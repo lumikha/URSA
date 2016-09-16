@@ -570,10 +570,6 @@ if(isset($_POST['new_thread'])) {
             document.getElementById("commit_subj").value = "";
             document.getElementById("commit_msg").value = "";
         })
-
-        if($('#attModal').style.display == "block") {
-            alert($('#attModal').hasClass('in'));
-        }
     });
 
     function preview(imgsrc, imgttl) {
