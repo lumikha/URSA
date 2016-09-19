@@ -60,12 +60,12 @@
             </thead>
             <tbody>
             <?php
-                $array = $all_users->rows;
-                foreach ($array as $object) {
-                    $email = $object->value->email;
-                    $type = $object->value->userType;
-                    $id = $object->value->_id;
-                    @$stat = $object->value->status;
+                $array_users = $result_db_users['Items'];
+                foreach ($array_users as $object) {
+                    @$email = $object['email']['S'];
+                    @$type = $object['userType']['S'];
+                    @$id = $object['user_id']['S'];
+                    @$stat = $object['status']['S'];
                     echo "<tr>
                         <td>".$email."</td>
                         <td>".$type."</td>
@@ -77,7 +77,7 @@
                     echo "</td>
                         <td>";
             ?>
-                    <a href='?action=status&user_id=<?php echo $id; ?>' class='<?php if($stat=="Active"){ echo "text-primary"; }else { echo "text-danger"; } ?>'><strong><?php echo $stat; ?></strong></a>
+                    <a href='?action=status&user_id=<?php echo $id; ?>' class='<?php if($stat=="active"){ echo "text-primary"; }else { echo "text-danger"; } ?>'><strong><?php echo $stat; ?></strong></a>
             <?php
                     echo  "</td>
                         </tr>";

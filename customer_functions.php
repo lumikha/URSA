@@ -741,99 +741,189 @@ date_default_timezone_set("Asia/Manila");
 */
 
 //-------ADMIN
-/*COMMENTED ADMIN FUNCTIONS FOR A WHILE
-@$all_users = $client_users->getView('users','viewAll');
-@$all_tickets = $client_tickets->getView('tickets','viewAll');
-@$all_logs = $client_logs->getView('logs','viewAll');
+//COMMENTED ADMIN FUNCTIONS FOR A WHILE
+//@$all_users = $client_users->getView('users','viewAll');
+//@$all_tickets = $client_tickets->getView('tickets','viewAll');
+//@$all_logs = $client_logs->getView('logs','viewAll');
   
 if(@$_POST['submit_user'])
 {
   if(@$_GET['user_id']){
-    $doc = $client_users->getDoc(@$_GET['user_id']);
-
-    $doc->user_first_name = $_POST['fname'];
-    $doc->user_last_name = $_POST['lname']; 
-    $doc->email = $_POST['email']; 
-    $doc->password = $_POST['pass']; 
-    $doc->userType = $_POST['type'];
-    
-
-    try {
-      $response = $client_users->storeDoc($doc);
-      ?>
-        <script type="text/javascript">
-            document.getElementById('home').click();
-        </script>
-      <?php
-    } catch ( Exception $e ) {
-      die("Unable to store the document : ".$e->getMessage());
-    }
-
-  }else{
-    $doc = new stdClass();
-
-    $doc->user_first_name = $_POST['fname'];
-    $doc->user_last_name = $_POST['lname']; 
-    $doc->email = $_POST['email']; 
-    $doc->password = $_POST['pass']; 
-    $doc->userType = $_POST['type']; 
-    $doc->status = "Active";
-
-    try {
-      $response = $client_users->storeDoc($doc);
-      ?>
-        <script type="text/javascript">
-            document.getElementById('home').click();
-        </script>
-      <?php
-    } catch ( Exception $e ) {
-      die("Unable to store the document : ".$e->getMessage());
-    }
-  }
-}
-if(@$_GET['action'] == "edit"){
-        try {
-          $doc = $client_users->getDoc("".$_GET['user_id']."");
-        } catch ( Exception $e ) {
-          die("Unable to get back the document : ".$e->getMessage());
+    $key = $marshaler->marshalJson('
+        {
+            "user_id": "'.@$_GET['user_id'].'"
         }
-        $user_fname =  $doc->user_first_name ;
-        $user_lname =  $doc->user_last_name ;
-        $user_email =  $doc->email ;
-        $userType =  $doc->userType ;
-}
-if(@$_GET['action'] == "delete"){
+    ');
+
+    $eav = $marshaler->marshalJson('
+        {
+            ":email": "'.$_POST['email'].'",
+            ":password": "'.$_POST['pass'].'",
+            ":userType": "'.$_POST['type'].'",
+            ":user_first_name": "'.$_POST['fname'].'",
+            ":user_last_name": "'.$_POST['lname'].'"
+        }
+    ');
+
+    $params = [
+        'TableName' => 'ursa-users',
+        'Key' => $key,
+        'UpdateExpression' =>
+            'set email=:email,
+                    password=:password,
+                    userType=:userType,
+                    user_first_name=:user_first_name,
+                    user_last_name=:user_last_name
+            ',
+        'ExpressionAttributeValues'=> $eav,
+        'ReturnValues' => 'UPDATED_NEW'
+    ];
+    
     try {
-        $doc = $client_users->getDoc("".$_GET['user_id']."");
-        $client_users->deleteDoc($doc);
+        $result = $dynamodb->updateItem($params);
         ?>
         <script type="text/javascript">
             document.getElementById('home').click();
         </script>
       <?php
-    } catch (Exception $e) {
-        echo "ERROR: ".$e->getMessage()." (".$e->getCode().")<br>\n";
-    }
-}  
-if(@$_GET['action'] == "status"){
-    $doc = $client_users->getDoc(@$_GET['user_id']);
-    $status =  $doc->status ;
 
-    if($status == "Active"){
-     $doc->status = "Not Active";
-    }else{
-      $doc->status = "Active";
+    } catch (DynamoDbException $e) {
+        echo "Unable to update item:\n";
+        echo $e->getMessage() . "\n";
     }
+
+  }else{
+    $item = $marshaler->marshalJson('
+        {
+            "user_id": "'.GUID().'",
+            "email": "'.$_POST['email'].'",
+            "password": "'.$_POST['pass'].'",
+            "status": "active",
+            "userType": "'.$_POST['type'].'",
+            "user_first_name": "'.$_POST['fname'].'",
+            "user_last_name": "'.$_POST['lname'].'"
+        }
+    ');
+
+    $params = [
+        'TableName' => 'ursa-users',
+        'Item' => $item
+    ];
+
 
     try {
-      $response = $client_users->storeDoc($doc);
-      ?>
+        $result = $dynamodb->putItem($params);
+        ?>
         <script type="text/javascript">
             document.getElementById('home').click();
         </script>
       <?php
-    } catch ( Exception $e ) {
-      die("Unable to store the document : ".$e->getMessage());
+
+    } catch (DynamoDbException $e) {
+        echo "Unable to add item:\n";
+        echo $e->getMessage() . "\n";
+    }
+  }
+}
+if(@$_GET['action'] == "edit"){
+    $key2 = $marshaler->marshalJson('
+        {
+            "user_id": "'.$_GET['user_id'].'"
+        }
+    ');
+    $params2 = [
+        'TableName' => 'ursa-users',
+        'Key' => $key2
+    ];
+    try {
+        $result = $dynamodb->getItem($params2);
+        $user_fname =  $result['Item']['user_first_name']['S'];
+        $user_lname =  $result['Item']['user_last_name']['S'];
+        $user_email =  $result['Item']['email']['S'];
+        $userType =  $result['Item']['userType']['S'];
+
+    } catch (DynamoDbException $e) {
+        echo "Unable to get item:\n";
+        echo $e->getMessage() . "\n";
     }
 }
-*/
+
+if(@$_GET['action'] == "delete"){
+    $key = $marshaler->marshalJson('
+        {
+            "user_id": "'.$_GET['user_id'].'"
+        }
+    ');
+
+
+    $params = [
+        'TableName' => 'ursa-users',
+        'Key' => $key
+    ];
+
+    try {
+        $result = $dynamodb->deleteItem($params);
+
+    } catch (DynamoDbException $e) {
+        echo "Unable to delete item:\n";
+        echo $e->getMessage() . "\n";
+    }
+}  
+if(@$_GET['action'] == "status"){
+    $key_get = $marshaler->marshalJson('
+        {
+            "user_id": "'.$_GET['user_id'].'"
+        }
+    ');
+    $params_get = [
+        'TableName' => 'ursa-users',
+        'Key' => $key_get
+    ];
+    try {
+        $result_get = $dynamodb->getItem($params_get);
+        $status =  $result_get['Item']['status']['S'];
+
+    } catch (DynamoDbException $e) {
+        echo "Unable to get item:\n";
+        echo $e->getMessage() . "\n";
+    }
+
+    $key_stat = $marshaler->marshalJson('
+        {
+            "user_id": "'.@$_GET['user_id'].'"
+        }
+    ');
+
+    if($status == "active"){
+     $stat_now = "not active";
+    }else{
+      $stat_now = "active";
+    }
+    $eav_stat = $marshaler->marshalJson('
+        {
+            ":status": "'.$stat_now.'"
+        }
+    ');
+
+    $params_stat = [
+        'TableName' => 'ursa-users',
+        'Key' => $key_stat,
+        'UpdateExpression' =>
+            'set #st=:status',
+        'ExpressionAttributeValues'=> $eav_stat,
+        'ReturnValues' => 'UPDATED_NEW',
+        'ExpressionAttributeNames'=> [ '#st' => 'status' ]
+    ];
+    
+    try {
+        $result = $dynamodb->updateItem($params_stat);
+        ?>
+        
+      <?php
+
+    } catch (DynamoDbException $e) {
+        echo "Unable to update item:\n";
+        echo $e->getMessage() . "\n";
+    }
+}
+
