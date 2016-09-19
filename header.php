@@ -121,6 +121,7 @@
                                     <li><a id="btn_center" class="nl disabledTab" data-toggle="tab" >Center</a></li>
                                     <?php } ?>
                                     <?php  if($current_page=="customer.php") { ?>  
+                                    <li><a class="hidden">Hidden</a></li>
                                     <li><a id="btn_account" class="nl" href="#account" data-toggle="tab">Account</a></li>
                                     <li><a id="btn_provisioning" class="nl" href="#provisioning" data-toggle="tab" >Provisioning</a></li>
                                     <li><a id="btn_support" class="nl" href="#support" data-toggle="tab" >Support</a></li>
