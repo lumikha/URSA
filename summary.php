@@ -3,7 +3,7 @@
     require 'lib/HelpScout/ApiClient.php';
     require 'header.php';
     use HelpScout\ApiClient;
-    $connectHS = true;
+    $connectHS = false;
     if($connectHS == true) {
         $client = ApiClient::getInstance();
         $client->setKey("9dc76fc9b48d19aae8d63a1e4c4130a997e6dd6e");
@@ -60,6 +60,9 @@ if(isset($_POST['new_thread'])) {
     margin-left: 1em;
     }
     </style>
+
+  
+    <div class="container_12 boxsummary"> <!--added this for media queries-->
      <!-- Modal -->
      <!--
   <div class="modal fade" id="addTicket" tabindex="-1" role="dialog">

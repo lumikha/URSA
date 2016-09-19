@@ -22,7 +22,7 @@
         <meta charset="UTF-8">
         <title>URSA</title>
         <link rel="Shortcut icon" href="img/ursa_tab_logo.png"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
     </head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link href="js/dataTables/dataTables.bootstrap.min.css" rel="stylesheet">
@@ -37,7 +37,7 @@
     <link rel="stylesheet" href="style.css"/>
    
    <!--media queries-->
-    <!--<link rel="stylesheet" type="text/css" href="mediaquery.css">-->
+   <link rel="stylesheet" type="text/css" href="css/ursa/mediaquery.css">
 
 
     <body>
@@ -45,13 +45,13 @@
  <div class="full-width-div">
  <div class="container_12" style="margin-top:60px;">
 
-                            <div class="grid_2 alpha text-center">
+                            <div class="grid_2 alpha logo text-center">
                                 <a id="home" href="summary">
                                     <img src="img/ursa_logo_red.gif" height="130" align="middle">
                                 </a>
                             </div>
                         
-                                    <div class="grid_3">
+                                    <div class="grid_3 hey">
                                          <div class="user_opt dropdown" style="margin-left:2em;"> 
                                             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                              <p class="hello">Hey <?php echo @$fname; ?>
@@ -68,6 +68,7 @@
                                         </div>
                                     </div>
                                     <?php if(!isset($_SESSION['user_now_db_customer_id'])) { ?>
+                                    <div class="search">
                                     <div class="grid_2 push_6 omega"  style="margin-left:3em;">
                                         <div ng-app="myapp" id="search_result_view" >
                                             <div ng-controller="newController">
@@ -87,9 +88,14 @@
                                                             <a class="list-group-item text-right" ng-if="search" href="#" onclick="getSearch();">View More Results <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>    
                                                         </div>
                                                     </div> 
+                                                    </div>
                                                 </div>
                                             </div>   
+                                            </div>
                                         </div> 
+                                        </div>
+                                        </div>
+
                                     </div>
                                     <?php } ?>
                                 </div>
@@ -100,7 +106,7 @@
 
                         <div class="container_12">
                        
-                            <div class="grid_2 alpha" style="margin-bottom:90px; margin-top:20px; position:absolute;">
+                            <div class="grid_2 alpha navtabs" style="margin-bottom:90px; margin-top:20px; position:absolute;">
                                     <?php 
                                     if(isset($_SESSION['user_now_db_customer_id'])) { ?>
                                     <ul class="nav nav-pills nav-stacked text-center" id="myTab">
@@ -133,13 +139,16 @@
                                     <?php } ?>
                                 </ul>
                                     <?php if($current_page == "customer.php") { ?>
-                                     <div class="row">
-                                        <div class="col-md-6 dynamic" hidden>
+                                     <div class="container_12" hidden>
+                                        <div class="grid_10 push_2 dynamic" hidden>
                                      </div>    
                                 </div>
                                     <?php } ?>
                                 <?php }?>
                              </div>
                             </div>
+</div>
+
                             </div>
+
                             
