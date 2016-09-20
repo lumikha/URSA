@@ -110,7 +110,7 @@
                                     <?php 
                                     if(isset($_SESSION['user_now_db_customer_id'])) { ?>
                                     <ul class="nav nav-pills nav-stacked text-center" id="myTab">
-                                     <li><a id="btn_account" class="nl disabledTab hidden" data-toggle="tab">Hidden</a></li>   
+                                     <li><a class="hidden">Hidden</a></li> 
                                         <li id="acc_tab1"><a class="nl" href="#account" data-toggle="tab">Account</a></li>
                                         <li id="acc_tab2"><a class="nl" href="#dashboard" data-toggle="tab">Dashboard</a></li>
                                      </ul>

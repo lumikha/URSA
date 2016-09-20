@@ -23,7 +23,7 @@ $marshaler = new Marshaler();
 
 $params = [
     'TableName' => 'ursa-users',
-    'ProjectionExpression' => 'user_id,email,password,userType,user_first_name,user_last_name,#st',
+    'ProjectionExpression' => 'user_id,email,password,userType,user_first_name,user_last_name,#st,chargify_id,customer_id',
     'ExpressionAttributeNames'=> [ '#st' => 'status' ]
 ];
 
@@ -85,10 +85,13 @@ try {
     echo $e->getMessage() . "\n";
 }
 
+//$days_ago = date('Y/m/d', mktime(0, 0, 0, date("m") , date("d") - 2, date("Y")))." 00:00:00";
+
 $params3 = [
     'TableName' => 'ursa-logs',
     'ProjectionExpression' => 'user_id,customer_id,event,#data,#date',
     'ExpressionAttributeNames'=> [ '#data' => 'data','#date' => 'date' ]
+    //'FilterExpression' => 'date >= '.$days_ago.''
 ];
 
     try {

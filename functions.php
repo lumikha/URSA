@@ -51,7 +51,7 @@
 				$_SESSION['user_now_email'] = $email;
 				$_SESSION['user_now_access_level'] = $result_db_users['Items'][$i]['userType']['S'];
 				if($result_db_users['Items'][$i]['userType']['S'] == 'Customer') {
-					$_SESSION['user_now_db_customer_id'] = $result_db_users['Items'][$i]['user_id']['S'];
+					$_SESSION['user_now_db_customer_id'] = $result_db_users['Items'][$i]['customer_id']['S'];
 					$_SESSION['type'] = "customer";
 					?>
 					<script>
