@@ -10,6 +10,8 @@
   body 
   {
     min-width: 480px;
+    margin-left:-10em;
+    margin-right: auto;
   }
 
   .container_12,
@@ -136,11 +138,6 @@
     margin-left:21em;
   }
 
-
-
-
-
-
 }
 
 @media only screen and (min-width: 299px) and (max-width: 479px) 
@@ -151,13 +148,14 @@
   {
     min-width: 299px;
     margin-right: 0;
-    margin-left: 0;
+    margin-left: -18em;
+    margin-right: auto;
   }
 
   .container_12,
   .container_16 
   {
-    width: 300px;
+    width: 250px;
   }
 
   .container_12 .grid_1,
@@ -194,7 +192,7 @@
   .container_16 .grid_16 
   {
     margin: 0;
-    width: 300px;
+    width: 250px;
   }
   .container_12 .push_1,
   .container_16 .push_1,
@@ -258,7 +256,7 @@
   .container_16 .pull_15 
   {
     left: 0;
-    width: 300px;
+    width: 250px;
    
   }
    .search
@@ -269,18 +267,185 @@
   .boxsummary
   {
     margin-top:35em;
-    margin-left:19.5em;
+    margin-left:26em;
   }
 
    .boxcustomer
   {
     margin-top:35em;
-    margin-left:25.5em;
+    margin-left:27.5em;
+  }
+
+  .tab-pane
+  {
+    padding-top: 3em;
+    padding-right: 2em;
+    width: 270px;
   }
 
 
 
 
+}
 
+@media only screen and (min-width: 768px) and (max-width: 950px) 
+{
+
+  body 
+  {
+    min-width: 720px;
+    margin-right: 0;
+    margin-left: 0em;
+    margin-right: auto;
+  }
+
+  .container_12,
+  .container_16 
+  {
+    width: 720px;
+  }
+
+  .container_12 .grid_1,
+  .container_16 .grid_1,
+  .container_12 .grid_2,
+  .container_16 .grid_2,
+  .container_12 .grid_3,
+  .container_16 .grid_3,
+  .container_12 .grid_4,
+  .container_16 .grid_4,
+  .container_12 .grid_5,
+  .container_16 .grid_5,
+  .container_12 .grid_6,
+  .container_16 .grid_6,
+  .container_12 .grid_7,
+  .container_16 .grid_7,
+  .container_12 .grid_8,
+  .container_16 .grid_8,
+  .container_12 .grid_9,
+  .container_16 .grid_9,
+  .container_12 .grid_10,
+  .container_16 .grid_10,
+  .container_12 .grid_11,
+  .container_16 .grid_11,
+  .container_12 .grid_12,
+  .container_16 .grid_12,
+  .container_12 .grid_13,
+  .container_16 .grid_13,
+  .container_12 .grid_14,
+  .container_16 .grid_14,
+  .container_12 .grid_15,
+  .container_16 .grid_15,
+  .container_12 .grid_16,
+  .container_16 .grid_16 
+  {
+    margin: 0;
+    width: 720px;
+  }
+  .container_12 .push_1,
+  .container_16 .push_1,
+  .container_12 .push_2,
+  .container_16 .push_2,
+  .container_12 .push_3,
+  .container_16 .push_3,
+  .container_12 .push_4,
+  .container_16 .push_4,
+  .container_12 .push_5,
+  .container_16 .push_5,
+  .container_12 .push_6,
+  .container_16 .push_6,
+  .container_12 .push_7,
+  .container_16 .push_7,
+  .container_12 .push_8,
+  .container_16 .push_8,
+  .container_12 .push_9,
+  .container_16 .push_9,
+  .container_12 .push_10,
+  .container_16 .push_10,
+  .container_12 .push_11,
+  .container_16 .push_11,
+  .container_12 .push_12,
+  .container_16 .push_12,
+  .container_12 .push_13,
+  .container_16 .push_13,
+  .container_12 .push_14,
+  .container_16 .push_14,
+  .container_12 .push_15,
+  .container_16 .push_15,
+  .container_12 .pull_1,
+  .container_16 .pull_1,
+  .container_12 .pull_2,
+  .container_16 .pull_2,
+  .container_12 .pull_3,
+  .container_16 .pull_3,
+  .container_12 .pull_4,
+  .container_16 .pull_4,
+  .container_12 .pull_5,
+  .container_16 .pull_5,
+  .container_12 .pull_6,
+  .container_16 .pull_6,
+  .container_12 .pull_7,
+  .container_16 .pull_7,
+  .container_12 .pull_8,
+  .container_16 .pull_8,
+  .container_12 .pull_9,
+  .container_16 .pull_9,
+  .container_12 .pull_10,
+  .container_16 .pull_10,
+  .container_12 .pull_11,
+  .container_16 .pull_11,
+  .container_12 .pull_12,
+  .container_16 .pull_12,
+  .container_12 .pull_13,
+  .container_16 .pull_13,
+  .container_12 .pull_14,
+  .container_16 .pull_14,
+  .container_12 .pull_15,
+  .container_16 .pull_15 
+  {
+    left: 0;
+    width: 720px;
+   
+  }
+   .search
+  {
+    margin-left: -3em;
+  }
+
+  .boxsummary
+  {
+    margin-top:35em;
+    margin-left:8em;
+  }
+
+   .boxcustomer
+  {
+    margin-top:35em;
+    margin-left:9em;
+  }
+
+  .tab-pane
+  {
+    padding-top: 3em;
+    padding-right: 2em;
+    width: 740px;
+  }
 
 }
+@media only screen and (min-width: 960px) and (max-width: 1600px) 
+
+{
+
+  body 
+  {
+    min-width: 960px;
+    margin-left:auto;
+    margin-right: auto;
+  }
+
+  .container_12
+   
+  {
+    width: 960px;
+  }
+
+  }

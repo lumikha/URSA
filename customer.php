@@ -60,7 +60,7 @@
             //Customer's Admin Info
             include "forms/cust_admin_form.php";
         ?>
-    </div></div>
+    </div>
         
 <?php
     require "footer.php";
