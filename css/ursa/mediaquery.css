@@ -140,6 +140,8 @@
 
 }
 
+/*XS DEVICES*/
+
 @media only screen and (min-width: 299px) and (max-width: 479px) 
 
 {
@@ -283,11 +285,17 @@
     width: 270px;
   }
 
+  .results
+  {
+    margin-left: 20em;
+  }
 
 
 
 }
 
+
+/*Small devices*/
 @media only screen and (min-width: 768px) and (max-width: 950px) 
 {
 
@@ -421,6 +429,8 @@
   {
     margin-top:35em;
     margin-left:9em;
+
+
   }
 
   .tab-pane
@@ -430,7 +440,10 @@
     width: 740px;
   }
 
+  
 }
+
+/*MEDIUM devices up to Large Devices*/
 @media only screen and (min-width: 960px) and (max-width: 1600px) 
 
 {

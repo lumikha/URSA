@@ -15,7 +15,10 @@
     <link rel="stylesheet" href="style.css"/>
    
    <!--media queries-->
-    <!--<link rel="stylesheet" type="text/css" href="mediaquery.css">-->
+    
+   <!--media queries-->
+   <link rel="stylesheet" type="text/css" href="css/ursa/mediaquery.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="js/angular.min.js"></script>
@@ -74,7 +77,7 @@
 		<div ng-app="myapp">
 			<div ng-controller="newController">
 			<div class="well-lg">
-			<div class="container_12">
+			<div class="container_12 results">
 				<div class="grid_12 alpha">
 					<form name="myForm">
 						<input type="text" class="form-control" ng-keypress="currentPage=0" onkeyup="return check();" id="search" size="30" name="search" ng-model="search" placeholder="Search">
