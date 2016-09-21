@@ -13,13 +13,14 @@
   $done = 0;
   $error_message = "";
   function GUID()
-  {
-      if (function_exists('com_create_guid') === true)
-      {
-          return trim(com_create_guid(), '{}');
-      }
-      return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
-  }
+    {
+          date_default_timezone_set("Asia/Manila");
+      $t = microtime(true);
+      $micro = sprintf("%06d",($t - floor($t)) * 1000000);
+      $d = new DateTime( date('Y-m-d H:i:s.'.$micro, $t) );
+
+      return $d->format("YmdHisu");
+    }
   if(isset($_POST['submit_business_form'])) {
 
     //adding - to phone number
