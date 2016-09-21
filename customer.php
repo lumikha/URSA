@@ -39,7 +39,7 @@
         
     </div>
     <div class="container_12" style="padding: 1em;">
-         <div class="grid_9 alpha"   style="margin-top:0.5em;">
+         <div class="grid_9 alpha"   style="margin-top:0.5em; margin-right:3em;">
     <div class="tab-content">
 
         <?php 
@@ -84,8 +84,8 @@
         </script><?php
     }
 ?>
-                                    
-                    <div class="grid_2 omega ticket-pane" style="font-size:83%;color:gray;margin-right:0px; margin-left:3em; margin-top:0.5em;height:450px; overflow:auto;">
+                     <div class="ticket-pane">               
+                    <div class="grid_2 omega" style="font-size:83%;color:gray;margin-right:0px; margin-left:0em; margin-top:0.5em;height:450px; overflow:auto;">
                     <?php
                     
                     if(isset($_GET['id'])) {
@@ -113,6 +113,7 @@
                     }
                     
                     ?>
+                     </div>
                      </div>
                      </div>
                     <!--box below forms-->

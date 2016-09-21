@@ -12,7 +12,11 @@
 	<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="css/ursa/style-login.css">
 	<link rel="stylesheet" type="text/css" href="js/field_trappings/error_msg.css">
+	
+<!--media query for login -->
 	<link rel="stylesheet" type="text/css" href="css/ursa/style-login-xs.css" media="screen and (max-width:500px)">
+	
+
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/field_trappings/login.js"></script>

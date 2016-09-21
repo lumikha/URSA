@@ -1,4 +1,9 @@
-html, body { 
+@media only screen and (min-width:299px) and (max-width:479px)
+
+{
+	
+	html, body
+	 { 
 	/*background-image: url("img/little_dipper.jpg");*/
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -110,4 +115,40 @@ html, body {
 	padding-left: 10px;
 	font-weight: bold;
 	text-align: center;
+	}
+
+}
+
+
+
+/*SM Devices*/
+@media only screen and (min-width:480px) and (max-width:767px)
+
+
+{
+
+
+
+}
+
+
+/*MEDIUM Devices*/
+@media only screen and (min-width:768px) and (max-width:959px)
+
+
+{
+
+
+
+}
+
+
+/*Large Devices*/
+@media only screen and (min-width:960px) and (max-width:1600px)
+
+
+{
+
+	
+
 }
