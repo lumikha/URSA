@@ -13,8 +13,8 @@
   {
     min-width: 280px;
     max-width: 320px;
-    margin-left: 1em;
-    margin-right: 1em;
+    margin-left: 5%;
+    margin-right: 0em;
     width: 320px;
   }
  
@@ -27,6 +27,7 @@
     width:300px;
     max-width: 320px;
     margin-left: auto;
+
 
 
   }
@@ -169,6 +170,12 @@
 
   }
 
+  .tab-content
+  {
+    margin-left: 0.5em;
+  }
+
+
 
 }
 
@@ -180,14 +187,16 @@
   body 
   {
     min-width: 480px;
-    margin-left:-12em;
+    max-width: 500px;
+    margin-left:auto;
     margin-right: auto;
+    width: 480px;
   }
 
   .container_12,
   .container_16 
   {
-    width: 420px;
+    width: 480px;
   }
 
   .container_12 .grid_1,
@@ -224,7 +233,7 @@
   .container_16 .grid_16 
   {
     margin: 0;
-    width: 420px;
+    width: 480px;
   }
   .container_12 .push_1,
   .container_16 .push_1,
@@ -288,7 +297,7 @@
   .container_16 .pull_15 
   {
     left: 0;
-    width: 420px;
+    width: 480px;
    
   }
    .search
@@ -300,13 +309,20 @@
   {
     margin-top:35em;
     margin-left:19.5em;
+
+
   }
 
    .boxcustomer
   {
     margin-top:35em;
-    margin-left:21em;
+    margin-left:18.5em;
   }
+  .tab-content
+  {
+    margin-left: 0.5em;
+  }
+
 
 }
 
@@ -438,7 +454,9 @@
   .boxsummary
   {
     margin-top:35em;
-    margin-left:3em;
+    margin-left:auto;
+    right: 0;
+    padding-left: 1em;
   }
 
    .boxcustomer
@@ -455,6 +473,11 @@
     padding-right: 2em;
     width: 740px;
   }
+  .tab-content
+  {
+    margin-left: 0.5em;
+  }
+
 
   
 }
