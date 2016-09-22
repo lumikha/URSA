@@ -184,19 +184,19 @@
 
 {
 
-  body 
+  body, .full-width-div
   {
-    min-width: 480px;
-    max-width: 500px;
-    margin-left:auto;
+    min-width: 420px;
+    width: 420px;
+    margin-left: auto;
     margin-right: auto;
-    width: 480px;
   }
 
   .container_12,
   .container_16 
   {
-    width: 480px;
+    width: 420px;
+    max-width: 500px;
   }
 
   .container_12 .grid_1,
@@ -233,7 +233,7 @@
   .container_16 .grid_16 
   {
     margin: 0;
-    width: 480px;
+    width: 420px;
   }
   .container_12 .push_1,
   .container_16 .push_1,
@@ -297,7 +297,7 @@
   .container_16 .pull_15 
   {
     left: 0;
-    width: 480px;
+    width: 420px;
    
   }
    .search
@@ -308,7 +308,7 @@
   .boxsummary
   {
     margin-top:35em;
-    margin-left:19.5em;
+    margin-left:1em;
 
 
   }
@@ -316,7 +316,7 @@
    .boxcustomer
   {
     margin-top:35em;
-    margin-left:18.5em;
+    margin-left:0em;
   }
   .tab-content
   {
@@ -328,7 +328,7 @@
 
 
 /*Small devices*/
-@media only screen and (min-width: 768px) and (max-width: 950px) 
+@media only screen and (min-width: 768px) and (max-width: 959px) 
 {
 
   body, .full-width-div
