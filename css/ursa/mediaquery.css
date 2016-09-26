@@ -5,7 +5,7 @@
 
 /*XS DEVICES*/
 
-@media only screen and (min-width: 280px) and (max-width: 479px) 
+@media only all and (min-width: 280px) and (max-width: 479px) 
 
 {
 
@@ -13,8 +13,8 @@
   {
     min-width: 280px;
     max-width: 320px;
-    margin-left: 5%;
-    margin-right: 0em;
+    margin-left: auto;
+    margin-right: auto;
     width: 320px;
   }
  
@@ -136,26 +136,29 @@
   }
    .search
   {
-    margin-left: -3em;
+    margin-left: -1.5em;
   }
+
 
   .boxsummary
   {
     margin-top:35em;
-    margin-left:3em;
+    margin-left:1em;
+    right: auto;
   }
 
    .boxcustomer
   {
     margin-top:35em;
-    margin-left:1em;
+    margin-left:auto;
+    right: auto;
   }
 
   .tab-pane
   {
     padding-top: 3em;
-    padding-right: 0em;
-    width: 290px;
+    padding-right: 1em;
+    width: 300px;
     margin-left: 2em;
   }
 
@@ -302,7 +305,7 @@
   }
    .search
   {
-    margin-left: -3em;
+     margin-left: -1.5em;
   }
 
   .boxsummary
@@ -448,7 +451,7 @@
   }
    .search
   {
-    margin-left: -3em;
+    margin-left: -1.5em;
   }
 
   .boxsummary
@@ -462,7 +465,7 @@
    .boxcustomer
   {
     margin-top:35em;
-    margin-left:2em;
+    margin-left:auto;
 
 
   }
@@ -500,4 +503,10 @@
     width: 960px;
   }
 
-  }
+.boxsummary
+{
+  margin-left: 25%;
+}
+
+
+}

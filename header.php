@@ -45,13 +45,13 @@
  <div class="full-width-div">
  <div class="container_12" style="margin-top:60px;">
                               
-                            <div class="grid_2 alpha logo text-center" style="margin-right:2em;">
+                            <div class="grid_2 alpha logo text-center">
                                 <a id="home" href="summary"> 
                                     <img src="img/ursa_logo_red.gif" height="130" align="middle" >
                                 </a>
                             </div>
                         
-                                    <div class="grid_3 hey">
+                                    <div class="grid_3 hey" style="margin-left:2.5em;">
                                          <div class="user_opt dropdown"> 
                                             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                              <p class="hello">Hey <?php echo @$fname; ?>
@@ -70,7 +70,7 @@
                                
                                     <?php if(!isset($_SESSION['user_now_db_customer_id'])) { ?>
                                     <div class="search">
-                                    <div class="grid_2 push_6 omega"  style="margin-left:3em;">
+                                    <div class="grid_2 push_6 omega"  style="margin-left:1.5em;">
                                         <div ng-app="myapp" id="search_result_view" >
                                             <div ng-controller="newController">
                                                 <div id="toggleContainer" style=" position:relative">

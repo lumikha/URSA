@@ -273,22 +273,23 @@
         <img class="preview-modal-content" id="img01">
         <div id="caption"></div>
     </div>
-
+    <div class="full-width-div">        
      <div class="container_12" style="margin-top:-1em;">
     <div id="boxes" class="row text-center">
-        <div class="grid_2 push_2 alpha" style="padding: 1em;margin-right:1em;margin-bottom:1em;border:solid #A60800 2px;color:#A60800"><a href="#" onclick="return addTicket();"><strong>Ticket</strong></a></div>
-        <div class="grid_2 push_2 omega" style="padding: 1em;margin-right:1em;margin-bottom:1em;border:solid #340570 2px;color:#340570"><strong>Talkdesk</strong></div>
+        <div class="grid_2 push_1 alpha" style="padding: 1em;margin-right:1em;margin-bottom:1em;border:solid #A60800 2px;color:#A60800"><a href="#" onclick="return addTicket();"><strong>Ticket</strong></a></div>
+        <div class="grid_2 push_1 omega" style="padding: 1em;margin-right:1em;margin-bottom:1em;border:solid #340570 2px;color:#340570"><strong>Talkdesk</strong></div>
         
     </div>
+    </div>
+    </div>
     <div class="container_12">
-        <div class="grid_5 push_2 alpha" style="overflow-y: scroll; overflow-x: hidden; height: 550px; padding-left:2em; margin-left:-1em;">
-
-            <div class="container_12">
-                        
-                
-            </div>
+        <div class="grid_12">
+        <div class="grid_4 push_2 alpha" style="overflow-y: scroll; overflow-x: hidden; height: 450px; padding-left:2em;">
+ 
+        </div>
         </div>
     </div>
+   
 
 <?php
     require "footer.php";
