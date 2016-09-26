@@ -1,5 +1,6 @@
 <?php
     require 'header.php';
+    require 'gmail_get_messages.php';
 ?>
     <style>
         .round-div{
@@ -283,10 +284,39 @@
     </div>
     </div>
     <div class="container_12">
+<<<<<<< HEAD
         <div class="grid_12">
         <div class="grid_4 push_2 alpha" style="overflow-y: scroll; overflow-x: hidden; height: 450px; padding-left:2em;">
  
         </div>
+=======
+        <div class="grid_5 push_2 alpha" style="overflow-y: scroll; overflow-x: hidden; height: 550px; padding-left:2em; margin-left:-1em;">
+
+        <?php 
+            $cnt=0;
+            while(!empty($arr_msgs[$cnt])) { 
+        ?>
+            <div class="container_12">
+                <div class="grid_1 alpha round-div">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+                <div class="grid_2 omega">
+                    <strong><?php //echo $t_bname; ?></strong></a> <br>
+                    <?php
+                    /*
+                        echo $t_cust_fname." ".$t_cust_lname."<br>".
+                             $t_bphone."<br>".
+                             $t_cust_id;
+                    */
+                        echo $arr_msgs[$cnt]['id'];
+                    ?>
+                </div>
+            </div>
+        <?php 
+                $cnt++;
+            } 
+        ?>
+>>>>>>> origin/master
         </div>
     </div>
    
