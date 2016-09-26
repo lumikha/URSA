@@ -179,8 +179,13 @@
   }
 
 
+.round-div
+  {
+   max-width: 65px;
+  }
 
-}
+ }
+
 
 /* Mobile Landscape Width to Tablet Portrait Width */
 @media only screen and (min-width: 480px) and (max-width: 767px) 
@@ -326,6 +331,10 @@
     margin-left: 0.5em;
   }
 
+  .round-div
+  {
+   max-width: 65px;
+  }
 
 }
 
@@ -481,7 +490,11 @@
     margin-left: 0.5em;
   }
 
-
+.round-div
+  {
+   max-width: 65px;
+   
+  }
   
 }
 

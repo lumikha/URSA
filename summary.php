@@ -3,19 +3,6 @@
     require 'gmail_get_messages.php';
 ?>
     <style>
-        .round-div{
-            background: pink;
-            border-radius:50%;
-            color: black;
-            display:table;
-            height: 65px;
-            font-weight: bold;
-            font-size: 1.2em;
-            width: auto;
-            margin:0 auto;
-            margin-right: 4em;
-            margin-left: 1em;
-        }
 
         .modal.fade .modal-dialog {
             -webkit-transform: scale(0.1);
@@ -284,13 +271,8 @@
     </div>
     </div>
     <div class="container_12">
-<<<<<<< HEAD
-        <div class="grid_12">
-        <div class="grid_4 push_2 alpha" style="overflow-y: scroll; overflow-x: hidden; height: 450px; padding-left:2em;">
- 
-        </div>
-=======
-        <div class="grid_5 push_2 alpha" style="overflow-y: scroll; overflow-x: hidden; height: 550px; padding-left:2em; margin-left:-1em;">
+
+        <div class="grid_5 push_1 alpha" style="overflow-y: scroll; overflow-x: hidden; height: 550px; padding-left:0em; margin-left:auto;">
 
         <?php 
             $cnt=0;
@@ -316,9 +298,10 @@
                 $cnt++;
             } 
         ?>
->>>>>>> origin/master
+
         </div>
     </div>
+   </div>
    
 
 <?php
