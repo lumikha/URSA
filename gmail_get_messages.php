@@ -3,6 +3,39 @@
     require 'dynamoDB/dbConnect.php';
     require_once realpath(dirname(__FILE__) . '/lib/google/apiclient/src/Google/autoload.php');
 
+    $params_t_check = [
+    'TableName' => 'ursa-tickets',
+    'ProjectionExpression' => 'ticket_gmail_id'
+    ];
+
+        try {
+        while (true) {
+            $ticket_check = $dynamodb->scan($params_t_check);
+
+            
+            foreach ($ticket_check['Items'] as $i) {
+                $movie = $marshaler->unmarshalItem($i);
+            }
+
+            if (isset($ticket_check['LastEvaluatedKey'])) {
+                $params_t_check['ExclusiveStartKey'] = $ticket_check['LastEvaluatedKey'];
+                $ticket_check = $dynamodb->scan($params_t_check);
+            } else {
+                break;
+            }
+        }
+    } catch (DynamoDbException $e) {
+        echo "Unable to scan USERS:\n";
+        echo $e->getMessage() . "\n";
+    }
+    $test = array();
+                foreach ($ticket_check['Items'] as $obj) {
+                    if($obj['ticket_gmail_id']['S']){
+                        array_push($test, $obj['ticket_gmail_id']['S']);
+                    }
+                }
+                //print_r($test);
+
     $table_tickets = 'ursa-tickets';
     $table_ticket_notes = 'ursa-ticket-notes';
 
@@ -33,12 +66,22 @@ function decodeBody($body) {
     }
     return $decodedMessage;
 }
+    function GUID()
+      {
+            date_default_timezone_set("Asia/Manila");
+            $t = microtime(true);
+            $micro = sprintf("%06d",($t - floor($t)) * 1000000);
+            $d = new DateTime( date('Y-m-d H:i:s.'.$micro, $t) );
+
+            return $d->format("YmdHisu");
+      }
 
 $gmail = new Google_Service_Gmail($client);
 
 $list = $gmail->users_messages->listUsersMessages('me', ['maxResults' => 1000]);
 
 try{
+    $email_num =1;
     while ($list->getMessages() != null) {
         
         $arr_msgs = array();
@@ -49,6 +92,33 @@ try{
         foreach ($list->getMessages() as $mlist) {
 
             $message_id = $mlist->id;
+           // print_r($ticket_check['Items'][0]['ticket_gmail_id']['S']);
+            if( in_array( $message_id ,$test) )
+                {
+                    echo $message_id." already exist.</br>";
+                }else{
+                    $item_t_add = $marshaler->marshalJson('
+                        {
+                            "ticket_id": "'.GUID().'",
+                            "ticket_gmail_id": "'.$message_id.'"
+                        }
+                    ');
+
+                    $params_t_add = [
+                        'TableName' => $table_tickets,
+                        'Item' => $item_t_add
+                    ];
+
+
+                    try {
+                        $result = $dynamodb->putItem($params_t_add);
+                        echo $message_id." SAVED<br>";
+                    } catch (DynamoDbException $e) {
+                        echo "Unable to add item:\n";
+                        echo $e->getMessage() . "\n";
+                    }
+                }
+
             $optParamsGet2['format'] = 'full';
             $single_message = $gmail->users_messages->get('me', $message_id, $optParamsGet2);
             $payload = $single_message->getPayload();
