@@ -293,6 +293,7 @@ try{
                 "id" => $message_id,
                 "date" => $date,
                 "subject" => $subject,
+                "body" => $FOUND_BODY,
                 "from" => $from,
                 "email" => $from_email,
                 "attachments" => $arr_att
