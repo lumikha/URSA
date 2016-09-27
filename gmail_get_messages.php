@@ -257,7 +257,7 @@ try{
                         {
                             "ticket_id": "'.UID().'",
                             "ticket_gmail_id": "'.$message_id.'",
-                            "ticket_email_from": "'.$from_email[1].'"
+                            "ticket_email_from": "'.$from_email.'"
                         }
                     ');
 
