@@ -275,27 +275,27 @@
         <div class="grid_5 push_1 alpha" style="overflow-y: scroll; overflow-x: hidden; height: 550px; padding-left:0em; margin-left:auto;">
 
         <?php 
-            $cnt=0;
-            while(!empty($arr_msgs[$cnt])) { 
+            foreach($arr_msgs as $a_m) { 
+                if($arr_msgs['email'] == ) {
         ?>
-            <div class="container_12">
-                <div class="grid_1 alpha round-div">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </div>
-                <div class="grid_2 omega">
-                    <strong><?php //echo $t_bname; ?></strong></a> <br>
-                    <?php
-                    /*
-                        echo $t_cust_fname." ".$t_cust_lname."<br>".
-                             $t_bphone."<br>".
-                             $t_cust_id;
-                    */
-                        echo $arr_msgs[$cnt]['id'];
-                    ?>
-                </div>
-            </div>
+                    <div class="container_12">
+                        <div class="grid_1 alpha round-div">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                        <div class="grid_2 omega">
+                            <strong><?php //echo $t_bname; ?></strong></a> <br>
+                            <?php
+                            /*
+                                echo $t_cust_fname." ".$t_cust_lname."<br>".
+                                     $t_bphone."<br>".
+                                     $t_cust_id;
+                            */
+                                echo $a_m['id'];
+                            ?>
+                        </div>
+                    </div>
         <?php 
-                $cnt++;
+                }
             } 
         ?>
 

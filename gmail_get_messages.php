@@ -66,6 +66,7 @@ function decodeBody($body) {
     }
     return $decodedMessage;
 }
+/*
     function GUID()
       {
             date_default_timezone_set("Asia/Manila");
@@ -75,7 +76,7 @@ function decodeBody($body) {
 
             return $d->format("YmdHisu");
       }
-
+*/
 $gmail = new Google_Service_Gmail($client);
 
 $list = $gmail->users_messages->listUsersMessages('me', ['maxResults' => 1000]);
@@ -95,7 +96,7 @@ try{
            // print_r($ticket_check['Items'][0]['ticket_gmail_id']['S']);
             if( in_array( $message_id ,$test) )
                 {
-                    echo $message_id." already exist.</br>";
+                    //echo $message_id." already exist.</br>";
                 }else{
                     $item_t_add = $marshaler->marshalJson('
                         {
@@ -136,6 +137,9 @@ try{
                 }
                 if($head['name'] == 'From') {
                     $from = $head['value'];
+                }
+                if($head['name'] == 'Authentication-Results') {
+                    $from_email = explode("smtp.mailfrom=", $head['value']); 
                 }
             }
 
@@ -250,6 +254,23 @@ try{
             if(!$FOUND_BODY) {
                 $FOUND_BODY = '(No message)';
             }
+
+            $arr_att = array();
+            foreach($parts as $ptest) {
+                if($ptest['body']['attachmentId']) {
+                    $attachment = $gmail->users_messages_attachments->get('me', $message_id, $ptest['body']['attachmentId']);
+                    $data64 = strtr($attachment->getData(), array('-' => '+', '_' => '/'));
+                    $replace = "src=\"data:" . $ptest['mimeType'] . ";base64," . $data64 . "\"";
+                    if($ptest['mimeType'] == 'image/gif' || $ptest['mimeType'] == 'image/png' || $ptest['mimeType'] == 'image/jpeg') {
+                        $att = "<img ".$replace." >";
+                        array_push($arr_att, $att);
+                    } else {
+                        $att = "<iframe ".$replace." width='100%' height='800px'></iframe>";
+                        array_push($arr_att, $att);
+                    }
+                }
+            }
+
             // Finally, print the message ID and the body
             //echo "ID: "; print_r($message_id); 
             //echo "<br/>BODY: "; print_r($FOUND_BODY);
@@ -261,11 +282,15 @@ try{
                 "id" => $message_id,
                 "date" => $date,
                 "subject" => $subject,
-                "from" => $from
+                "from" => $from,
+                "email" => $from_email[1],
+                "attachments" => $arr_att
             ));
         }
 
         //print_r($arr_msgs);
+
+
 
         if ($list->getNextPageToken() != null) {
             $pageToken = $list->getNextPageToken();
