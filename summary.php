@@ -58,22 +58,24 @@
 
     <div class="container_12 boxsummary">
     <div class="modal fade" id="viewTicket" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-md" >
+        <div id="modal_dialog" class="modal-dialog modal-md" >
             <div class="modal-content">
-                                    
+                <span>
+                          
+                </span>
                 <div class="modal-body">
                     <input type="type" id="cID" hidden>
                     <div class="row">
+                        <div class="col-md-4">
+                            <label>Ticket Entry No.</label>
+                            <input type="text" class="form-control" id="tNo" value="" style="text-align: center; font-weight: bold;" readonly>
+                        </div>
                         <div class="col-md-6">
                             <label style="display: none;">Ticket ID</label>
                             <input type="text" class="form-control" id="tID" value="" style="text-align: center; font-weight: bold; display: none;" readonly>
                         </div>
-                        <div class="col-md-2">
-                            &nbsp;
-                        </div>
-                        <div class="col-md-4">
-                            <label>Ticket Entry No.</label>
-                            <input type="text" class="form-control" id="tNo" value="" style="text-align: center; font-weight: bold;" readonly>
+                        <div class="col-md-2 text-right" style="top:-20px">
+                            <a id="expand" href="#"><span id="glyph_resize" class="btn btn-info btn-sm glyphicon glyphicon-resize-full " aria-hidden="true"></span></a>
                         </div>
                     </div>
                     <div class="row">
@@ -224,7 +226,7 @@
     </div>
 
     <div class="modal fade" id="updateTicket" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-md" >
+        <div id="modal_cont" class="modal-dialog modal-lg">
             <div class="modal-content">
                                     
                 <div class="modal-body">
@@ -460,4 +462,21 @@
     function insertAfter(referenceNode, newNode) {
         referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
     }
+    $('#expand').click(function(){
+        if($('#modal_dialog').hasClass('modal-md')){
+            $('#glyph_resize').removeClass('glyphicon-resize-full');
+            $('#glyph_resize').addClass('glyphicon-resize-small');
+            $('#modal_dialog').removeClass('modal-md');
+            $('#modal_cont').removeClass('modal-md');
+            $('#modal_dialog').addClass('modal-lg');
+            $('#modal_cont').addClass('modal-lg');
+        }else{
+            $('#glyph_resize').removeClass('glyphicon-resize-small');
+            $('#glyph_resize').addClass('glyphicon-resize-full');
+            $('#modal_dialog').removeClass('modal-lg');
+            $('#modal_cont').removeClass('modal-lg');
+            $('#modal_dialog').addClass('modal-md');
+            $('#modal_cont').addClass('modal-md');
+        }
+    });
 </script>
