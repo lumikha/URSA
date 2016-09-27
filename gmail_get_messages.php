@@ -66,8 +66,8 @@ function decodeBody($body) {
     }
     return $decodedMessage;
 }
-/*
-    function GUID()
+
+    function UID()
       {
             date_default_timezone_set("Asia/Manila");
             $t = microtime(true);
@@ -76,7 +76,7 @@ function decodeBody($body) {
 
             return $d->format("YmdHisu");
       }
-*/
+
 $gmail = new Google_Service_Gmail($client);
 
 $list = $gmail->users_messages->listUsersMessages('me', ['maxResults' => 1000]);
@@ -94,31 +94,7 @@ try{
 
             $message_id = $mlist->id;
            // print_r($ticket_check['Items'][0]['ticket_gmail_id']['S']);
-            if( in_array( $message_id ,$test) )
-                {
-                    //echo $message_id." already exist.</br>";
-                }else{
-                    $item_t_add = $marshaler->marshalJson('
-                        {
-                            "ticket_id": "'.GUID().'",
-                            "ticket_gmail_id": "'.$message_id.'"
-                        }
-                    ');
-
-                    $params_t_add = [
-                        'TableName' => $table_tickets,
-                        'Item' => $item_t_add
-                    ];
-
-
-                    try {
-                        $result = $dynamodb->putItem($params_t_add);
-                        echo $message_id." SAVED<br>";
-                    } catch (DynamoDbException $e) {
-                        echo "Unable to add item:\n";
-                        echo $e->getMessage() . "\n";
-                    }
-                }
+            
 
             $optParamsGet2['format'] = 'full';
             $single_message = $gmail->users_messages->get('me', $message_id, $optParamsGet2);
@@ -141,6 +117,7 @@ try{
                 if($head['name'] == 'Authentication-Results') {
                     $from_email = explode("smtp.mailfrom=", $head['value']); 
                 }
+                //print_r($from_email);
             }
 
             $FOUND_BODY = FALSE;
@@ -270,6 +247,32 @@ try{
                     }
                 }
             }
+            if( in_array( $message_id ,$test) )
+                {
+                    //echo $message_id." already exist.</br>";
+                }else{
+                    $item_t_add = $marshaler->marshalJson('
+                        {
+                            "ticket_id": "'.UID().'",
+                            "ticket_gmail_id": "'.$message_id.'",
+                            "ticket_email_from": "'.$from_email[1].'"
+                        }
+                    ');
+
+                    $params_t_add = [
+                        'TableName' => $table_tickets,
+                        'Item' => $item_t_add
+                    ];
+
+
+                    try {
+                        $result = $dynamodb->putItem($params_t_add);
+                        //echo $message_id." SAVED<br>";
+                    } catch (DynamoDbException $e) {
+                        echo "Unable to add item:\n";
+                        echo $e->getMessage() . "\n";
+                    }
+                }
 
             // Finally, print the message ID and the body
             //echo "ID: "; print_r($message_id); 
@@ -277,6 +280,7 @@ try{
             //echo "<br/>DATE: "; print_r($date);
             //echo "<br/>SUBJECT: "; print_r($subject);
             //echo "<br/>FROM: "; print_r($from);
+            //echo "<br/>FROM: "; print_r($from_email[1]);
             //array_push($arr_msgs['id'],$message_id);
             array_push($arr_msgs, array(
                 "id" => $message_id,
