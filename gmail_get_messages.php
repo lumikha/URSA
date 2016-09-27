@@ -246,10 +246,13 @@ try{
                     $data64 = strtr($attachment->getData(), array('-' => '+', '_' => '/'));
                     $replace = "src=\"data:" . $ptest['mimeType'] . ";base64," . $data64 . "\"";
                     if($ptest['mimeType'] == 'image/gif' || $ptest['mimeType'] == 'image/png' || $ptest['mimeType'] == 'image/jpeg') {
-                        $att = "<div style='position: relative;'><img style='width: 200px; height: 200px;' ".$replace." ></div>";
+                        $att = "&nbsp&nbsp&nbsp&nbsp<img style='width: 200px; height: 200px; margin-bottom:25px;' ".$replace.">";
                         array_push($arr_att, $att);
                     } else {
-                        $att = "<iframe ".$replace." width='200px' height='200px' style='overflow:hidden !important;'></iframe>";
+                        $att = "&nbsp&nbsp&nbsp&nbsp  
+                        <iframe ".$replace." width='200px' height='200px' style='overflow:hidden !important;margin-bottom:25px;'>&nbsp&nbsp
+                        </iframe>
+                        &nbsp&nbsp";
                         array_push($arr_att, $att);
                     }
                 }
