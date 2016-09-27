@@ -252,7 +252,7 @@ try{
             if( in_array( $message_id ,$test) )
                 {
                     //echo $message_id." already exist.</br>";
-                }else{
+                }else if($from_email!=""){ 
                     $item_t_add = $marshaler->marshalJson('
                         {
                             "ticket_id": "'.UID().'",
