@@ -104,6 +104,7 @@ try{
             $header = $payload->getHeaders();
             $body = $payload->getBody();
 
+            $from_email = "";
             foreach($header as $head) {
                 if($head['name'] == 'Date') {
                     $date = $head['value'];
@@ -115,7 +116,8 @@ try{
                     $from = $head['value'];
                 }
                 if($head['name'] == 'Authentication-Results') {
-                    $from_email = explode("smtp.mailfrom=", $head['value']); 
+                    $get_email = explode("smtp.mailfrom=", $head['value']); 
+                    $from_email = $get_email[1]; 
                 }
                 //print_r($from_email);
             }
@@ -287,7 +289,7 @@ try{
                 "date" => $date,
                 "subject" => $subject,
                 "from" => $from,
-                "email" => $from_email[1],
+                "email" => $from_email,
                 "attachments" => $arr_att
             ));
         }

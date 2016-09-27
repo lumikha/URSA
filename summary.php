@@ -276,7 +276,7 @@
 
         <?php 
             foreach($arr_msgs as $a_m) { 
-                if($arr_msgs['email'] == ) {
+                //if($arr_msgs['email'] == ) {
         ?>
                     <div class="container_12">
                         <div class="grid_1 alpha round-div">
@@ -290,12 +290,12 @@
                                      $t_bphone."<br>".
                                      $t_cust_id;
                             */
-                                echo $a_m['id'];
+                                echo $a_m['email'];
                             ?>
                         </div>
                     </div>
         <?php 
-                }
+                //}
             } 
         ?>
 
