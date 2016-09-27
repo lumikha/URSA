@@ -2,11 +2,18 @@
     require 'header.php';
     require 'gmail_get_messages.php';
     $em_check = array();
-                foreach ($result_db_customers['Items'] as $obj) {
-                    if($obj['customer_email']['S']){
-                        array_push($em_check, $obj['customer_email']['S']);
-                    }
-                }
+    foreach ($result_db_customers['Items'] as $obj) {
+        if($obj['customer_email']['S']){
+            array_push($em_check, array(
+                "email" => $obj['customer_email']['S'],
+                "id" => $obj['chargify_id']['S'],
+                "bname" => $obj['business_name']['S'],
+                "fname" => $obj['customer_first_name']['S'],
+                "lname" => $obj['customer_last_name']['S'],
+                "bphone" => $obj['business_phone_no']['S']
+            ));
+        }
+    }
 ?>
     <style>
 
@@ -282,25 +289,30 @@
 
         <?php 
             foreach($arr_msgs as $a_m) { 
-                if(in_array( $a_m['email'] ,$em_check)) {
+                //echo "<pre>"; print_r($a_m); echo "</pre>";
+                $em_cnt=0;
+                while(!empty($em_check[$em_cnt])) {
+                    if($a_m['email'] == $em_check[$em_cnt]['email']) {
         ?>
-                    <div class="container_12">
-                        <div class="grid_1 alpha round-div">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="container_12">
+                            <div class="grid_1 alpha round-div">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </div>
+                            <div class="grid_2 omega">
+                                <strong><?php //echo $t_bname; ?></strong></a> <br>
+                                <?php
+                                /*
+                                    echo $t_cust_fname." ".$t_cust_lname."<br>".
+                                         $t_bphone."<br>".
+                                         $t_cust_id;
+                                */
+                                    echo $em_check[$em_cnt]['bname'];
+                                ?>
+                            </div>
                         </div>
-                        <div class="grid_2 omega">
-                            <strong><?php //echo $t_bname; ?></strong></a> <br>
-                            <?php
-                            /*
-                                echo $t_cust_fname." ".$t_cust_lname."<br>".
-                                     $t_bphone."<br>".
-                                     $t_cust_id;
-                            */
-                                echo $a_m['email'];
-                            ?>
-                        </div>
-                    </div>
         <?php 
+                    }
+                    $em_cnt++;
                 }
             } 
         ?>
