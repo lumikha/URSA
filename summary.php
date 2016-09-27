@@ -1,6 +1,12 @@
 <?php
     require 'header.php';
     require 'gmail_get_messages.php';
+    $em_check = array();
+                foreach ($result_db_customers['Items'] as $obj) {
+                    if($obj['customer_email']['S']){
+                        array_push($em_check, $obj['customer_email']['S']);
+                    }
+                }
 ?>
     <style>
 
@@ -276,7 +282,7 @@
 
         <?php 
             foreach($arr_msgs as $a_m) { 
-                //if($arr_msgs['email'] == ) {
+                if(in_array( $a_m['email'] ,$em_check)) {
         ?>
                     <div class="container_12">
                         <div class="grid_1 alpha round-div">
@@ -295,7 +301,7 @@
                         </div>
                     </div>
         <?php 
-                //}
+                }
             } 
         ?>
 
