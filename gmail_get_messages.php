@@ -117,7 +117,12 @@ try{
                 }
                 if($head['name'] == 'Authentication-Results') {
                     $get_email = explode("smtp.mailfrom=", $head['value']); 
-                    $from_email = $get_email[1]; 
+                    if(strpos($get_email[1], ";")) {
+                        $if_yahoo = explode(";", $get_email[1]);
+                        $from_email = $if_yahoo[0];
+                    } else {
+                        $from_email = $get_email[1];
+                    }
                 }
                 //print_r($from_email);
             }
@@ -295,8 +300,6 @@ try{
         }
 
         //print_r($arr_msgs);
-
-
 
         if ($list->getNextPageToken() != null) {
             $pageToken = $list->getNextPageToken();
