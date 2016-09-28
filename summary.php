@@ -342,7 +342,7 @@
 ?>
 
 <script>
-    $(document).ready(function(){
+    $(document).ready(function() {
         $('#viewTicket').on('hidden.bs.modal', function (e) {
             $("#magic_buttons").empty();
             $("#lbl_th").empty();
