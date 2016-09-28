@@ -246,13 +246,50 @@ try{
                     $data64 = strtr($attachment->getData(), array('-' => '+', '_' => '/'));
                     $replace = "src=\"data:" . $ptest['mimeType'] . ";base64," . $data64 . "\"";
                     if($ptest['mimeType'] == 'image/gif' || $ptest['mimeType'] == 'image/png' || $ptest['mimeType'] == 'image/jpeg') {
-                        $att = "&nbsp&nbsp&nbsp&nbsp<img style='width: 200px; height: 200px;' ".$replace.">";
+                        $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
+                        $att = "&nbsp&nbsp&nbsp&nbsp
+                            <a href='".$att_dl."' download='".$ptest['filename']."'>
+                            <img style='width: 200px; height: 200px; margin-bottom:25px;' ".$replace."></a>";
+                        /*
+                        //TEST
+                        $att = "&nbsp&nbsp&nbsp&nbsp
+                                <div id='box' style='width: 200px; height: 200px;'>
+                                    <div id='insidebox1' style='position: absolute; width: 200px; height: 200px; background-image: url(doc.png); background-size: 100%; background-repeat: no-repeat;'>
+
+                                    </div>
+                                    <div id='insidebox2' style='position: absolute; margin-top: 150px; margin-left: 150px; width: 40px; height: 40px; background-color: green;''>
+                                        <button style='width: 100%; height: 100%;''></button>
+                                    </div>
+                                </div>";
+                        */
+                        array_push($arr_att, $att);
+                    } else if($ptest['mimeType'] == 'application/pdf') {
+                        $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
+                        $att = "&nbsp&nbsp&nbsp&nbsp  
+                            <a href='".$att_dl."' download='".$ptest['filename']."'>
+                            <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/pdf.png'></a>";
+                        /*<iframe ".$replace." width='200px' height='200px' style='margin-bottom:25px;'>&nbsp&nbsp
+                        </iframe>&nbsp&nbsp";*/
+                        array_push($arr_att, $att);
+                    } else if($ptest['mimeType'] == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+                        $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
+                        $att = "&nbsp&nbsp&nbsp&nbsp  
+                            <a href='".$att_dl."' download='".$ptest['filename']."'>
+                            <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/docx.png'></a>";
+                        array_push($arr_att, $att);
+                    } else if($ptest['mimeType'] == 'application/msword') {
+                        $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
+                        $att = "&nbsp&nbsp&nbsp&nbsp  
+                            <a href='".$att_dl."' download='".$ptest['filename']."'>
+                            <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/doc.png'></a>";
                         array_push($arr_att, $att);
                     } else {
+                        $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
                         $att = "&nbsp&nbsp&nbsp&nbsp  
-                        <iframe ".$replace." width='200px' height='200px' style='overflow:hidden !important;'>&nbsp&nbsp
-                        </iframe>
-                        &nbsp&nbsp";
+                            <a href='".$att_dl."' download='".$ptest['filename']."'>
+                            <img style='width: 180px; height: 200px; margin-bottom:25px;' src='img/unknown.png'></a>";
+                        /*<iframe ".$replace." width='200px' height='200px' style='margin-bottom:25px;'>&nbsp&nbsp
+                        </iframe>&nbsp&nbsp";*/
                         array_push($arr_att, $att);
                     }
                 }
