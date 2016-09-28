@@ -248,20 +248,14 @@ try{
                     if($ptest['mimeType'] == 'image/gif' || $ptest['mimeType'] == 'image/png' || $ptest['mimeType'] == 'image/jpeg') {
                         $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
                         $att = "&nbsp&nbsp&nbsp&nbsp
-                            <a href='".$att_dl."' download='".$ptest['filename']."'>
-                            <img style='width: 200px; height: 200px; margin-bottom:25px;' ".$replace."></a>";
-                        /*
-                        //TEST
-                        $att = "&nbsp&nbsp&nbsp&nbsp
-                                <div id='box' style='width: 200px; height: 200px;'>
-                                    <div id='insidebox1' style='position: absolute; width: 200px; height: 200px; background-image: url(doc.png); background-size: 100%; background-repeat: no-repeat;'>
-
-                                    </div>
-                                    <div id='insidebox2' style='position: absolute; margin-top: 150px; margin-left: 150px; width: 40px; height: 40px; background-color: green;''>
-                                        <button style='width: 100%; height: 100%;''></button>
-                                    </div>
-                                </div>";
-                        */
+                            <div style='position: relative; display: inline-block;'>
+                                <a href='#' class='open-modal-previewAtt' data-src='".$att_dl."' data-fn='".$ptest['filename']."'>
+                                    <img style='width: 200px; height: 200px; margin-bottom:25px;' ".$replace.">
+                                </a>
+                                <a href='".$att_dl."' download='".$ptest['filename']."' style=''>
+                                    <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
+                                </a>
+                            </div>";
                         array_push($arr_att, $att);
                     } else if($ptest['mimeType'] == 'application/pdf') {
                         $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;

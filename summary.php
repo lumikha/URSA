@@ -104,80 +104,6 @@
                         #attID:hover {
                             -webkit-filter: brightness(50%);
                         }
-
-                        .preview-modal {
-                            display: none; 
-                            position: fixed; 
-                            z-index: 1060 !important;
-                            padding-top: 100px; 
-                            left: 0;
-                            top: 0;
-                            width: 100%;
-                            height: 100%;
-                            overflow: auto;
-                            background-color: rgb(0,0,0);
-                            background-color: rgba(0,0,0,0.9);
-                        }
-
-                        .preview-modal-content {
-                            margin: auto;
-                            display: block;
-                            width: 80%;
-                            max-width: 700px;
-                        }
-
-                        #caption {
-                            margin: auto;
-                            display: block;
-                            width: 80%;
-                            max-width: 700px;
-                            text-align: center;
-                            color: #ccc;
-                            padding: 10px 0;
-                            height: 150px;
-                        }
-
-                        .preview-modal-content, #caption {
-                            -webkit-animation-name: zoom;
-                            -webkit-animation-duration: 0.6s;
-                            animation-name: zoom;
-                            animation-duration: 0.6s;
-                        }
-
-                        @-webkit-keyframes zoom {
-                            from {-webkit-transform:scale(0)}
-                            to {-webkit-transform:scale(1)}
-                        }
-
-                        @keyframes zoom {
-                            from {transform:scale(0)}
-                            to {transform:scale(1)}
-                        }
-
-                        .preview-close {
-                            position: absolute;
-                            top: 15px;
-                            right: 35px;
-                            color: #f1f1f1;
-                            font-size: 40px;
-                            font-weight: bold;
-                            transition: 0.3s;
-                        }
-
-                        .preview-close:hover,
-                        .preview-close:focus {
-                            color: #bbb;
-                            text-decoration: none;
-                            cursor: pointer;
-                        }
-
-                        @media only screen and (max-width: 700px){
-                            .preview-modal-content {
-                                width: 100%;
-                            }
-                        }
-
-                        
                     </style>
                     <div class="row">
                         <div class="col-md-12">
@@ -271,19 +197,80 @@
         </div>
     </div>
 
+    <div class="modal fade" id="updateTicket" tabindex="-1" role="dialog">
+        <div id="modal_cont" class="modal-dialog modal-lg">
+            <div class="modal-content">
+                                    
+                <div class="modal-body">
+                    <form method="POST">
+                        <input type="type" id="cID_new_thread" name="cTID" hidden>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>New Thread Type</label>
+                                <div class="radio" style="margin-left: 30px;">
+                                    <label><input type="radio" id="rad1" name="type" value="note" onclick="tType(1);">Note</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <label><input type="radio" id="rad2" name="type" value="message" onclick="tType(2);">Message</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label>New Status</label>
+                                <select class="form-control" id="commit_status" name="status">
+                                    <optgroup label="Status">
+                                        <option value="" disabled selected>No Change</option>
+                                        <option value="active">Active</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="closed">Closed</option>
+                                        <option value="spam">Spam</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Message</label>
+                                <textarea class="form-control" id="commit_msg" name="message" style="height: 300px;"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <center>
+                                <input type="Submit" class="btn btn-danger" name="new_thread" value="Create Thread">
+                            </center>
+                        </div>
+                    </form>
+                </div>
+        
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="previewAtt" tabindex="-1" role="dialog">
+        <div id="modal_cont" class="modal-dialog">
+            <div class="modal-content" style="position: absolute; margin-left: auto; margin-right: auto; width: 0 !important; height: 0 !important; border: none; padding: none;">
+                                    
+                <div class="modal-body">
+                    <div id="attid"></div>
+                    <span id="attfn" style="background-color: #000; font-size: 20px; color: #fff;"></span>
+                </div>
+        
+            </div>
+        </div>
+    </div>
+
+    <!--
     <div id="attModal" class="preview-modal">
         <span class="preview-close">×</span>
         <img class="preview-modal-content" id="img01">
         <div id="caption"></div>
     </div>
+    -->
     <div class="full-width-div">        
-     <div class="container_12" style="margin-top:-1em;">
-    <div id="boxes" class="row text-center">
-        <div class="grid_2 push_1 alpha" style="padding: 1em;margin-right:1em;margin-bottom:1em;border:solid #A60800 2px;color:#A60800"><a href="#" onclick="return addTicket();"><strong>Ticket</strong></a></div>
-        <div class="grid_2 push_1 omega" style="padding: 1em;margin-right:1em;margin-bottom:1em;border:solid #340570 2px;color:#340570"><strong>Talkdesk</strong></div>
+        <div class="container_12" style="margin-top:-1em;">
+            <div id="boxes" class="row text-center">
+                <div class="grid_2 push_1 alpha" style="padding: 1em;margin-right:1em;margin-bottom:1em;border:solid #A60800 2px;color:#A60800"><a href="#" onclick="return addTicket();"><strong>Ticket</strong></a></div>
+                <div class="grid_2 push_1 omega" style="padding: 1em;margin-right:1em;margin-bottom:1em;border:solid #340570 2px;color:#340570"><strong>Talkdesk</strong></div>
         
-    </div>
-    </div>
+            </div>
+        </div>
     </div>
     <div class="container_12">
 
@@ -353,6 +340,10 @@
             $('#tBody').scrollTop(0);
         })
 
+        $('#previewAtt').on('hidden.bs.modal', function (e) {
+            $("#attid").empty();
+        })
+
         $('#updateTicket').on('hidden.bs.modal', function (e) {
             $('#rad1').removeAttr('checked');
             $('#rad2').removeAttr('checked');
@@ -362,23 +353,6 @@
             document.getElementById("commit_msg").value = "";
         })
     });
-
-    function preview(imgsrc, imgttl) {
-        var modal = document.getElementById('attModal');
-        var img = document.getElementById('attID');
-        var modalImg = document.getElementById("img01");
-        var captionText = document.getElementById("caption");
-            
-        modal.style.display = "block";
-        modalImg.src = imgsrc;
-        captionText.innerHTML = imgttl;
-            
-        var span = document.getElementsByClassName("preview-close")[0];
-
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-    }
     
     function testClick(val) {
         if(document.getElementById('id_you_like_div_'+val).style.display == "block") {
@@ -438,6 +412,17 @@
         }
 
         $("#viewTicket").modal('show');
+    });
+
+    $(document).on("click", ".open-modal-previewAtt", function (e) {
+      var _self = $(this);
+            src = _self.data('src'),
+            fn = _self.data('fn');
+        var img = document.createElement("img");
+        img.src= src;
+        document.getElementById('attid').appendChild(img);
+        document.getElementById('attfn').innerHTML = fn;
+        $("#previewAtt").modal('show');
     });
 
     $(document).on("click", ".open-modal-updTicket", function (e) {
