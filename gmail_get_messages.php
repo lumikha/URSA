@@ -1,6 +1,6 @@
 <?php
 // Authentication things above
-    require 'dynamoDB/dbConnect.php';
+    require_once 'dynamoDB/dbConnect.php';
     require_once realpath(dirname(__FILE__) . '/lib/google/apiclient/src/Google/autoload.php');
 
     $params_t_check = [
