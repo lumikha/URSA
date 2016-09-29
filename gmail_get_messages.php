@@ -86,9 +86,6 @@ try{
     while ($list->getMessages() != null) {
         
         $arr_msgs = array();
-        $arr_msgs_body = array();
-        $arr_msgs_date = array();
-        $arr_msgs_id = array();
 
         foreach ($list->getMessages() as $mlist) {
 
@@ -240,6 +237,7 @@ try{
             }
 
             $arr_att = array();
+            $cnt_att = 0;
             foreach($parts as $ptest) {
                 if($ptest['body']['attachmentId']) {
                     $attachment = $gmail->users_messages_attachments->get('me', $message_id, $ptest['body']['attachmentId']);
@@ -247,15 +245,31 @@ try{
                     $replace = "src=\"data:" . $ptest['mimeType'] . ";base64," . $data64 . "\"";
                     if($ptest['mimeType'] == 'image/gif' || $ptest['mimeType'] == 'image/png' || $ptest['mimeType'] == 'image/jpeg') {
                         $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
+                        $att_title_id = "att_title_".$message_id."_".$cnt_att;
+                        $att_img_id = "att_img_".$message_id."_".$cnt_att;;
                         $att = "&nbsp&nbsp&nbsp&nbsp
                             <div style='position: relative; display: inline-block;'>
+                                <div id='".$att_title_id."' style='position: absolute; background-color: #000; width: 200px; padding: 5px; word-wrap: break-word;'>
+                                    <span>".$ptest['filename']."</span>
+                                </div>
                                 <a href='#' class='open-modal-previewAtt' data-src='".$att_dl."' data-fn='".$ptest['filename']."'>
-                                    <img style='width: 200px; height: 200px; margin-bottom:25px;' ".$replace.">
+                                    <img id='att_img_".$att_img_id."' style='width: 200px; height: 200px; margin-bottom:25px;' ".$replace.">
                                 </a>
                                 <a href='".$att_dl."' download='".$ptest['filename']."' style=''>
                                     <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
                                 </a>
                             </div>";
+                        ?>
+                            <script>
+                                var x = <?php echo $att_title_id; ?>;
+                                var y = <?php echo $att_img_id; ?>;
+                                $("#"+y).hover(function(){
+                                    $("#"+x).css("display", "block");
+                                    }, function(){
+                                    $("#"+x).css("display", "none");
+                                });
+                            </script>
+                        <?php
                         array_push($arr_att, $att);
                     } else if($ptest['mimeType'] == 'application/pdf') {
                         $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
@@ -287,6 +301,7 @@ try{
                         array_push($arr_att, $att);
                     }
                 }
+                $cnt_att++;
             }
             if( in_array( $message_id ,$test) )
                 {
