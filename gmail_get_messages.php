@@ -5,7 +5,7 @@
 
     $params_t_check = [
     'TableName' => 'ursa-tickets',
-    'ProjectionExpression' => 'ticket_gmail_id'
+    'ProjectionExpression' => 'ticket_gmail_id,ticket_name_from,ticket_email_subject,ticket_email_from,ticket_email_body,ticket_embedded_image,ticket_email_attachment'
     ];
 
         try {
@@ -29,12 +29,45 @@
         echo $e->getMessage() . "\n";
     }
     $test = array();
-                foreach ($ticket_check['Items'] as $obj) {
-                    if($obj['ticket_gmail_id']['S']){
-                        array_push($test, $obj['ticket_gmail_id']['S']);
-                    }
+    foreach ($ticket_check['Items'] as $obj) {
+        if($obj['ticket_gmail_id']['S']){
+            array_push($test, $obj['ticket_gmail_id']['S']);
+        }
+    }
+
+    $arr_msgs = array();
+    foreach ($ticket_check['Items'] as $obj2) {
+        if($obj2['ticket_gmail_id']['S']){
+            $bdy_image = decodeBody(@$obj2['ticket_email_body']['S']);
+
+            preg_match_all('/src="cid:(.*)"/Uims', $bdy_image, $matches);
+            if(count($matches)) {
+                foreach($matches[1] as $match) {
+                    $search = "src=\"cid:$match\"";
+                    $replace = "src=images/".$obj2['ticket_embedded_image']['S'];
+                    $bdy_image = str_replace($search, $replace, $bdy_image);         
                 }
-                //print_r($test);
+            }
+            $arr_att = array();
+            $att_file = $obj2['ticket_email_attachment']['S'];
+            $arr = explode(',', $att_file);
+                     
+            if(preg_match('/.php/',$att_file)){
+                foreach ($arr as $key) {
+                    @$attmts = file_get_contents('images/attachments/'.$key);
+                    array_push($arr_att, $attmts);
+                }
+            }
+            array_push($arr_msgs, array(
+                "id" => $obj2['ticket_gmail_id']['S'],
+                "subject" => $obj2['ticket_email_subject']['S'],
+                "body" => $bdy_image,
+                "from" => $obj2['ticket_name_from']['S'],
+                "email" => $obj2['ticket_email_from']['S'],
+                "attachments" => $arr_att
+            ));
+        }
+    }
 
     $table_tickets = 'ursa-tickets';
     $table_ticket_notes = 'ursa-ticket-notes';
@@ -67,15 +100,14 @@ function decodeBody($body) {
     return $decodedMessage;
 }
 
-    function UID()
-      {
-            date_default_timezone_set("Asia/Manila");
-            $t = microtime(true);
-            $micro = sprintf("%06d",($t - floor($t)) * 1000000);
-            $d = new DateTime( date('Y-m-d H:i:s.'.$micro, $t) );
+function UID() {
+    date_default_timezone_set("Asia/Manila");
+    $t = microtime(true);
+    $micro = sprintf("%06d",($t - floor($t)) * 1000000);
+    $d = new DateTime( date('Y-m-d H:i:s.'.$micro, $t) );
 
-            return $d->format("YmdHisu");
-      }
+    return $d->format("YmdHisu");
+}
 
 $gmail = new Google_Service_Gmail($client);
 
@@ -84,15 +116,8 @@ $list = $gmail->users_messages->listUsersMessages('me', ['maxResults' => 1000]);
 try{
     $email_num =1;
     while ($list->getMessages() != null) {
-        
-        $arr_msgs = array();
-
         foreach ($list->getMessages() as $mlist) {
-
             $message_id = $mlist->id;
-           // print_r($ticket_check['Items'][0]['ticket_gmail_id']['S']);
-            
-
             $optParamsGet2['format'] = 'full';
             $single_message = $gmail->users_messages->get('me', $message_id, $optParamsGet2);
             $payload = $single_message->getPayload();
@@ -124,232 +149,239 @@ try{
                 //print_r($from_email);
             }
 
-            $FOUND_BODY = FALSE;
-            // If we didn't find a body, let's look for the parts
-            if(!$FOUND_BODY) {
-                foreach ($parts  as $part) {
-                    if($part['parts'] && !$FOUND_BODY) {
-                        foreach ($part['parts'] as $p) {
-                            if($p['parts'] && count($p['parts']) > 0){
-                                foreach ($p['parts'] as $y) {
-                                    if(($y['mimeType'] === 'text/html') && $y['body']) {
-                                        $FOUND_BODY = decodeBody($y['body']->data);
-                                        break;
-                                    }
-                                }
-                            } else if(($p['mimeType'] === 'text/html') && $p['body']) {
-                                $FOUND_BODY = decodeBody($p['body']->data);
-                                break;
-                            }
-                        }
-                    }
-                    if($FOUND_BODY) {
-                        break;
-                    }
-                }
-            }
-            // let's save all the images linked to the mail's body:
-            if($FOUND_BODY && count($parts) > 1){
-                $images_linked = array();
-                foreach ($parts  as $part) {
-                    if($part['filename']){
-                        array_push($images_linked, $part);
-                    } else{
-                        if($part['parts']) {
+            if( in_array( $message_id ,$test)) { 
+                break;
+            } else if($from_email!="") {
+                $FOUND_BODY = FALSE;
+                // If we didn't find a body, let's look for the parts
+                if(!$FOUND_BODY) {
+                    foreach ($parts  as $part) {
+                        if($part['parts'] && !$FOUND_BODY) {
                             foreach ($part['parts'] as $p) {
                                 if($p['parts'] && count($p['parts']) > 0){
                                     foreach ($p['parts'] as $y) {
                                         if(($y['mimeType'] === 'text/html') && $y['body']) {
-                                            array_push($images_linked, $y);
+                                            $FOUND_BODY = decodeBody($y['body']->data);
+                                            $body_msg = $y['body']->data;
+                                            break;
                                         }
                                     }
-                                } else if(($p['mimeType'] !== 'text/html') && $p['body']) {
-                                    array_push($images_linked, $p);
+                                } else if(($p['mimeType'] === 'text/html') && $p['body']) {
+                                    $FOUND_BODY = decodeBody($p['body']->data);
+                                    $body_msg = $p['body']->data;
+                                    break;
+                                }
+                            }
+                        }
+                        if($FOUND_BODY) {
+                            break;
+                        }
+                    }
+                }
+
+                $uniqueFilename = "(no embedded image)";
+                // let's save all the images linked to the mail's body:
+                if($FOUND_BODY && count($parts) > 1){
+                    $images_linked = array();
+                    foreach ($parts  as $part) {
+                        if($part['filename']){
+                            array_push($images_linked, $part);
+                        } else {
+                            if($part['parts']) {
+                                foreach ($part['parts'] as $p) {
+                                    if($p['parts'] && count($p['parts']) > 0){
+                                        foreach ($p['parts'] as $y) {
+                                            if(($y['mimeType'] === 'text/html') && $y['body']) {
+                                                array_push($images_linked, $y);
+                                            }
+                                        }
+                                    } else if(($p['mimeType'] !== 'text/html') && $p['body']) {
+                                        array_push($images_linked, $p);
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                // special case for the wdcid...
-                preg_match_all('/wdcid(.*)"/Uims', $FOUND_BODY, $wdmatches);
-                if(count($wdmatches)) {
-                    $z = 0;
-                    foreach($wdmatches[0] as $match) {
-                        $z++;
-                        if($z > 9){
-                            $FOUND_BODY = str_replace($match, 'image0' . $z . '@', $FOUND_BODY);
-                        } else {
-                            $FOUND_BODY = str_replace($match, 'image00' . $z . '@', $FOUND_BODY);
+                    // special case for the wdcid...
+                    preg_match_all('/wdcid(.*)"/Uims', $FOUND_BODY, $wdmatches);
+                    if(count($wdmatches)) {
+                        $z = 0;
+                        foreach($wdmatches[0] as $match) {
+                            $z++;
+                            if($z > 9){
+                                $FOUND_BODY = str_replace($match, 'image0' . $z . '@', $FOUND_BODY);
+                            } else {
+                                $FOUND_BODY = str_replace($match, 'image00' . $z . '@', $FOUND_BODY);
+                            }
                         }
                     }
-                }
-                preg_match_all('/src="cid:(.*)"/Uims', $FOUND_BODY, $matches);
-                if(count($matches)) {
-                    $search = array();
-                    $replace = array();
-                    // let's trasnform the CIDs as base64 attachements 
-                    foreach($matches[1] as $match) {
-                        foreach($images_linked as $img_linked) {
-                            foreach($img_linked['headers'] as $img_lnk) {
-                                if( $img_lnk['name'] === 'Content-ID' || $img_lnk['name'] === 'Content-Id' || $img_lnk['name'] === 'X-Attachment-Id'){
-                                    if ($match === str_replace('>', '', str_replace('<', '', $img_lnk->value)) 
-                                            || explode("@", $match)[0] === explode(".", $img_linked->filename)[0]
-                                            || explode("@", $match)[0] === $img_linked->filename){
-                                        $search = "src=\"cid:$match\"";
-                                        $mimetype = $img_linked->mimeType;
-                                        $attachment = $gmail->users_messages_attachments->get('me', $mlist->id, $img_linked['body']->attachmentId);
-                                        $data64 = strtr($attachment->getData(), array('-' => '+', '_' => '/'));
-                                        $replace = "src=\"data:" . $mimetype . ";base64," . $data64 . "\"";
-                                        $FOUND_BODY = str_replace($search, $replace, $FOUND_BODY);
+                    preg_match_all('/src="cid:(.*)"/Uims', $FOUND_BODY, $matches);
+                    if(count($matches)) {
+                        $uniqueFilename = UID().".png";
+                        $search = array();
+                        $replace = array();
+                        // let's trasnform the CIDs as base64 attachements 
+                        foreach($matches[1] as $match) {
+                            foreach($images_linked as $img_linked) {
+                                foreach($img_linked['headers'] as $img_lnk) {
+                                    if( $img_lnk['name'] === 'Content-ID' || $img_lnk['name'] === 'Content-Id' || $img_lnk['name'] === 'X-Attachment-Id'){
+                                        if ($match === str_replace('>', '', str_replace('<', '', $img_lnk->value)) || explode("@",$match)[0] === explode(".", $img_linked->filename)[0] || explode("@",$match)[0] === $img_linked->filename) {
+                                            $search = "src=\"cid:$match\"";
+                                            $mimetype = $img_linked->mimeType;
+                                            $attachment = $gmail->users_messages_attachments->get('me', $mlist->id, $img_linked['body']->attachmentId);
+                                            $data64 = strtr($attachment->getData(), array('-' => '+', '_' => '/'));
+                                            $replace = "src=\"data:" . $mimetype . ";base64," . $data64 . "\"";
+                                            $FOUND_BODY = str_replace($search, $replace, $FOUND_BODY);
+                                            file_put_contents("images/$uniqueFilename", decodeBody($attachment['data']));
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
-            }
-            // If we didn't find the body in the last parts, 
-            // let's loop for the first parts (text-html only)
-            if(!$FOUND_BODY) {
-                foreach ($parts  as $part) {
-                    if($part['body'] && $part['mimeType'] === 'text/html') {
-                        $FOUND_BODY = decodeBody($part['body']->data);
-                        break;
-                    }
-                }
-            }
-            // With no attachment, the payload might be directly in the body, encoded.
-            if(!$FOUND_BODY) {
-                $FOUND_BODY = decodeBody($body['data']);
-            }
-            // Last try: if we didn't find the body in the last parts, 
-            // let's loop for the first parts (text-plain only)
-            if(!$FOUND_BODY) {
-                foreach ($parts  as $part) {
-                    if($part['body']) {
-                        $FOUND_BODY = decodeBody($part['body']->data);
-                        break;
-                    }
-                }
-            }
-            if(!$FOUND_BODY) {
-                $FOUND_BODY = '(No message)';
-            }
-
-            $arr_att = array();
-            $cnt_att = 0;
-            foreach($parts as $ptest) {
-                if($ptest['body']['attachmentId']) {
-                    $attachment = $gmail->users_messages_attachments->get('me', $message_id, $ptest['body']['attachmentId']);
-                    $data64 = strtr($attachment->getData(), array('-' => '+', '_' => '/'));
-                    $replace = "src=\"data:" . $ptest['mimeType'] . ";base64," . $data64 . "\"";
-                    if($ptest['mimeType'] == 'image/gif' || $ptest['mimeType'] == 'image/png' || $ptest['mimeType'] == 'image/jpeg') {
-                        $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
-                        $att_title_id = "att_title_".$message_id."_".$cnt_att;
-                        $att_img_id = "att_img_".$message_id."_".$cnt_att;;
-                        $att = "&nbsp&nbsp&nbsp&nbsp
-                            <div style='position: relative; display: inline-block;'>
-                                <div id='".$att_title_id."' style='position: absolute; background-color: #000; width: 200px; padding: 5px; word-wrap: break-word;'>
-                                    <span>".$ptest['filename']."</span>
-                                </div>
-                                <a href='#' class='open-modal-previewAtt' data-src='".$att_dl."' data-fn='".$ptest['filename']."'>
-                                    <img id='att_img_".$att_img_id."' style='width: 200px; height: 200px; margin-bottom:25px;' ".$replace.">
-                                </a>
-                                <a href='".$att_dl."' download='".$ptest['filename']."' style=''>
-                                    <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
-                                </a>
-                            </div>";
-                        ?>
-                            <script>
-                                var x = <?php echo $att_title_id; ?>;
-                                var y = <?php echo $att_img_id; ?>;
-                                $("#"+y).hover(function(){
-                                    $("#"+x).css("display", "block");
-                                    }, function(){
-                                    $("#"+x).css("display", "none");
-                                });
-                            </script>
-                        <?php
-                        array_push($arr_att, $att);
-                    } else if($ptest['mimeType'] == 'application/pdf') {
-                        $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
-                        $att = "&nbsp&nbsp&nbsp&nbsp  
-                            <a href='".$att_dl."' download='".$ptest['filename']."'>
-                            <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/pdf.png'></a>";
-                        /*<iframe ".$replace." width='200px' height='200px' style='margin-bottom:25px;'>&nbsp&nbsp
-                        </iframe>&nbsp&nbsp";*/
-                        array_push($arr_att, $att);
-                    } else if($ptest['mimeType'] == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-                        $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
-                        $att = "&nbsp&nbsp&nbsp&nbsp  
-                            <a href='".$att_dl."' download='".$ptest['filename']."'>
-                            <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/docx.png'></a>";
-                        array_push($arr_att, $att);
-                    } else if($ptest['mimeType'] == 'application/msword') {
-                        $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
-                        $att = "&nbsp&nbsp&nbsp&nbsp  
-                            <a href='".$att_dl."' download='".$ptest['filename']."'>
-                            <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/doc.png'></a>";
-                        array_push($arr_att, $att);
-                    } else {
-                        $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
-                        $att = "&nbsp&nbsp&nbsp&nbsp  
-                            <a href='".$att_dl."' download='".$ptest['filename']."'>
-                            <img style='width: 180px; height: 200px; margin-bottom:25px;' src='img/unknown.png'></a>";
-                        /*<iframe ".$replace." width='200px' height='200px' style='margin-bottom:25px;'>&nbsp&nbsp
-                        </iframe>&nbsp&nbsp";*/
-                        array_push($arr_att, $att);
-                    }
-                }
-                $cnt_att++;
-            }
-            if( in_array( $message_id ,$test) )
-                {
-                    //echo $message_id." already exist.</br>";
-                }else if($from_email!=""){ 
-                    $item_t_add = $marshaler->marshalJson('
-                        {
-                            "ticket_id": "'.UID().'",
-                            "ticket_gmail_id": "'.$message_id.'",
-                            "ticket_email_from": "'.$from_email.'"
+                // If we didn't find the body in the last parts, 
+                // let's loop for the first parts (text-html only)
+                if(!$FOUND_BODY) {
+                    foreach ($parts  as $part) {
+                        if($part['body'] && $part['mimeType'] === 'text/html') {
+                            $FOUND_BODY = decodeBody($part['body']->data);
+                            $body_msg = $part['body']->data;
+                            break;
                         }
-                    ');
+                    }
+                }
+                // With no attachment, the payload might be directly in the body, encoded.
+                if(!$FOUND_BODY) {
+                    $FOUND_BODY = decodeBody($body['data']);
+                    $body = decodeBody($body['data']);
+                }
+                // Last try: if we didn't find the body in the last parts, 
+                // let's loop for the first parts (text-plain only)
+                if(!$FOUND_BODY) {
+                    foreach ($parts  as $part) {
+                        if($part['body']) {
+                            $FOUND_BODY = decodeBody($part['body']->data);
+                            $body_msg = $part['body']->data;
+                            break;
+                        }
+                    }
+                }
+                if(!$FOUND_BODY) {
+                    $FOUND_BODY = '(No message)';
+                    $body_msg = '(No message)';
+                }
+
+                $uniqueFilename2 = "";
+                $attachmentName = array();
+                $cnt_att = 0;
+                foreach($parts as $ptest) {
+                    if($ptest['body']['attachmentId']) {
+                        $uniqueFilename2 = UID().".php";
+                        $attachment = $gmail->users_messages_attachments->get('me', $message_id, $ptest['body']['attachmentId']);
+                        $data64 = strtr($attachment->getData(), array('-' => '+', '_' => '/'));
+                        file_put_contents("images/attachments/$uniqueFilename2", $data64);
+                        $replace = "src=\"data:" . $ptest['mimeType'] . ";base64," . $data64 . "\"";
+                        if($ptest['mimeType'] == 'image/gif' || $ptest['mimeType'] == 'image/png' || $ptest['mimeType'] == 'image/jpeg') {
+                            $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
+                            $att_title_id = "att_title_".$message_id."_".$cnt_att;
+                            $att_img_id = "att_img_".$message_id."_".$cnt_att;;
+                            $att = "&nbsp&nbsp&nbsp&nbsp
+                                <div style='position: relative; display: inline-block;'>
+                                    <div id='".$att_title_id."' style='position: absolute; background-color: #000; width: 200px; padding: 5px; word-wrap: break-word;'>
+                                        <span>".$ptest['filename']."</span>
+                                    </div>
+                                    <a href='#' class='open-modal-previewAtt' data-src='".$att_dl."' data-fn='".$ptest['filename']."'>
+                                        <img id='att_img_".$att_img_id."' style='width: 200px; height: 200px; margin-bottom:25px;' ".$replace.">
+                                    </a>
+                                    <a href='".$att_dl."' download='".$ptest['filename']."' style=''>
+                                        <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
+                                    </a>
+                                </div>";
+                            array_push($attachmentName, $uniqueFilename2);
+                            file_put_contents("images/attachments/$uniqueFilename2", $att);
+                            ?>
+                                <script>
+                                    var x = <?php echo $att_title_id; ?>;
+                                    var y = <?php echo $att_img_id; ?>;
+                                    $("#"+y).hover(function(){
+                                        $("#"+x).css("display", "block");
+                                        }, function(){
+                                        $("#"+x).css("display", "none");
+                                    });
+                                </script>
+                            <?php
+                        } else if($ptest['mimeType'] == 'application/pdf') {
+                            $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
+                            $att = "&nbsp&nbsp&nbsp&nbsp  
+                                <a href='".$att_dl."' download='".$ptest['filename']."'>
+                                <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/pdf.png'></a>";
+                            /*<iframe ".$replace." width='200px' height='200px' style='margin-bottom:25px;'>&nbsp&nbsp
+                            </iframe>&nbsp&nbsp";*/
+                            array_push($attachmentName, $uniqueFilename2);
+                            file_put_contents("images/attachments/$uniqueFilename2", $att);
+                        } else if($ptest['mimeType'] == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+                            $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
+                            $att = "&nbsp&nbsp&nbsp&nbsp  
+                                <a href='".$att_dl."' download='".$ptest['filename']."'>
+                                <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/docx.png'></a>";
+                            array_push($attachmentName, $uniqueFilename2);
+                            file_put_contents("images/attachments/$uniqueFilename2", $att);
+                        } else if($ptest['mimeType'] == 'application/msword') {
+                            $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
+                            $att = "&nbsp&nbsp&nbsp&nbsp  
+                                <a href='".$att_dl."' download='".$ptest['filename']."'>
+                                <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/doc.png'></a>";
+                            array_push($attachmentName, $uniqueFilename2);
+                            file_put_contents("images/attachments/$uniqueFilename2", $att);
+                        } else {
+                            $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
+                            $att = "&nbsp&nbsp&nbsp&nbsp  
+                                <a href='".$att_dl."' download='".$ptest['filename']."'>
+                                <img style='width: 180px; height: 200px; margin-bottom:25px;' src='img/unknown.png'></a>";
+                            /*<iframe ".$replace." width='200px' height='200px' style='margin-bottom:25px;'>&nbsp&nbsp
+                            </iframe>&nbsp&nbsp";*/
+                            array_push($attachmentName, $uniqueFilename2);
+                            file_put_contents("images/attachments/$uniqueFilename2", $att);
+                        }
+                    }
+                    $cnt_att++;
+                }
+
+                $comma_separated = "(no attachment)";
+                if($uniqueFilename2 != ""){
+                    $comma_separated = implode(",", $attachmentName);
+                }
+                        
+                if(!empty($FOUND_BODY)){
+                    $item_t_add = $marshaler->marshalJson('
+                    {
+                        "ticket_id": "'.UID().'",
+                        "ticket_gmail_id": "'.$message_id.'",
+                        "ticket_email_from": "'.$from_email.'",
+                        "ticket_name_from": "'.$from.'",
+                        "ticket_email_subject": "'.$subject.'",
+                        "ticket_email_date": "'.$date.'",
+                        "ticket_email_body": "'.$body_msg.'",
+                        "ticket_embedded_image": "'.$uniqueFilename.'",
+                        "ticket_email_attachment": "'.$comma_separated.'"
+                    }');
 
                     $params_t_add = [
                         'TableName' => $table_tickets,
                         'Item' => $item_t_add
                     ];
 
-
                     try {
                         $result = $dynamodb->putItem($params_t_add);
-                        //echo $message_id." SAVED<br>";
                     } catch (DynamoDbException $e) {
                         echo "Unable to add item:\n";
                         echo $e->getMessage() . "\n";
                     }
                 }
+            } else {}
 
-            // Finally, print the message ID and the body
-            //echo "ID: "; print_r($message_id); 
-            //echo "<br/>BODY: "; print_r($FOUND_BODY);
-            //echo "<br/>DATE: "; print_r($date);
-            //echo "<br/>SUBJECT: "; print_r($subject);
-            //echo "<br/>FROM: "; print_r($from);
-            //echo "<br/>FROM: "; print_r($from_email[1]);
-            //array_push($arr_msgs['id'],$message_id);
-            array_push($arr_msgs, array(
-                "id" => $message_id,
-                "date" => $date,
-                "subject" => $subject,
-                "body" => $FOUND_BODY,
-                "from" => $from,
-                "email" => $from_email,
-                "attachments" => $arr_att
-            ));
         }
-
-        //print_r($arr_msgs);
 
         if ($list->getNextPageToken() != null) {
             $pageToken = $list->getNextPageToken();
