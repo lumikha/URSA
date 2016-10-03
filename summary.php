@@ -374,6 +374,16 @@
         })
     });
     
+    function showTitle(x) {
+        var targetDiv = x.getElementsByClassName("att_title")[0];
+        targetDiv.style.display = "block";
+    }
+
+    function hideTitle(x) {
+        var targetDiv = x.getElementsByClassName("att_title")[0];
+        targetDiv.style.display = "none";
+    }
+    
     function testClick(val) {
         if(document.getElementById('id_you_like_div_'+val).style.display == "block") {
             document.getElementById('id_you_like_div_'+val).style.display = "none";

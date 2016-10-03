@@ -54,7 +54,7 @@
                      
             if(preg_match('/.php/',$att_file)){
                 foreach ($arr as $key) {
-                    @$attmts = file_get_contents('images/attachments/'.$key);
+                    @$attmts = file_get_contents('../URSA_att/attachments/'.$key);
                     array_push($arr_att, $attmts);
                 }
             }
@@ -233,7 +233,7 @@ try{
                                             $data64 = strtr($attachment->getData(), array('-' => '+', '_' => '/'));
                                             $replace = "src=\"data:" . $mimetype . ";base64," . $data64 . "\"";
                                             $FOUND_BODY = str_replace($search, $replace, $FOUND_BODY);
-                                            file_put_contents("images/$uniqueFilename", decodeBody($attachment['data']));
+                                            file_put_contents("../URSA_att/$uniqueFilename", decodeBody($attachment['data']));
                                         }
                                     }
                                 }
@@ -282,74 +282,80 @@ try{
                         $uniqueFilename2 = UID().".php";
                         $attachment = $gmail->users_messages_attachments->get('me', $message_id, $ptest['body']['attachmentId']);
                         $data64 = strtr($attachment->getData(), array('-' => '+', '_' => '/'));
-                        file_put_contents("images/attachments/$uniqueFilename2", $data64);
                         $replace = "src=\"data:" . $ptest['mimeType'] . ";base64," . $data64 . "\"";
+                        $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
                         if($ptest['mimeType'] == 'image/gif' || $ptest['mimeType'] == 'image/png' || $ptest['mimeType'] == 'image/jpeg') {
-                            $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
-                            $att_title_id = "att_title_".$message_id."_".$cnt_att;
-                            $att_img_id = "att_img_".$message_id."_".$cnt_att;;
                             $att = "&nbsp&nbsp&nbsp&nbsp
-                                <div style='position: relative; display: inline-block;'>
-                                    <div id='".$att_title_id."' style='position: absolute; background-color: #000; width: 200px; padding: 5px; word-wrap: break-word; text-align: center;'>
-                                        <span>".$ptest['filename']."</span>
-                                    </div>
+                                <div onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
                                     <a href='#' class='open-modal-previewAtt' data-src='".$att_dl."' data-fn='".$ptest['filename']."'>
-                                        <img id='att_img_".$att_img_id."' style='width: 200px; height: 200px; margin-bottom:25px;' ".$replace.">
+                                        <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word; cursor: zoom-in;'>
+                                            <span>".$ptest['filename']."</span>
+                                        </div>
                                     </a>
+                                    <img style='width: 200px; height: 200px; margin-bottom:25px;' ".$replace.">
                                     <a href='".$att_dl."' download='".$ptest['filename']."' style=''>
                                         <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
                                     </a>
                                 </div>";
-                                array_push($arr_att, $att);
+                            array_push($arr_att, $att);
                             array_push($attachmentName, $uniqueFilename2);
-                            file_put_contents("images/attachments/$uniqueFilename2", $att);
-                            ?>
-                                <script>
-                                    var x = <?php echo $att_title_id; ?>;
-                                    var y = <?php echo $att_img_id; ?>;
-                                    $("#"+y).hover(function(){
-                                        $("#"+x).css("display", "block");
-                                        }, function(){
-                                        $("#"+x).css("display", "none");
-                                    });
-                                </script>
-                            <?php
+                            file_put_contents("../URSA_att/attachments/$uniqueFilename2", $att);
                         } else if($ptest['mimeType'] == 'application/pdf') {
-                            $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
                             $att = "&nbsp&nbsp&nbsp&nbsp  
-                                <a href='".$att_dl."' download='".$ptest['filename']."'>
-                                <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/pdf.png'></a>";
-                            /*<iframe ".$replace." width='200px' height='200px' style='margin-bottom:25px;'>&nbsp&nbsp
-                            </iframe>&nbsp&nbsp";*/
+                                <div onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
+                                    <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word;'>
+                                        <span>".$ptest['filename']."</span>
+                                    </div>
+                                    <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/pdf.png'>
+                                    <a href='".$att_dl."' download='".$ptest['filename']."' style=''>
+                                        <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
+                                    </a>
+                                </div>";
                             array_push($arr_att, $att);
                             array_push($attachmentName, $uniqueFilename2);
-                            file_put_contents("images/attachments/$uniqueFilename2", $att);
+                            file_put_contents("../URSA_att/attachments/$uniqueFilename2", $att);
                         } else if($ptest['mimeType'] == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-                            $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
                             $att = "&nbsp&nbsp&nbsp&nbsp  
-                                <a href='".$att_dl."' download='".$ptest['filename']."'>
-                                <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/docx.png'></a>";
-                                array_push($arr_att, $att);
-                            array_push($attachmentName, $uniqueFilename2);
-                            file_put_contents("images/attachments/$uniqueFilename2", $att);
-                        } else if($ptest['mimeType'] == 'application/msword') {
-                            $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
-                            $att = "&nbsp&nbsp&nbsp&nbsp  
-                                <a href='".$att_dl."' download='".$ptest['filename']."'>
-                                <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/doc.png'></a>";
-                                array_push($arr_att, $att);
-                            array_push($attachmentName, $uniqueFilename2);
-                            file_put_contents("images/attachments/$uniqueFilename2", $att);
-                        } else {
-                            $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
-                            $att = "&nbsp&nbsp&nbsp&nbsp  
-                                <a href='".$att_dl."' download='".$ptest['filename']."'>
-                                <img style='width: 180px; height: 200px; margin-bottom:25px;' src='img/unknown.png'></a>";
-                            /*<iframe ".$replace." width='200px' height='200px' style='margin-bottom:25px;'>&nbsp&nbsp
-                            </iframe>&nbsp&nbsp";*/
+                                <div onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
+                                    <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word;'>
+                                        <span>".$ptest['filename']."</span>
+                                    </div>
+                                    <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/docx.png'></a>
+                                    <a href='".$att_dl."' download='".$ptest['filename']."' style=''>
+                                        <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
+                                    </a>
+                                </div>";
                             array_push($arr_att, $att);
                             array_push($attachmentName, $uniqueFilename2);
-                            file_put_contents("images/attachments/$uniqueFilename2", $att);
+                            file_put_contents("../URSA_att/attachments/$uniqueFilename2", $att);
+                        } else if($ptest['mimeType'] == 'application/msword') {
+                            $att = "&nbsp&nbsp&nbsp&nbsp  
+                                <div onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
+                                    <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word;'>
+                                        <span>".$ptest['filename']."</span>
+                                    </div>
+                                    <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/doc.png'></a>
+                                    <a href='".$att_dl."' download='".$ptest['filename']."' style=''>
+                                        <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
+                                    </a>
+                                </div>";
+                            array_push($arr_att, $att);
+                            array_push($attachmentName, $uniqueFilename2);
+                            file_put_contents("../URSA_att/attachments/$uniqueFilename2", $att);
+                        } else {
+                            $att = "&nbsp&nbsp&nbsp&nbsp  
+                                <div onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
+                                    <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word;'>
+                                        <span>".$ptest['filename']."</span>
+                                    </div>
+                                    <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/unknown.png'></a>
+                                    <a href='".$att_dl."' download='".$ptest['filename']."' style=''>
+                                        <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
+                                    </a>
+                                </div>";
+                            array_push($arr_att, $att);
+                            array_push($attachmentName, $uniqueFilename2);
+                            file_put_contents("../URSA_att/attachments/$uniqueFilename2", $att);
                         }
                     }
                     $cnt_att++;
