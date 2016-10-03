@@ -189,6 +189,12 @@
     
   }
 
+  /**modal dialog toggle button**/
+  #glyph_resize
+  {
+    margin-top:-10em;
+  }
+
  }
 
 
@@ -351,6 +357,12 @@
   {
     position: absolute;
     
+  }
+
+  /**modal dialog toggle button**/
+  #glyph_resize
+  {
+    margin-top:-10em;
   }
 
 }
@@ -523,6 +535,11 @@
   {
     position: absolute;
     
+  }
+  /**modal dialog toggle button**/
+  #glyph_resize
+  {
+    margin-top:-10em;
   }
 
 }
