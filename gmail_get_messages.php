@@ -44,7 +44,7 @@
             if(count($matches)) {
                 foreach($matches[1] as $match) {
                     $search = "src=\"cid:$match\"";
-                    $replace = "src=images/".$obj2['ticket_embedded_image']['S'];
+                    $replace = "src=../URSA_att/".$obj2['ticket_embedded_image']['S'];
                     $bdy_image = str_replace($search, $replace, $bdy_image);         
                 }
             }
