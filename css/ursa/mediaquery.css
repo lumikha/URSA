@@ -173,13 +173,20 @@
 .round-div
   {
    max-width: 65px;
-   float: right;
+   
    margin-left: -2em;
   }
 
+/**tickets summary and round-div **/
   .ticketsummary
   {
     text-align: center;
+  }
+
+  .round-div
+  {
+    position: absolute;
+    
   }
 
  }
@@ -334,9 +341,16 @@
    max-width: 65px;
   }
 
+  /**tickets summary and round-div **/
   .ticketsummary
   {
     text-align: center;
+  }
+
+  .round-div
+  {
+    position: absolute;
+    
   }
 
 }
@@ -499,15 +513,22 @@
    
   }
   
+  /**tickets summary and round-div **/
   .ticketsummary
   {
     text-align: center;
   }
 
+  .round-div
+  {
+    position: absolute;
+    
+  }
+
 }
 
 /*MEDIUM devices up to Large Devices*/
-@media only screen and (min-width: 960px) and (max-width: 1600px) 
+@media only screen and (min-width: 960px) and (max-width: 1599px) 
 
 {
 
@@ -528,5 +549,34 @@
 {
   margin-left: 25%;
 }
+
+
+
+  }
+
+  /*Large devices up to extra Large Devices*/
+@media only screen and (min-width: 1600px) and (max-width: 2040px) 
+
+{
+
+  body, .full-width-div 
+  {
+    min-width: 1600px;
+    margin-left:auto;
+    margin-right: auto;
+  }
+
+  .container_12
+   
+  {
+    width: 1600px;
+  }
+
+.boxsummary
+{
+  margin-left: 15%;
+}
+
+
 
   }

@@ -299,6 +299,8 @@
                         $bp = $em_check[$em_cnt]['bphone'];
         ?>
                         <div class="container_12">
+                           
+                        <div class="ticketsummary">
                             <div class="grid_1 alpha round-div">
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             </div>
@@ -311,7 +313,9 @@
                                          $cID;
                                 ?>
                             </div>
-                        </div><br/>
+                        </div>
+                        </div>
+                        <br/>
         <?php 
                     }
                     $em_cnt++;
