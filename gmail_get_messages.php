@@ -290,7 +290,7 @@ try{
                             $att_img_id = "att_img_".$message_id."_".$cnt_att;;
                             $att = "&nbsp&nbsp&nbsp&nbsp
                                 <div style='position: relative; display: inline-block;'>
-                                    <div id='".$att_title_id."' style='position: absolute; background-color: #000; width: 200px; padding: 5px; word-wrap: break-word;'>
+                                    <div id='".$att_title_id."' style='position: absolute; background-color: #000; width: 200px; padding: 5px; word-wrap: break-word; text-align: center;'>
                                         <span>".$ptest['filename']."</span>
                                     </div>
                                     <a href='#' class='open-modal-previewAtt' data-src='".$att_dl."' data-fn='".$ptest['filename']."'>

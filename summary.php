@@ -249,7 +249,23 @@
                                     
                 <div class="modal-body">
                     <div id="attid"></div>
-                    <span id="attfn" style="background-color: #000; font-size: 20px; color: #fff;"></span>
+                     <span id="attfn" style="background-color: #000; font-size: 20px; color: #fff;" ></span>
+                    
+
+                    <style type="text/css">
+
+                    #attid img
+                    {
+                        margin-left: -2em;
+                        margin-top: -2em;
+                        width: 600px;
+                        height: 600px;
+
+                    }
+
+                 
+                    </style>
+                   
                 </div>
         
             </div>
