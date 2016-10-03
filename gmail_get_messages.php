@@ -5,7 +5,7 @@
 
     $params_t_check = [
     'TableName' => 'ursa-tickets',
-    'ProjectionExpression' => 'ticket_gmail_id,ticket_name_from,ticket_email_subject,ticket_email_from,ticket_email_body,ticket_embedded_image,ticket_email_attachment'
+    'ProjectionExpression' => 'ticket_id,ticket_gmail_id,ticket_name_from,ticket_email_subject,ticket_email_from,ticket_email_body,ticket_embedded_image,ticket_email_attachment'
     ];
 
         try {
@@ -59,6 +59,7 @@
                 }
             }
             array_push($arr_msgs, array(
+                "ticket_id" => $obj2['ticket_id']['S'],
                 "id" => $obj2['ticket_gmail_id']['S'],
                 "subject" => $obj2['ticket_email_subject']['S'],
                 "body" => $bdy_image,
@@ -274,6 +275,7 @@ try{
 
                 $uniqueFilename2 = "";
                 $attachmentName = array();
+                $arr_att = array();
                 $cnt_att = 0;
                 foreach($parts as $ptest) {
                     if($ptest['body']['attachmentId']) {
@@ -298,6 +300,7 @@ try{
                                         <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
                                     </a>
                                 </div>";
+                                array_push($arr_att, $att);
                             array_push($attachmentName, $uniqueFilename2);
                             file_put_contents("images/attachments/$uniqueFilename2", $att);
                             ?>
@@ -318,6 +321,7 @@ try{
                                 <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/pdf.png'></a>";
                             /*<iframe ".$replace." width='200px' height='200px' style='margin-bottom:25px;'>&nbsp&nbsp
                             </iframe>&nbsp&nbsp";*/
+                            array_push($arr_att, $att);
                             array_push($attachmentName, $uniqueFilename2);
                             file_put_contents("images/attachments/$uniqueFilename2", $att);
                         } else if($ptest['mimeType'] == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
@@ -325,6 +329,7 @@ try{
                             $att = "&nbsp&nbsp&nbsp&nbsp  
                                 <a href='".$att_dl."' download='".$ptest['filename']."'>
                                 <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/docx.png'></a>";
+                                array_push($arr_att, $att);
                             array_push($attachmentName, $uniqueFilename2);
                             file_put_contents("images/attachments/$uniqueFilename2", $att);
                         } else if($ptest['mimeType'] == 'application/msword') {
@@ -332,6 +337,7 @@ try{
                             $att = "&nbsp&nbsp&nbsp&nbsp  
                                 <a href='".$att_dl."' download='".$ptest['filename']."'>
                                 <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/doc.png'></a>";
+                                array_push($arr_att, $att);
                             array_push($attachmentName, $uniqueFilename2);
                             file_put_contents("images/attachments/$uniqueFilename2", $att);
                         } else {
@@ -341,6 +347,7 @@ try{
                                 <img style='width: 180px; height: 200px; margin-bottom:25px;' src='img/unknown.png'></a>";
                             /*<iframe ".$replace." width='200px' height='200px' style='margin-bottom:25px;'>&nbsp&nbsp
                             </iframe>&nbsp&nbsp";*/
+                            array_push($arr_att, $att);
                             array_push($attachmentName, $uniqueFilename2);
                             file_put_contents("images/attachments/$uniqueFilename2", $att);
                         }
@@ -352,11 +359,11 @@ try{
                 if($uniqueFilename2 != ""){
                     $comma_separated = implode(",", $attachmentName);
                 }
-                        
+                $t_id = UID();
                 if(!empty($FOUND_BODY)){
                     $item_t_add = $marshaler->marshalJson('
                     {
-                        "ticket_id": "'.UID().'",
+                        "ticket_id": "'.$t_id.'",
                         "ticket_gmail_id": "'.$message_id.'",
                         "ticket_email_from": "'.$from_email.'",
                         "ticket_name_from": "'.$from.'",
@@ -378,6 +385,18 @@ try{
                         echo "Unable to add item:\n";
                         echo $e->getMessage() . "\n";
                     }
+
+                    array_unshift($arr_msgs, array(
+                        "ticket_id" => $t_id,
+                        "id" => $message_id,
+                        //"date" => $date,
+                        "subject" => $subject,
+                        "body" => $FOUND_BODY,
+                        "from" => $from,
+                        "email" => $from_email,
+                        "attachments" => $arr_att
+                    ));
+
                 }
             } else {}
 
@@ -393,4 +412,16 @@ try{
 } catch (Exception $e) {
     echo $e->getMessage();
 }
+
+function array_sort_by_column(&$arr, $col, $dir = SORT_ASC) {
+    $sort_col = array();
+    foreach ($arr as $key=> $row) {
+        $sort_col[$key] = $row[$col];
+    }
+
+    array_multisort($sort_col, $dir, $arr);
+}
+
+
+array_sort_by_column($arr_msgs, 'ticket_id');
 ?>

@@ -309,7 +309,7 @@ try{
                     // With no attachment, the payload might be directly in the body, encoded.
                     if(!$FOUND_BODY) {
                         $FOUND_BODY = decodeBody($body['data']);
-                        $body = decodeBody($body['data']);
+                        $body_msg = $body['data'];
                         
                     }
                     // Last try: if we didn't find the body in the last parts, 
