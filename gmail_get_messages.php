@@ -301,13 +301,19 @@ try{
                             array_push($attachmentName, $uniqueFilename2);
                             file_put_contents("../URSA_att/attachments/$uniqueFilename2", $att);
                         } else if($ptest['mimeType'] == 'application/pdf') {
+                            
+                            $pdf_decoded = base64_decode ($data64);
+                            $pdf = fopen ('../URSA_att/attachments/'.$ptest['filename'] ,'w');
+                            fwrite ($pdf,$pdf_decoded);
+                            fclose ($pdf);
+
                             $att = "&nbsp&nbsp&nbsp&nbsp  
                                 <div onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
                                     <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word;'>
                                         <span>".$ptest['filename']."</span>
                                     </div>
                                     <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/pdf.png'>
-                                    <a href='".$att_dl."' download='".$ptest['filename']."' style=''>
+                                    <a href='../URSA_att/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
                                         <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
                                     </a>
                                 </div>";
