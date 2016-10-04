@@ -51,12 +51,16 @@
         if($obj2['ticket_gmail_id']['S']){
             $bdy_image = decodeBody(@$obj2['ticket_email_body']['S']);
 
+            $arr_emb = explode(',', $obj2['ticket_embedded_image']['S']);
+
             preg_match_all('/src="cid:(.*)"/Uims', $bdy_image, $matches);
             if(count($matches)) {
+                $cnt_emb = 0;
                 foreach($matches[1] as $match) {
                     $search = "src=\"cid:$match\"";
-                    $replace = "src=".$att_path.$obj2['ticket_gmail_id']['S'].$obj2['ticket_embedded_image']['S'];
-                    $bdy_image = str_replace($search, $replace, $bdy_image);         
+                    $replace = "src=".$att_path.$obj2['ticket_gmail_id']['S']."/".$arr_emb[$cnt_emb];
+                    $bdy_image = str_replace($search, $replace, $bdy_image);  
+                    $cnt_emb++;       
                 }
             }
             $arr_att = array();
@@ -197,6 +201,7 @@ try{
                 }
 
                 $uniqueFilename = "(no embedded image)";
+                $arr_emb_imgs = array();
                 // let's save all the images linked to the mail's body:
                 if($FOUND_BODY && count($parts) > 1){
                     $images_linked = array();
@@ -250,16 +255,30 @@ try{
                                             $data64 = strtr($attachment->getData(), array('-' => '+', '_' => '/'));
                                             $replace = "src=\"data:" . $mimetype . ";base64," . $data64 . "\"";
                                             $FOUND_BODY = str_replace($search, $replace, $FOUND_BODY);
-                                            $uniqueFilename = UID();
-                                            file_put_contents($att_path.$message_id."/".$uniqueFilename.".".$mime_exp[1], decodeBody($attachment['data']));
-                                            $uniqueFilename = $uniqueFilename.".".$mime_exp[1];
                                         }
                                     }
                                 }
                             }
+                            $uniqueFilename = UID();
+                            file_put_contents($att_path.$message_id."/".$uniqueFilename.".".$mime_exp[1], decodeBody($attachment['data']));
+                            $uniqueFilename = $uniqueFilename.".".$mime_exp[1];
+                            array_push($arr_emb_imgs, $uniqueFilename);
                         }
                     }
                 }
+                if($arr_emb_imgs != null) {
+                    $uniqueFilename = "";
+                    $cnt_aei = 0;
+                    foreach($arr_emb_imgs as $aei) {
+                        if($cnt_aei != 0) {
+                            $uniqueFilename .= ",".$aei;
+                        } else {
+                            $uniqueFilename .= $aei;
+                        }
+                        $cnt_aei++;
+                    }
+                }
+
                 // If we didn't find the body in the last parts, 
                 // let's loop for the first parts (text-html only)
                 if(!$FOUND_BODY) {
