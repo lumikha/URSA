@@ -14,6 +14,32 @@
             ));
         }
     }
+    if(@$_POST['new_thread']){
+        $thread = $marshaler->marshalJson('
+        {
+            "ticket_note_id": "'.GUID().'",
+            "ticket_id": "'.@$_POST['cTID'].'",
+            "note_content": "'.@$_POST['message'].'",
+            "note_created_at": "'.date('Y/m/d H:i:s').'",
+            "note_created_by": "'.$fname.'"
+        }
+    ');
+
+        $params_note = [
+            'TableName' => 'ursa-ticket-notes',
+            'Item' => $thread
+        ];
+
+
+        try {
+            $result_note = $dynamodb->putItem($params_note);
+            //print_r($result);
+
+        } catch (DynamoDbException $e) {
+            //echo "Unable to add item:\n";
+            echo $e->getMessage() . "\n";
+        }
+    }
 ?>
     <style>
 
@@ -161,7 +187,7 @@
                                     
                 <div class="modal-body">
                     <form method="POST">
-                        <input type="type" id="cID_new_thread" name="cTID" hidden>
+                        <input type="text" id="cID_new_thread" name="cTID" hidden>
                         <div class="row">
                             <div class="col-md-6">
                                 <label>New Thread Type</label>
@@ -289,7 +315,7 @@
 
         <?php 
             foreach($arr_msgs as $a_m) { 
-                $mID = $a_m['id'];
+                $mID = $a_m['ticket_id'];
                 $sbj = $a_m['subject'];
                 $bdy = htmlentities($a_m['body']);
                 $ats_title = "";
