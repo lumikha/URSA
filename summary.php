@@ -74,9 +74,13 @@
                             <label style="display: none;">Ticket ID</label>
                             <input type="text" class="form-control" id="tID" value="" style="text-align: center; font-weight: bold; display: none;" readonly>
                         </div>
+
+
+
                         <div class="col-md-2 text-right" style="top:-20px">
                             <a id="expand" href="#"><span id="glyph_resize" class="btn btn-info btn-sm glyphicon glyphicon-resize-full " aria-hidden="true"></span></a>
                         </div>
+                       
                     </div>
                     <div class="row">
                         <div class="col-md-12">
@@ -92,7 +96,7 @@
                             background-size: 50px;
                             background-position: center; 
                             border: 1 solid #fff2e6;
-                            height: 200px;
+                            height: 150px;
                             box-shadow: 9px 9px 10px #818181;
                             -webkit-box-shadow: 9px 9px 10px #818181;
                             -moz-box-shadow: 9px 9px 10px #818181;
@@ -252,16 +256,7 @@
                      <span id="attfn" style="background-color: #000; font-size: 20px; color: #fff;" ></span>
                     
 
-                    <style type="text/css">
 
-                    #attid img
-                    {
-                        margin-left: -2em;
-                        margin-top: -2em;
-                        width: 600px;
-                        height: 600px;
-
-                    }
 
                  
                     </style>
@@ -478,13 +473,28 @@
         referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
     }
     $('#expand').click(function(){
+
+        var _self = $(this);
+            src = _self.data('src'),
+            fn = _self.data('fn');
+        var img = document.createElement("img");
+        img.src= src;
+        document.getElementById('attid').appendChild(img);
+
+
         if($('#modal_dialog').hasClass('modal-md')){
+
             $('#glyph_resize').removeClass('glyphicon-resize-full');
             $('#glyph_resize').addClass('glyphicon-resize-small');
             $('#modal_dialog').removeClass('modal-md');
             $('#modal_cont').removeClass('modal-md');
             $('#modal_dialog').addClass('modal-lg');
             $('#modal_cont').addClass('modal-lg');
+            $('.imgatt1').css({'background-color': 'transparent', 'width': '400px', 'height': '300px', 'padding': '1em'}).addClass('modal-md'); 
+            $('.imgatt2').css({'background-color': 'transparent', 'width': '400px', 'height': '300px', 'padding': '1em'}).addClass('modal-md'); 
+            $('.att_title').css({ 'width': '400px', 'height': '300px'}).addClass('modal-md'); 
+    
+
         }else{
             $('#glyph_resize').removeClass('glyphicon-resize-small');
             $('#glyph_resize').addClass('glyphicon-resize-full');
@@ -492,6 +502,10 @@
             $('#modal_cont').removeClass('modal-lg');
             $('#modal_dialog').addClass('modal-md');
             $('#modal_cont').addClass('modal-md');
+            $('.imgatt1').css({'background-color': 'transparent', 'width': '200px' , 'height': '200px', 'padding': '1em'}).removeClass('modal-md'); 
+            $('.imgatt2').css({'background-color': 'transparent', 'width': '200px', 'height': '200px', 'padding': '1em'}).removeClass('modal-md'); 
+            $('.att_title').css({ 'width': '200px', 'height': '200px'}).removeClass('modal-md'); 
+
         }
     });
 </script>

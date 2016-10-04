@@ -286,13 +286,13 @@ try{
                         $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
                         if($ptest['mimeType'] == 'image/gif' || $ptest['mimeType'] == 'image/png' || $ptest['mimeType'] == 'image/jpeg') {
                             $att = "&nbsp&nbsp&nbsp&nbsp
-                                <div onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
+                                <div onmouseover='showTitle(this)' onmouseout='hideTitle(this)' class='imgatt1' style='position: relative; display: inline-block;'>
                                     <a href='#' class='open-modal-previewAtt' data-src='".$att_dl."' data-fn='".$ptest['filename']."'>
                                         <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word; cursor: zoom-in;'>
                                             <span>".$ptest['filename']."</span>
                                         </div>
                                     </a>
-                                    <img style='width: 200px; height: 200px; margin-bottom:25px;' ".$replace.">
+                                    <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:25px;' ".$replace.">
                                     <a href='".$att_dl."' download='".$ptest['filename']."' style=''>
                                         <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
                                     </a>
@@ -308,11 +308,11 @@ try{
                             fclose ($pdf);
 
                             $att = "&nbsp&nbsp&nbsp&nbsp  
-                                <div onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
+                                <div onmouseover='showTitle(this)' onmouseout='hideTitle(this)' class='imgatt1' style='position: relative; display: inline-block;'>
                                     <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word;'>
                                         <span>".$ptest['filename']."</span>
                                     </div>
-                                    <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/pdf.png'>
+                                    <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:25px;' src='img/pdf.png'>
                                     <a href='../URSA_att/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
                                         <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
                                     </a>
@@ -322,11 +322,11 @@ try{
                             file_put_contents("../URSA_att/attachments/$uniqueFilename2", $att);
                         } else if($ptest['mimeType'] == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
                             $att = "&nbsp&nbsp&nbsp&nbsp  
-                                <div onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
+                                <div onmouseover='showTitle(this)' onmouseout='hideTitle(this)' class='imgatt1' style='position: relative; display: inline-block;'>
                                     <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word;'>
                                         <span>".$ptest['filename']."</span>
                                     </div>
-                                    <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/docx.png'></a>
+                                    <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:25px;' src='img/docx.png'></a>
                                     <a href='".$att_dl."' download='".$ptest['filename']."' style=''>
                                         <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
                                     </a>
@@ -336,11 +336,11 @@ try{
                             file_put_contents("../URSA_att/attachments/$uniqueFilename2", $att);
                         } else if($ptest['mimeType'] == 'application/msword') {
                             $att = "&nbsp&nbsp&nbsp&nbsp  
-                                <div onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
+                                <div onmouseover='showTitle(this)' onmouseout='hideTitle(this)' class='imgatt1' style='position: relative; display: inline-block;'>
                                     <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word;'>
                                         <span>".$ptest['filename']."</span>
                                     </div>
-                                    <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/doc.png'></a>
+                                    <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:25px;' src='img/doc.png'></a>
                                     <a href='".$att_dl."' download='".$ptest['filename']."' style=''>
                                         <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
                                     </a>
@@ -350,11 +350,11 @@ try{
                             file_put_contents("../URSA_att/attachments/$uniqueFilename2", $att);
                         } else {
                             $att = "&nbsp&nbsp&nbsp&nbsp  
-                                <div onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
-                                    <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word;'>
+                                <div onmouseover='showTitle(this)'  onmouseout='hideTitle(this)' class='imgatt1' style='position: relative; display: inline-block;'>
+                                    <div class='att_title'  style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word;'>
                                         <span>".$ptest['filename']."</span>
                                     </div>
-                                    <img style='width: 200px; height: 200px; margin-bottom:25px;' src='img/unknown.png'></a>
+                                    <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:25px;' src='img/unknown.png'></a>
                                     <a href='".$att_dl."' download='".$ptest['filename']."' style=''>
                                         <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
                                     </a>
