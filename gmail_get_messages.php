@@ -3,16 +3,26 @@
     require_once 'dynamoDB/dbConnect.php';
     require_once realpath(dirname(__FILE__) . '/lib/google/apiclient/src/Google/autoload.php');
 
+    $live_server = true;
+    if($live_server) {
+        $att_path = "../URSA_att/";
+        $tbname = 'ursa-tickets';
+        $tbid = 'ticket_id';
+    } else {
+        $att_path = "../URSA_att/";
+        $tbname = 'ursa-ticket-notes';
+        $tbid = 'ticket_note_id';
+    }
+
     $params_t_check = [
-    'TableName' => 'ursa-tickets',
-    'ProjectionExpression' => 'ticket_id,ticket_gmail_id,ticket_name_from,ticket_email_subject,ticket_email_from,ticket_email_body,ticket_embedded_image,ticket_email_attachment'
+    'TableName' => $tbname,
+    'ProjectionExpression' => $tbid.',ticket_gmail_id,ticket_name_from,ticket_email_subject,ticket_email_from,ticket_email_body,ticket_embedded_image,ticket_email_attachment'
     ];
 
-        try {
+    try {
         while (true) {
             $ticket_check = $dynamodb->scan($params_t_check);
 
-            
             foreach ($ticket_check['Items'] as $i) {
                 $movie = $marshaler->unmarshalItem($i);
             }
@@ -28,6 +38,7 @@
         echo "Unable to scan USERS:\n";
         echo $e->getMessage() . "\n";
     }
+
     $test = array();
     foreach ($ticket_check['Items'] as $obj) {
         if($obj['ticket_gmail_id']['S']){
@@ -44,7 +55,7 @@
             if(count($matches)) {
                 foreach($matches[1] as $match) {
                     $search = "src=\"cid:$match\"";
-                    $replace = "src=../URSA_att/".$obj2['ticket_embedded_image']['S'];
+                    $replace = "src=".$att_path.$obj2['ticket_gmail_id']['S'].$obj2['ticket_embedded_image']['S'];
                     $bdy_image = str_replace($search, $replace, $bdy_image);         
                 }
             }
@@ -54,12 +65,12 @@
                      
             if(preg_match('/.php/',$att_file)){
                 foreach ($arr as $key) {
-                    @$attmts = file_get_contents('../URSA_att/attachments/'.$key);
+                    @$attmts = file_get_contents($att_path.$obj2['ticket_gmail_id']['S'].'/attachments/'.$key);
                     array_push($arr_att, $attmts);
                 }
             }
             array_push($arr_msgs, array(
-                "ticket_id" => $obj2['ticket_id']['S'],
+                $tbid => $obj2[$tbid]['S'],
                 "id" => $obj2['ticket_gmail_id']['S'],
                 "subject" => $obj2['ticket_email_subject']['S'],
                 "body" => $bdy_image,
@@ -69,9 +80,6 @@
             ));
         }
     }
-
-    $table_tickets = 'ursa-tickets';
-    $table_ticket_notes = 'ursa-ticket-notes';
 
     define('APPLICATION_NAME', 'Gmail API PHP Quickstart');
     define('CLIENT_SECRET_PATH', 'lib/secret_biglo/client_secret.json');
@@ -108,6 +116,14 @@ function UID() {
     $d = new DateTime( date('Y-m-d H:i:s.'.$micro, $t) );
 
     return $d->format("YmdHisu");
+}
+
+function createFile($data64, $message_id, $filename) {
+    global $att_path;
+    $file_decoded = base64_decode ($data64);
+    $file = fopen ($att_path.$message_id.'/attachments/'.$filename ,'w');
+    fwrite ($file, $file_decoded);
+    fclose ($file);
 }
 
 $gmail = new Google_Service_Gmail($client);
@@ -218,7 +234,7 @@ try{
                     }
                     preg_match_all('/src="cid:(.*)"/Uims', $FOUND_BODY, $matches);
                     if(count($matches)) {
-                        $uniqueFilename = UID().".png";
+                        mkdir($att_path.$message_id, 0755, true);
                         $search = array();
                         $replace = array();
                         // let's trasnform the CIDs as base64 attachements 
@@ -229,11 +245,14 @@ try{
                                         if ($match === str_replace('>', '', str_replace('<', '', $img_lnk->value)) || explode("@",$match)[0] === explode(".", $img_linked->filename)[0] || explode("@",$match)[0] === $img_linked->filename) {
                                             $search = "src=\"cid:$match\"";
                                             $mimetype = $img_linked->mimeType;
+                                            $mime_exp = explode('/', $mimetype);
                                             $attachment = $gmail->users_messages_attachments->get('me', $mlist->id, $img_linked['body']->attachmentId);
                                             $data64 = strtr($attachment->getData(), array('-' => '+', '_' => '/'));
                                             $replace = "src=\"data:" . $mimetype . ";base64," . $data64 . "\"";
                                             $FOUND_BODY = str_replace($search, $replace, $FOUND_BODY);
-                                            file_put_contents("../URSA_att/$uniqueFilename", decodeBody($attachment['data']));
+                                            $uniqueFilename = UID();
+                                            file_put_contents($att_path.$message_id."/".$uniqueFilename.".".$mime_exp[1], decodeBody($attachment['data']));
+                                            $uniqueFilename = $uniqueFilename.".".$mime_exp[1];
                                         }
                                     }
                                 }
@@ -279,89 +298,92 @@ try{
                 $cnt_att = 0;
                 foreach($parts as $ptest) {
                     if($ptest['body']['attachmentId']) {
+                        if (!file_exists($att_path.$message_id.'/attachments')) {
+                            mkdir($att_path.$message_id.'/attachments', 0755, true);
+                        }
                         $uniqueFilename2 = UID().".php";
                         $attachment = $gmail->users_messages_attachments->get('me', $message_id, $ptest['body']['attachmentId']);
                         $data64 = strtr($attachment->getData(), array('-' => '+', '_' => '/'));
                         $replace = "src=\"data:" . $ptest['mimeType'] . ";base64," . $data64 . "\"";
-                        $att_dl = "data:" . $ptest['mimeType'] . ";base64," . $data64;
+                        
                         if($ptest['mimeType'] == 'image/gif' || $ptest['mimeType'] == 'image/png' || $ptest['mimeType'] == 'image/jpeg') {
                             $att = "&nbsp&nbsp&nbsp&nbsp
-                                <div onmouseover='showTitle(this)' onmouseout='hideTitle(this)' class='imgatt1' style='position: relative; display: inline-block;'>
-                                    <a href='#' class='open-modal-previewAtt' data-src='".$att_dl."' data-fn='".$ptest['filename']."'>
+                                <div class='imgatt1' onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
+                                    <a href='#' class='open-modal-previewAtt' data-src='".$att_path.$message_id."/attachments/".$ptest['filename']."' data-fn='".$ptest['filename']."'>
                                         <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word; cursor: zoom-in;'>
                                             <span>".$ptest['filename']."</span>
                                         </div>
                                     </a>
-                                    <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:25px;' ".$replace.">
-                                    <a href='".$att_dl."' download='".$ptest['filename']."' style=''>
+                                    <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:25px;' src='".$att_path.$message_id."/attachments/".$ptest['filename']."'>
+                                    <a href='".$att_path.$message_id."/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
                                         <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
                                     </a>
                                 </div>";
                             array_push($arr_att, $att);
                             array_push($attachmentName, $uniqueFilename2);
-                            file_put_contents("../URSA_att/attachments/$uniqueFilename2", $att);
+                            file_put_contents($att_path.$message_id."/attachments/$uniqueFilename2", $att);
+                            file_put_contents($att_path.$message_id."/attachments/".$ptest['filename'], decodeBody($attachment['data']));
                         } else if($ptest['mimeType'] == 'application/pdf') {
-                            
-                            $pdf_decoded = base64_decode ($data64);
-                            $pdf = fopen ('../URSA_att/attachments/'.$ptest['filename'] ,'w');
-                            fwrite ($pdf,$pdf_decoded);
-                            fclose ($pdf);
-
                             $att = "&nbsp&nbsp&nbsp&nbsp  
-                                <div onmouseover='showTitle(this)' onmouseout='hideTitle(this)' class='imgatt1' style='position: relative; display: inline-block;'>
+                                <div class='imgatt1' onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
                                     <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word;'>
                                         <span>".$ptest['filename']."</span>
                                     </div>
                                     <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:25px;' src='img/pdf.png'>
-                                    <a href='../URSA_att/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
+                                    <a href='".$att_path.$message_id."/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
                                         <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
                                     </a>
                                 </div>";
                             array_push($arr_att, $att);
                             array_push($attachmentName, $uniqueFilename2);
-                            file_put_contents("../URSA_att/attachments/$uniqueFilename2", $att);
+                            file_put_contents($att_path.$message_id."/attachments/$uniqueFilename2", $att);
+                            createFile($data64, $message_id, $ptest['filename']);
                         } else if($ptest['mimeType'] == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
                             $att = "&nbsp&nbsp&nbsp&nbsp  
-                                <div onmouseover='showTitle(this)' onmouseout='hideTitle(this)' class='imgatt1' style='position: relative; display: inline-block;'>
+                                <div class='imgatt1' onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
                                     <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word;'>
                                         <span>".$ptest['filename']."</span>
                                     </div>
                                     <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:25px;' src='img/docx.png'></a>
-                                    <a href='".$att_dl."' download='".$ptest['filename']."' style=''>
+                                    <a href='".$att_path.$message_id."/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
                                         <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
                                     </a>
                                 </div>";
                             array_push($arr_att, $att);
                             array_push($attachmentName, $uniqueFilename2);
-                            file_put_contents("../URSA_att/attachments/$uniqueFilename2", $att);
+                            file_put_contents($att_path.$message_id."/attachments/$uniqueFilename2", $att);
+                            createFile($data64, $message_id, $ptest['filename']);
+
                         } else if($ptest['mimeType'] == 'application/msword') {
                             $att = "&nbsp&nbsp&nbsp&nbsp  
-                                <div onmouseover='showTitle(this)' onmouseout='hideTitle(this)' class='imgatt1' style='position: relative; display: inline-block;'>
+                                <div class='imgatt1' onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
                                     <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word;'>
                                         <span>".$ptest['filename']."</span>
                                     </div>
                                     <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:25px;' src='img/doc.png'></a>
-                                    <a href='".$att_dl."' download='".$ptest['filename']."' style=''>
+                                    <a href='".$att_path.$message_id."/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
                                         <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
                                     </a>
                                 </div>";
                             array_push($arr_att, $att);
                             array_push($attachmentName, $uniqueFilename2);
-                            file_put_contents("../URSA_att/attachments/$uniqueFilename2", $att);
+                            file_put_contents($att_path.$message_id."/attachments/$uniqueFilename2", $att);
+                            createFile($data64, $message_id, $ptest['filename']);
                         } else {
                             $att = "&nbsp&nbsp&nbsp&nbsp  
-                                <div onmouseover='showTitle(this)'  onmouseout='hideTitle(this)' class='imgatt1' style='position: relative; display: inline-block;'>
-                                    <div class='att_title'  style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word;'>
+                                <div class='imgatt1' onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
+                                    <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word;'>
                                         <span>".$ptest['filename']."</span>
                                     </div>
                                     <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:25px;' src='img/unknown.png'></a>
-                                    <a href='".$att_dl."' download='".$ptest['filename']."' style=''>
+                                    <a href='".$att_path.$message_id."/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
                                         <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
                                     </a>
                                 </div>";
                             array_push($arr_att, $att);
                             array_push($attachmentName, $uniqueFilename2);
-                            file_put_contents("../URSA_att/attachments/$uniqueFilename2", $att);
+                            file_put_contents($att_path.$message_id."/attachments/$uniqueFilename2", $att);
+                            createFile($data64, $message_id, $ptest['filename']);
                         }
                     }
                     $cnt_att++;
@@ -375,7 +397,7 @@ try{
                 if(!empty($FOUND_BODY)){
                     $item_t_add = $marshaler->marshalJson('
                     {
-                        "ticket_id": "'.$t_id.'",
+                        "'.$tbid.'": "'.$t_id.'",
                         "ticket_gmail_id": "'.$message_id.'",
                         "ticket_email_from": "'.$from_email.'",
                         "ticket_name_from": "'.$from.'",
@@ -387,7 +409,7 @@ try{
                     }');
 
                     $params_t_add = [
-                        'TableName' => $table_tickets,
+                        'TableName' => $tbname,
                         'Item' => $item_t_add
                     ];
 
@@ -399,7 +421,7 @@ try{
                     }
 
                     array_unshift($arr_msgs, array(
-                        "ticket_id" => $t_id,
+                        $tbid => $t_id,
                         "id" => $message_id,
                         //"date" => $date,
                         "subject" => $subject,
@@ -435,5 +457,5 @@ function array_sort_by_column(&$arr, $col, $dir = SORT_ASC) {
 }
 
 
-array_sort_by_column($arr_msgs, 'ticket_id');
+array_sort_by_column($arr_msgs, $tbid);
 ?>
