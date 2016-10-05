@@ -21,7 +21,8 @@
             "ticket_id": "'.@$_POST['cTID'].'",
             "note_content": "'.@$_POST['message'].'",
             "note_created_at": "'.date('Y/m/d H:i:s').'",
-            "note_created_by": "'.$fname.'"
+            "note_created_by": "'.$fname.'",
+            "ticket_current_status": "'.$_POST['status'].'"
         }
     ');
 
@@ -316,6 +317,7 @@
         <?php 
             foreach($arr_msgs as $a_m) { 
                 $mID = $a_m['ticket_id'];
+                $tNo = $a_m['no'];
                 $sbj = $a_m['subject'];
                 $bdy = htmlentities($a_m['body']);
                 $ats_title = "";
@@ -342,7 +344,7 @@
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             </div>
                             <div class="grid_2 omega">
-                                <a href="#" class="open-modal" data-cid="<?=$cID?>" data-id="<?=$mID?>" data-no="" data-subject="<?=$sbj?>" data-mes="<?=$bdy?>" data-atturl="<?=$ats_title.$ats?>" data-threadmsg="">
+                                <a href="#" class="open-modal" data-cid="<?=$cID?>" data-id="<?=$mID?>" data-no="<?=$tNo?>" data-subject="<?=$sbj?>" data-mes="<?=$bdy?>" data-atturl="<?=$ats_title.$ats?>" data-threadmsg="">
                                 <strong><?php echo $bn; ?></strong></a> <br>
                                 <?php
                                     echo $fn." ".$ln."<br>".
