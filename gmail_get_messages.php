@@ -15,7 +15,7 @@
 
     $params_t_check = [
     'TableName' => $tbname,
-    'ProjectionExpression' => $tbid.',ticket_number,ticket_gmail_id,ticket_name_from,ticket_email_subject,ticket_email_from,ticket_email_body,ticket_embedded_image,ticket_email_attachment'
+    'ProjectionExpression' => $tbid.',ticket_number,ticket_gmail_id,ticket_name_from,ticket_email_subject,ticket_email_from,ticket_email_body,ticket_embedded_image,ticket_email_attachment,ticket_notes,ticket_status'
     ];
 
     try {
@@ -73,6 +73,37 @@
                     array_push($arr_att, $attmts);
                 }
             }
+            
+            if($obj2['ticket_notes']['S'] == "(null)") {
+                $noteLists = null;
+            } else {
+                $arr_notes = array();
+                $nExp = explode(',', $obj2['ticket_notes']['S']);
+                foreach($nExp as $tn) {
+                    $get_notes = $marshaler->marshalJson('
+                        {
+                            "ticket_note_id": "'.$tn.'"
+                        }
+                    ');
+                    $params_get_notes = [
+                        'TableName' => 'ursa-ticket-notes',
+                        'Key' => $get_notes
+                    ];
+
+                    try {
+                        $data_tNote = $dynamodb->getItem($params_get_notes);
+                        array_push($arr_notes, array(
+                            "n_id" => $data_tNote['Item']['ticket_note_id'],
+                            "n_created_at" => $data_tNote['Item']['note_created_at'],
+                            "n_content" => $data_tNote['Item']['note_content']
+                        ));
+                    } catch (DynamoDbException $e) {
+                        echo $e->getMessage() . "\n";
+                    }
+                }
+                $noteLists = $arr_notes;
+            }
+
             array_push($arr_msgs, array(
                 $tbid => $obj2[$tbid]['S'],
                 "no" => $obj2['ticket_number']['S'],
@@ -81,7 +112,8 @@
                 "body" => $bdy_image,
                 "from" => $obj2['ticket_name_from']['S'],
                 "email" => $obj2['ticket_email_from']['S'],
-                "attachments" => $arr_att
+                "attachments" => $arr_att,
+                "notes" => $noteLists
             ));
         }
         $cnt_tckts++;
@@ -461,6 +493,8 @@ try{
                 {
                     "'.$tbid.'": "'.$t_id.'",
                     "ticket_number": "'.$cnt_tckts.'",
+                    "ticket_notes": "(null)",
+                    "ticket_status": "active",
                     "ticket_gmail_id": "'.$message_id.'",
                     "ticket_email_from": "'.$from_email.'",
                     "ticket_name_from": "'.$from.'",
@@ -492,7 +526,8 @@ try{
                 "body" => $FOUND_BODY,
                 "from" => $from,
                 "email" => $from_email,
-                "attachments" => $arr_att
+                "attachments" => $arr_att,
+                "notes" => null
             ));
         }
     }

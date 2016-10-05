@@ -14,30 +14,74 @@
             ));
         }
     }
-    if(@$_POST['new_thread']){
-        $thread = $marshaler->marshalJson('
-        {
-            "ticket_note_id": "'.GUID().'",
-            "ticket_id": "'.@$_POST['cTID'].'",
-            "note_content": "'.@$_POST['message'].'",
-            "note_created_at": "'.date('Y/m/d H:i:s').'",
-            "note_created_by": "'.$fname.'",
-            "ticket_current_status": "'.$_POST['status'].'"
-        }
-    ');
 
-        $params_note = [
+    if(@$_POST['new_thread']){
+        $new_note_id = GUID();
+        
+        //insert new ticket note in ursa-ticket-notes
+        $new_note = $marshaler->marshalJson('
+            {
+                "ticket_note_id": "'.$new_note_id.'",
+                "ticket_id": "'.@$_POST['cTID'].'",
+                "note_content": "'.@$_POST['message'].'",
+                "note_created_at": "'.date('Y/m/d H:i:s').'",
+                "note_created_by": "'.$fname.'",
+                "ticket_current_status": "'.$_POST['status'].'"
+            }
+        ');
+
+        $params_new_note = [
             'TableName' => 'ursa-ticket-notes',
-            'Item' => $thread
+            'Item' => $new_note
         ];
 
+        //get list of existing notes for the current ticket_id
+        $get_notes = $marshaler->marshalJson('
+            {
+                "ticket_id": "'.$_POST['cTID'].'"
+            }
+        ');
+        $params_get_ticket = [
+            'TableName' => 'ursa-tickets',
+            'Key' => $get_notes
+        ];
 
         try {
-            $result_note = $dynamodb->putItem($params_note);
-            //print_r($result);
+            $dynamodb->putItem($params_new_note);
+            $ticket = $dynamodb->getItem($params_get_ticket);
+            json_encode($ticket["Item"]);
+            $existing_notes = $ticket['Item']['ticket_notes']['S'];
 
+            if($existing_notes == "(null)") {
+                $upd_note_lists = $new_note_id;
+            } else {
+                $upd_note_lists = $existing_notes.",".$new_note_id;
+            }
+
+            $current_ticketID = $marshaler->marshalJson('
+            {
+                "ticket_id": "'.$_POST['cTID'].'"
+            }
+            ');
+
+            $toUpdate = $marshaler->marshalJson('
+                {
+                    ":ticket_notes": "'.$upd_note_lists.'",
+                    ":ticket_status": "'.$_POST['status'].'"
+                }
+            ');
+
+            $params = [
+                'TableName' => 'ursa-tickets',
+                'Key' => $current_ticketID,
+                'UpdateExpression' => 'set ticket_notes=:ticket_notes, ticket_status=:ticket_status', 
+                'ExpressionAttributeValues'=> $toUpdate,
+                'ReturnValues' => 'UPDATED_NEW'
+            ];
+
+            $dynamodb->updateItem($params);
+   
         } catch (DynamoDbException $e) {
-            //echo "Unable to add item:\n";
             echo $e->getMessage() . "\n";
         }
     }
@@ -188,66 +232,19 @@
                                     
                 <div class="modal-body">
                     <form method="POST">
-                        <input type="text" id="cID_new_thread" name="cTID" hidden>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>New Thread Type</label>
-                                <div class="radio" style="margin-left: 30px;">
-                                    <label><input type="radio" id="rad1" name="type" value="note" onclick="tType(1);">Note</label>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label><input type="radio" id="rad2" name="type" value="message" onclick="tType(2);">Message</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label>New Status</label>
-                                <select class="form-control" id="commit_status" name="status">
-                                    <optgroup label="Status">
-                                        <option value="" disabled selected>No Change</option>
-                                        <option value="active">Active</option>
-                                        <option value="pending">Pending</option>
-                                        <option value="closed">Closed</option>
-                                        <option value="spam">Spam</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label>Message</label>
-                                <textarea class="form-control" id="commit_msg" name="message" style="height: 300px;"></textarea>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <center>
-                                <input type="Submit" class="btn btn-danger" name="new_thread" value="Create Thread">
-                            </center>
-                        </div>
-                    </form>
-                </div>
-        
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="updateTicket" tabindex="-1" role="dialog">
-        <div id="modal_cont" class="modal-dialog modal-lg">
-            <div class="modal-content">
-                                    
-                <div class="modal-body">
-                    <form method="POST">
                         <input type="type" id="cID_new_thread" name="cTID" hidden>
                         <div class="row">
                             <div class="col-md-6">
                                 <label>New Thread Type</label>
                                 <div class="radio" style="margin-left: 30px;">
-                                    <label><input type="radio" id="rad1" name="type" value="note" onclick="tType(1);">Note</label>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label><input type="radio" id="rad2" name="type" value="message" onclick="tType(2);">Message</label>
+                                    <label><input type="radio" id="rad1" name="type" value="note" onclick="tType(1);" checked>Note</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <!--<label><input type="radio" id="rad2" name="type" value="message" onclick="tType(2);">Message</label>-->
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label>New Status</label>
                                 <select class="form-control" id="commit_status" name="status">
                                     <optgroup label="Status">
-                                        <option value="" disabled selected>No Change</option>
                                         <option value="active">Active</option>
                                         <option value="pending">Pending</option>
                                         <option value="closed">Closed</option>
@@ -269,7 +266,6 @@
                         </div>
                     </form>
                 </div>
-        
             </div>
         </div>
     </div>
@@ -317,6 +313,26 @@
                 $tNo = $a_m['no'];
                 $sbj = $a_m['subject'];
                 $bdy = htmlentities($a_m['body']);
+
+                if($a_m['notes']) {
+                    $th_arr_fin = "";
+                    $th_arr = array();
+                    foreach($a_m['notes'] as $nl) {
+                        array_push($th_arr, "Added note||+||<span style='float: right;'>".$nl['n_created_at']['S']."</span>||+||<p>".$nl['n_content']['S']."</p>~^^^~");
+                        /*echo $nl['n_id']['S'];
+                        echo $nl['n_created_at']['S'];
+                        echo $nl['n_content']['S'];*/
+                    }
+
+                    $thArrCnt = 0;
+                    while(!empty($th_arr[$thArrCnt])) {
+                        $th_arr_fin .= $th_arr[$thArrCnt];
+                        $thArrCnt++;
+                    }
+                } else {
+                    $th_arr_fin = "";
+                }
+
                 $ats_title = "";
                 $ats = "";
                 if($a_m['attachments']) {
@@ -341,7 +357,7 @@
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             </div>
                             <div class="grid_2 omega">
-                                <a href="#" class="open-modal" data-cid="<?=$cID?>" data-id="<?=$mID?>" data-no="<?=$tNo?>" data-subject="<?=$sbj?>" data-mes="<?=$bdy?>" data-atturl="<?=$ats_title.$ats?>" data-threadmsg="">
+                                <a href="#" class="open-modal" data-cid="<?=$cID?>" data-id="<?=$mID?>" data-no="<?=$tNo?>" data-subject="<?=$sbj?>" data-mes="<?=$bdy?>" data-atturl="<?=$ats_title.$ats?>" data-threadmsg="<?=$th_arr_fin?>">
                                 <strong><?php echo $bn; ?></strong></a> <br>
                                 <?php
                                     echo $fn." ".$ln."<br>".
@@ -450,9 +466,7 @@
                 var element = document.getElementById("magic_buttons");
                 i++;
             }
-            $('#id_you_like_'+(i-1)).remove();
-            $('#id_you_like_div_'+(i-1)).remove();
-            if(i == 1) {
+            if(i < 1) {
                 var no = document.createElement("SPAN");
                 no.setAttribute("id", "id_you_like_div_none");
                 no.setAttribute("class", "col-md-12");
