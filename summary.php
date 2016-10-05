@@ -123,7 +123,7 @@
                             background-size: 50px;
                             background-position: center; 
                             border: 1 solid #fff2e6;
-                            height: 150px;
+                            height: 200px;
                             box-shadow: 9px 9px 10px #818181;
                             -webkit-box-shadow: 9px 9px 10px #818181;
                             -moz-box-shadow: 9px 9px 10px #818181;
@@ -279,16 +279,13 @@
             <div class="modal-content" style="position: absolute; margin-left: auto; margin-right: auto; width: 0 !important; height: 0 !important; border: none; padding: none;">
                                     
                 <div class="modal-body">
+
+                   
+                </div>
                     <div id="attid"></div>
                      <span id="attfn" style="background-color: #000; font-size: 20px; color: #fff;" ></span>
                     
 
-
-
-                 
-                    </style>
-                   
-                </div>
         
             </div>
         </div>
@@ -476,6 +473,12 @@
         document.getElementById('attid').appendChild(img);
         document.getElementById('attfn').innerHTML = fn;
         $("#previewAtt").modal('show');
+         img.style.width = '950px';
+         img.style.height = '650px';
+         $('#previewAtt').css('margin-top','-30px');
+         $('#previewAtt').css('margin-left','-350px');
+         $('#attfn').css('text-align','center');
+
     });
 
     $(document).on("click", ".open-modal-updTicket", function (e) {
@@ -514,9 +517,12 @@
           //  $('.imgatt1').css({'background-color': 'transparent', 'width': '400px', 'height': '300px', 'padding': '1em', 'display': 'inline-block'}).removeClass('modal-md'); 
             // $('.imgatt1').css({'background-color': 'transparent', 'width': '400px', 'height': '300px', 'padding': '1em', 'display': 'inline-block'}).addClass('modal-lg'); 
             $('.imgatt2').removeClass('modal-md'); 
-             $('.imgatt2').css({'background-color': 'transparent', 'width': '220px', 'height': '220px', 'margin': '1em', 'display': 'inline-block'}).addClass('modal-lg'); 
+             $('.imgatt2').css({'background-color': 'transparent', 'width': '250px', 'height': '250px', 'margin': '1em', 'display': 'inline-block'}).addClass('modal-lg'); 
             $('.att_title').removeClass('modal-md'); 
-            $('.att_title').css({ 'width': '220px', 'height': '220px'}).addClass('modal-lg'); 
+            $('.att_title').css({ 'width': '250px', 'height': '250px'}).addClass('modal-lg'); 
+           // $('#previewAtt').css({ 'width': '800px', 'height': '800px'}).addClass('modal-lg');
+            //$('#previewAtt').removeClass('modal-md');
+           
 
         }else{
             $('#glyph_resize').removeClass('glyphicon-resize-small');
@@ -528,10 +534,11 @@
             //$('.imgatt1').css({'background-color': 'transparent', 'width': '200px' , 'height': '200px', 'padding': '1em', 'display': 'inline-block'}).removeClass('modal-lg'); 
             //$('.imgatt1').css({'background-color': 'transparent', 'width': '200px' , 'height': '200px', 'padding': '1em', 'display': 'inline-block'}).addClass('modal-md'); 
             $('.imgatt2').removeClass('modal-lg'); 
-            $('.imgatt2').css({'background-color': 'transparent', 'width': '150px', 'height': '150px', 'margin': '1em', 'display': 'inline-block'}).addClass('modal-md'); 
+            $('.imgatt2').css({'background-color': 'transparent', 'width': '200px', 'height': '200px', 'margin': '1em', 'display': 'inline-block'}).addClass('modal-md'); 
             $('.att_title').removeClass('modal-lg'); 
-            $('.att_title').css({ 'width': '150px', 'height': '150px'}).addClass('modal-md'); 
-
+            $('.att_title').css({ 'width': '200px', 'height': '200px'}).addClass('modal-md'); 
+            // $('#previewAtt').removeClass('modal-lg');
+            //$('#previewAtt').css({ 'width': '650px', 'height': '650px'}).addClass('modal-md');
         }
     });
 </script>
