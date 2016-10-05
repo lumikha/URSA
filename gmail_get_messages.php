@@ -379,7 +379,7 @@ try{
                         </a>
                         <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:25px;' src='".$att_path.$message_id."/attachments/".$ptest['filename']."'>
                         <a href='".$att_path.$message_id."/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
-                            <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
+                            <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/down_icon.png); background-size: 100%; border-color: #0071BC;'></button>
                         </a>
                     </div>";
                 array_push($arr_att, $att);
@@ -394,7 +394,7 @@ try{
                         </div>
                         <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:25px;' src='img/pdf.png'>
                         <a href='".$att_path.$message_id."/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
-                            <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
+                            <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/down_icon.png); background-size: 100%; border-color: #0071BC;'></button>
                         </a>
                     </div>";
                     array_push($arr_att, $att);
@@ -409,7 +409,7 @@ try{
                             </div>
                             <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:25px;' src='img/docx.png'></a>
                             <a href='".$att_path.$message_id."/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
-                                <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
+                                <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/down_icon.png); background-size: 100%; border-color: #0071BC;'></button>
                             </a>
                         </div>";
                     array_push($arr_att, $att);
@@ -424,7 +424,7 @@ try{
                             </div>
                             <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:25px;' src='img/doc.png'></a>
                             <a href='".$att_path.$message_id."/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
-                                <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
+                                <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/down_icon.png); background-size: 100%; border-color: #0071BC;'></button>
                             </a>
                         </div>";
                     array_push($arr_att, $att);
@@ -439,7 +439,7 @@ try{
                             </div>
                             <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:25px;' src='img/unknown.png'></a>
                             <a href='".$att_path.$message_id."/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
-                                <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/download_icon.png); background-size: 100%; border-color: #0071BC;'></button>
+                                <button style='position: absolute; width: 50px; height: 50px; top: 65%; left: 72%; background: transparent; background-image: url(img/down_icon.png); background-size: 100%; border-color: #0071BC;'></button>
                             </a>
                         </div>";
                     array_push($arr_att, $att);

@@ -502,13 +502,6 @@
     }
     $('#expand').click(function(){
 
-        var _self = $(this);
-            src = _self.data('src'),
-            fn = _self.data('fn');
-        var img = document.createElement("img");
-        img.src= src;
-        document.getElementById('attid').appendChild(img);
-
 
         if($('#modal_dialog').hasClass('modal-md')){
 
@@ -518,10 +511,12 @@
             $('#modal_cont').removeClass('modal-md');
             $('#modal_dialog').addClass('modal-lg');
             $('#modal_cont').addClass('modal-lg');
-            $('.imgatt1').css({'background-color': 'transparent', 'width': '400px', 'height': '300px', 'padding': '1em'}).addClass('modal-md'); 
-            $('.imgatt2').css({'background-color': 'transparent', 'width': '400px', 'height': '300px', 'padding': '1em'}).addClass('modal-md'); 
-            $('.att_title').css({ 'width': '400px', 'height': '300px'}).addClass('modal-md'); 
-    
+          //  $('.imgatt1').css({'background-color': 'transparent', 'width': '400px', 'height': '300px', 'padding': '1em', 'display': 'inline-block'}).removeClass('modal-md'); 
+            // $('.imgatt1').css({'background-color': 'transparent', 'width': '400px', 'height': '300px', 'padding': '1em', 'display': 'inline-block'}).addClass('modal-lg'); 
+            $('.imgatt2').removeClass('modal-md'); 
+             $('.imgatt2').css({'background-color': 'transparent', 'width': '220px', 'height': '220px', 'margin': '1em', 'display': 'inline-block'}).addClass('modal-lg'); 
+            $('.att_title').removeClass('modal-md'); 
+            $('.att_title').css({ 'width': '220px', 'height': '220px'}).addClass('modal-lg'); 
 
         }else{
             $('#glyph_resize').removeClass('glyphicon-resize-small');
@@ -530,9 +525,12 @@
             $('#modal_cont').removeClass('modal-lg');
             $('#modal_dialog').addClass('modal-md');
             $('#modal_cont').addClass('modal-md');
-            $('.imgatt1').css({'background-color': 'transparent', 'width': '200px' , 'height': '200px', 'padding': '1em'}).removeClass('modal-md'); 
-            $('.imgatt2').css({'background-color': 'transparent', 'width': '200px', 'height': '200px', 'padding': '1em'}).removeClass('modal-md'); 
-            $('.att_title').css({ 'width': '200px', 'height': '200px'}).removeClass('modal-md'); 
+            //$('.imgatt1').css({'background-color': 'transparent', 'width': '200px' , 'height': '200px', 'padding': '1em', 'display': 'inline-block'}).removeClass('modal-lg'); 
+            //$('.imgatt1').css({'background-color': 'transparent', 'width': '200px' , 'height': '200px', 'padding': '1em', 'display': 'inline-block'}).addClass('modal-md'); 
+            $('.imgatt2').removeClass('modal-lg'); 
+            $('.imgatt2').css({'background-color': 'transparent', 'width': '150px', 'height': '150px', 'margin': '1em', 'display': 'inline-block'}).addClass('modal-md'); 
+            $('.att_title').removeClass('modal-lg'); 
+            $('.att_title').css({ 'width': '150px', 'height': '150px'}).addClass('modal-md'); 
 
         }
     });
