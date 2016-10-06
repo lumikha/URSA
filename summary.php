@@ -508,13 +508,30 @@
         document.getElementById('attid').appendChild(img);
         document.getElementById('attfn').innerHTML = fn;
         $("#previewAtt").modal('show');
+         
+         if($('#modal_dialog').hasClass('modal-lg')){
+        
          img.style.width = '950px';
          img.style.height = '650px';
          $('#previewAtt').css('margin-top','-30px');
          $('#previewAtt').css('margin-left','-350px');
          $('#attfn').css('text-align','center');
 
+
+     }
+
+        else{
+         img.style.width = '650px';
+         img.style.height = '650px';
+         $('#previewAtt').css('margin-top','-30px');
+         $('#previewAtt').css('margin-left','-50px');
+         $('#attfn').css('text-align','center');
+     }
+
     });
+
+//for image resizing depending on the screen size
+
 
     $(document).on("click", ".open-modal-updTicket", function (e) {
         document.getElementById('cID_new_thread').value = document.getElementById('tID').value;
