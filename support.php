@@ -11,20 +11,21 @@
             
                 </div>
             </div>
-            <div style="margin-left: 60px; height: 200px; width: 200px; background-color: black; float: left;">
+            </div>
+
+            <div class="container_12">
+                <div class="grid_4  black" style="height: 200px; width: 300px;margin: 0; background-color: black;">
 
             
-            </div>
-            <div style="height: 200px; width: 200px; background-color: green; float: left;">
+                </div>
+                <div class="grid_4  green" style="height: 200px; width: 300px; margin:0; background-color: green;">
 
             
-            </div>
-            <div style="height: 200px; width: 200px; background-color: yellow; float: left;">
+                </div>
+                <div class="grid_4  yellow" style="height: 200px; width: 300px; margin:0; background-color: yellow;">
 
-            
             </div>
-        </div>
-        
+         </div> 
     </div>
    
 
