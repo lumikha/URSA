@@ -172,7 +172,8 @@
 
 .round-div
   {
-   max-width: 65px;
+   max-width: 40px;
+   max-height: 40px;
    
    margin-left: -2em;
   }
@@ -344,7 +345,8 @@
 
   .round-div
   {
-   max-width: 65px;
+   max-width: 50px;
+   max-height: 50px;
   }
 
   /**tickets summary and round-div **/
@@ -521,7 +523,8 @@
 
 .round-div
   {
-   max-width: 65px;
+   max-width: 60px;
+   max-height: 60px;
    
   }
   
@@ -529,12 +532,13 @@
   .ticketsummary
   {
     text-align: center;
+    
   }
 
   .round-div
   {
     position: absolute;
-    
+   
   }
   /**modal dialog toggle button**/
   #glyph_resize
