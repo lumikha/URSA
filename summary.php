@@ -18,12 +18,23 @@
     if(@$_POST['new_thread']){
         $new_note_id = GUID();
         
+        if($_POST['status'] != $_POST['curr_status']) {
+            if(empty($_POST['message'])) {
+                $n_ctnt = $_POST['message']."<b>~</b> changed status from ";
+            } else {
+                $n_ctnt = $_POST['message']."<br/></br><b>~</b> changed status from ";
+            }
+            $n_ctnt .= "<b>".strtoupper($_POST['curr_status'])."</b> to <b>".strtoupper($_POST['status'])."</b>.";
+        } else {
+            $n_ctnt = $_POST['message'];
+        }
+
         //insert new ticket note in ursa-ticket-notes
         $new_note = $marshaler->marshalJson('
             {
                 "ticket_note_id": "'.$new_note_id.'",
                 "ticket_id": "'.@$_POST['cTID'].'",
-                "note_content": "'.@$_POST['message'].'",
+                "note_content": "'.$n_ctnt.'",
                 "note_created_at": "'.date('Y/m/d H:i:s').'",
                 "note_created_by": "'.$fname.'",
                 "ticket_current_status": "'.$_POST['status'].'"
@@ -80,6 +91,9 @@
             ];
 
             $dynamodb->updateItem($params);
+            ?><script>
+                window.location.href = "summary";
+            </script><?php
    
         } catch (DynamoDbException $e) {
             echo $e->getMessage() . "\n";
@@ -233,6 +247,7 @@
                 <div class="modal-body">
                     <form method="POST">
                         <input type="type" id="cID_new_thread" name="cTID" hidden>
+                        <input type="type" id="curr_status" name="curr_status" hidden>
                         <div class="row">
                             <div class="col-md-6">
                                 <label>New Thread Type</label>
@@ -305,12 +320,19 @@
     </div>
     <div class="container_12">
 
-        <div class="grid_5 push_1 alpha" style="overflow-y: scroll; overflow-x: hidden; height: 550px; padding-left:0em; margin-left:auto;">
+        <style>
+        #sumArea::-webkit-scrollbar { 
+            display: none; 
+        }
+        </style>
+
+        <div id="sumArea" class="grid_5 push_1 alpha" style="overflow-y: scroll; overflow-x: hidden; height: 550px; padding-left:0em; margin-left:auto;">
 
         <?php 
             foreach($arr_msgs as $a_m) { 
                 $mID = $a_m['ticket_id'];
                 $tNo = $a_m['no'];
+                $sts = $a_m['status'];
                 $sbj = $a_m['subject'];
                 $bdy = htmlentities($a_m['body']);
 
@@ -318,10 +340,7 @@
                     $th_arr_fin = "";
                     $th_arr = array();
                     foreach($a_m['notes'] as $nl) {
-                        array_push($th_arr, "Added note||+||<span style='float: right;'>".$nl['n_created_at']['S']."</span>||+||<p>".$nl['n_content']['S']."</p>~^^^~");
-                        /*echo $nl['n_id']['S'];
-                        echo $nl['n_created_at']['S'];
-                        echo $nl['n_content']['S'];*/
+                        array_push($th_arr, "<i><b>".$nl['n_created_by']['S']."</b></i> added note||+||<span style='float: right;'>".$nl['n_created_at']['S']."</span>||+||<p>".$nl['n_content']['S']."</p>~^^^~");
                     }
 
                     $thArrCnt = 0;
@@ -352,20 +371,20 @@
         ?>
                         <div class="container_12">
                            
-                        <div class="ticketsummary">
-                            <div class="grid_1 alpha round-div">
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="ticketsummary">
+                                <div class="grid_1 alpha round-div">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </div>
+                                <div class="grid_2 omega">
+                                    <a href="#" class="open-modal" data-cid="<?=$cID?>" data-id="<?=$mID?>" data-no="<?=$tNo?>" data-status="<?=$sts?>" data-subject="<?=$sbj?>" data-mes="<?=$bdy?>" data-atturl="<?=$ats_title.$ats?>" data-threadmsg="<?=$th_arr_fin?>">
+                                    <strong><?php echo $bn; ?></strong></a> <br>
+                                    <?php
+                                        echo $fn." ".$ln."<br>".
+                                             $bp."<br>".
+                                             $cID;
+                                    ?>
+                                </div>
                             </div>
-                            <div class="grid_2 omega">
-                                <a href="#" class="open-modal" data-cid="<?=$cID?>" data-id="<?=$mID?>" data-no="<?=$tNo?>" data-subject="<?=$sbj?>" data-mes="<?=$bdy?>" data-atturl="<?=$ats_title.$ats?>" data-threadmsg="<?=$th_arr_fin?>">
-                                <strong><?php echo $bn; ?></strong></a> <br>
-                                <?php
-                                    echo $fn." ".$ln."<br>".
-                                         $bp."<br>".
-                                         $cID;
-                                ?>
-                            </div>
-                        </div>
                         </div>
                         <br/>
         <?php 
@@ -433,6 +452,7 @@
         var _self = $(this);
             tID = _self.data('id'),
             tNo = _self.data('no'),
+            tSts = _self.data('status'),
             tSubj = _self.data('subject'),
             tMsg = _self.data('mes'),
             tMsgAtt = _self.data('atturl'),
@@ -444,6 +464,8 @@
         $("#tMsg").html(tMsg);
         $("#tMsgAtt").html(tMsgAtt);
         $("#cID").val(cID);
+        $("#commit_status").val(tSts);
+        $("#curr_status").val(tSts);
 
         if(threads) {
             fields = threads.split("~^^^~");
@@ -466,13 +488,12 @@
                 var element = document.getElementById("magic_buttons");
                 i++;
             }
-            if(i < 1) {
-                var no = document.createElement("SPAN");
+        } else {
+            var no = document.createElement("SPAN");
                 no.setAttribute("id", "id_you_like_div_none");
                 no.setAttribute("class", "col-md-12");
                 document.getElementById('lbl_th').appendChild(no);
                 document.getElementById('id_you_like_div_none').innerHTML = "<span>No thread(s) found.</span";
-            }
         }
 
         $("#viewTicket").modal('show');
@@ -496,6 +517,7 @@
     });
 
     $(document).on("click", ".open-modal-updTicket", function (e) {
+        document.getElementById('cID_new_thread').value = document.getElementById('tID').value;
         document.getElementById('cID_new_thread').value = document.getElementById('tID').value;
         $("#updateTicket").modal('show');
     });

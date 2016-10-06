@@ -48,7 +48,7 @@
     $arr_msgs = array();
     $cnt_tckts = 0;
     foreach ($ticket_check['Items'] as $obj2) {
-        if($obj2['ticket_gmail_id']['S']){
+        if($obj2['ticket_gmail_id']['S'] && $obj2['ticket_status']['S'] != "closed"){
             $bdy_image = decodeBody(@$obj2['ticket_email_body']['S']);
 
             $arr_emb = explode(',', $obj2['ticket_embedded_image']['S']);
@@ -95,6 +95,7 @@
                         array_push($arr_notes, array(
                             "n_id" => $data_tNote['Item']['ticket_note_id'],
                             "n_created_at" => $data_tNote['Item']['note_created_at'],
+                            "n_created_by" => $data_tNote['Item']['note_created_by'],
                             "n_content" => $data_tNote['Item']['note_content']
                         ));
                     } catch (DynamoDbException $e) {
@@ -108,6 +109,7 @@
                 $tbid => $obj2[$tbid]['S'],
                 "no" => $obj2['ticket_number']['S'],
                 "id" => $obj2['ticket_gmail_id']['S'],
+                "status" => $obj2['ticket_status']['S'],
                 "subject" => $obj2['ticket_email_subject']['S'],
                 "body" => $bdy_image,
                 "from" => $obj2['ticket_name_from']['S'],
