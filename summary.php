@@ -302,6 +302,7 @@
         </div>
     </div>
 
+  
     <!--
     <div id="attModal" class="preview-modal">
         <span class="preview-close">×</span>
@@ -499,6 +500,7 @@
         $("#viewTicket").modal('show');
     });
 
+   
     $(document).on("click", ".open-modal-previewAtt", function (e) {
       var _self = $(this);
             src = _self.data('src'),
@@ -517,7 +519,6 @@
          $('#previewAtt').css('margin-left','-350px');
          $('#attfn').css('text-align','center');
 
-
      }
 
         else{
@@ -530,7 +531,7 @@
 
     });
 
-//for image resizing depending on the screen size
+
 
 
     $(document).on("click", ".open-modal-updTicket", function (e) {
@@ -567,13 +568,13 @@
             $('#modal_cont').removeClass('modal-md');
             $('#modal_dialog').addClass('modal-lg');
             $('#modal_cont').addClass('modal-lg');
-          //  $('.imgatt1').css({'background-color': 'transparent', 'width': '400px', 'height': '300px', 'padding': '1em', 'display': 'inline-block'}).removeClass('modal-md'); 
+             //$('.imgatt1').css({'background-color': 'transparent', 'width': '400px', 'height': '300px', 'padding': '1em', 'display': 'inline-block'}).removeClass('modal-md'); 
             // $('.imgatt1').css({'background-color': 'transparent', 'width': '400px', 'height': '300px', 'padding': '1em', 'display': 'inline-block'}).addClass('modal-lg'); 
             $('.imgatt2').removeClass('modal-md'); 
              $('.imgatt2').css({'background-color': 'transparent', 'width': '250px', 'height': '250px', 'margin': '1em', 'display': 'inline-block'}).addClass('modal-lg'); 
             $('.att_title').removeClass('modal-md'); 
             $('.att_title').css({ 'width': '250px', 'height': '250px'}).addClass('modal-lg'); 
-           // $('#previewAtt').css({ 'width': '800px', 'height': '800px'}).addClass('modal-lg');
+            // $('#previewAtt').css({ 'width': '800px', 'height': '800px'}).addClass('modal-lg');
             //$('#previewAtt').removeClass('modal-md');
            
 
