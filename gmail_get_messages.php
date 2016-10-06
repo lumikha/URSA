@@ -404,16 +404,16 @@ try{
             //$replace = "src=\"data:" . $ptest['mimeType'] . ";base64," . $data64 . "\"";
                         
             if($ptest['mimeType'] == 'image/gif' || $ptest['mimeType'] == 'image/png' || $ptest['mimeType'] == 'image/jpeg') {
-                $att = "&nbsp&nbsp&nbsp&nbsp
-                    <div class='imgatt1' onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
+                $att = "
+                    <div class='imgatt1' onmouseover='showTitle(this)' onmouseout='hideTitle(this)' >
                         <a href='#' class='open-modal-previewAtt' data-src='".$att_path.$message_id."/attachments/".$ptest['filename']."' data-fn='".$ptest['filename']."'>
-                            <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word; cursor: zoom-in;'>
+                            <div class='att_title' style='cursor: zoom-in;'>
                                 <span>".$ptest['filename']."</span>
                             </div>
                         </a>
-                        <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:35px;' src='".$att_path.$message_id."/attachments/".$ptest['filename']."'>
+                        <img class='imgatt2'  src='".$att_path.$message_id."/attachments/".$ptest['filename']."'>
                         <a href='".$att_path.$message_id."/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
-                            <button style='position: absolute; width: 35px; height: 35px; margin-top: 5%; margin-left: 5%; background: transparent; background-image: url(img/down_icon.png); background-size: 100%; border: none;'></button>
+                            <button ></button>
                         </a>
                     </div>";
                 array_push($arr_att, $att);
@@ -421,14 +421,14 @@ try{
                 file_put_contents($att_path.$message_id."/attachments/$uniqueFilename2", $att);
                 file_put_contents($att_path.$message_id."/attachments/".$ptest['filename'], decodeBody($attachment['data']));
             } else if($ptest['mimeType'] == 'application/pdf') {
-                $att = "&nbsp&nbsp&nbsp&nbsp  
-                    <div class='imgatt1' onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
-                        <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word;'>
+                $att = "  
+                    <div class='imgatt1' onmouseover='showTitle(this)' onmouseout='hideTitle(this)'>
+                        <div class='att_title'>
                             <span>".$ptest['filename']."</span>
                         </div>
-                        <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:35px;' src='img/pdf.png'>
+                        <img class='imgatt2'  src='img/pdf.png'>
                         <a href='".$att_path.$message_id."/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
-                            <button style='position: absolute; width: 35px; height: 35px; margin-top: 5%; margin-left: 5%; background: transparent; background-image: url(img/down_icon.png); background-size: 100%; border: none;'></button>
+                            <button ></button>
                         </a>
                     </div>";
                     array_push($arr_att, $att);
@@ -436,14 +436,14 @@ try{
                     file_put_contents($att_path.$message_id."/attachments/$uniqueFilename2", $att);
                     createFile($data64, $message_id, $ptest['filename']);
                 } else if($ptest['mimeType'] == "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-                    $att = "&nbsp&nbsp&nbsp&nbsp  
-                        <div class='imgatt1' onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
-                            <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word;'>
+                    $att = "  
+                        <div class='imgatt1' onmouseover='showTitle(this)' onmouseout='hideTitle(this)'>
+                            <div class='att_title'>
                                 <span>".$ptest['filename']."</span>
                             </div>
-                            <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:35px;' src='img/docx.png'></a>
+                            <img class='imgatt2'  src='img/docx.png'></a>
                             <a href='".$att_path.$message_id."/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
-                                <button style='position: absolute; width: 35px; height: 35px; margin-top: 5%; margin-left: 5%; background: transparent; background-image: url(img/down_icon.png); background-size: 100%; border: none;'></button>
+                                <button ></button>
                             </a>
                         </div>";
                     array_push($arr_att, $att);
@@ -451,14 +451,14 @@ try{
                     file_put_contents($att_path.$message_id."/attachments/$uniqueFilename2", $att);
                     createFile($data64, $message_id, $ptest['filename']);
                 } else if($ptest['mimeType'] == 'application/msword') {
-                    $att = "&nbsp&nbsp&nbsp&nbsp  
-                        <div class='imgatt1' onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
-                            <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word;'>
+                    $att = "  
+                        <div class='imgatt1' onmouseover='showTitle(this)' onmouseout='hideTitle(this)'>
+                            <div class='att_title'>
                                 <span>".$ptest['filename']."</span>
                             </div>
-                            <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:35px;' src='img/doc.png'></a>
+                            <img class='imgatt2'  src='img/doc.png'></a>
                             <a href='".$att_path.$message_id."/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
-                                <button style='position: absolute; width: 35px; height: 35px; margin-top: 5%; margin-left: 5%; background: transparent; background-image: url(img/down_icon.png); background-size: 100%; border: none;'></button>
+                                <button ></button>
                             </a>
                         </div>";
                     array_push($arr_att, $att);
@@ -466,14 +466,14 @@ try{
                     file_put_contents($att_path.$message_id."/attachments/$uniqueFilename2", $att);
                     createFile($data64, $message_id, $ptest['filename']);
                 } else {
-                    $att = "&nbsp&nbsp&nbsp&nbsp  
-                        <div class='imgatt1' onmouseover='showTitle(this)' onmouseout='hideTitle(this)' style='position: relative; display: inline-block;'>
-                            <div class='att_title' style='position: absolute; background: rgb(0, 0, 0); background: rgba(0, 0, 0, 0.7); width: 200px; height: 200px; display: none; color: #ffffff; font-weight: bold; padding: 5px; word-wrap: break-word;'>
+                    $att = "  
+                        <div class='imgatt1' onmouseover='showTitle(this)' onmouseout='hideTitle(this)'>
+                            <div class='att_title'>
                                 <span>".$ptest['filename']."</span>
                             </div>
-                            <img class='imgatt2' style='width: 200px; height: 200px; margin-bottom:35px;' src='img/unknown.png'></a>
+                            <img class='imgatt2'  src='img/unknown.png'></a>
                             <a href='".$att_path.$message_id."/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
-                                <button style='position: absolute; width: 35px; height: 35px; margin-top: 5%; margin-left: 5%; background: transparent; background-image: url(img/down_icon.png); background-size: 100%; border: none;'></button>
+                                <button ></button>
                             </a>
                         </div>";
                     array_push($arr_att, $att);

@@ -302,7 +302,55 @@
         </div>
     </div>
 
-  
+    <style>
+       .imgatt1 button {
+           width: 35px !important;   
+           height: 35px !important;
+           margin-left: 5%;
+           margin-top: 7%;
+           border: none;
+           position: absolute;
+           background: transparent;
+           background-image: url(img/down_icon.png);
+           background-size: 100%;
+       }
+
+       .imgatt1
+       {
+        
+        display: inline-block !important;
+
+       }
+
+
+       .att_title
+       {
+        position: absolute; 
+         display: inline-block;
+        background: rgb(0, 0, 0); 
+        background: rgba(0, 0, 0, 0.7); 
+        width: 200px; 
+        height: 200px; 
+        display: none;
+        color: #ffffff; 
+        font-weight: bold; 
+        padding: 5px; 
+        word-wrap: break-word;
+       }
+
+       .imgatt2
+       {
+        display: inline-block !important;
+
+        width: 200px; 
+        height: 200px; 
+        margin-bottom:35px;
+        
+       }
+
+
+   </style>
+
     <!--
     <div id="attModal" class="preview-modal">
         <span class="preview-close">×</span>
@@ -518,6 +566,7 @@
          $('#previewAtt').css('margin-top','-30px');
          $('#previewAtt').css('margin-left','-350px');
          $('#attfn').css('text-align','center');
+
 
      }
 
