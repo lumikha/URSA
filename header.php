@@ -117,7 +117,7 @@
                                      </ul>
                                     <?php }else { ?>
                                     <ul class="nav nav-pills nav-stacked text-center" id="myTab">
-                                    <?php  if($current_page=="summary.php") { ?>
+                                    <?php  if($current_page=="summary.php" || $current_page=="support.php") { ?>
                                     <li><a id="btn_account" class="nl disabledTab hidden" data-toggle="tab">Hidden</a></li>
                                     <li><a id="btn_account" class="nl disabledTab" data-toggle="tab">Account</a></li>
                                     <li><a id="btn_provisioning" class="nl disabledTab" data-toggle="tab" >Provisioning</a></li>

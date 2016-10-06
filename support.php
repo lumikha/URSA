@@ -1,57 +1,33 @@
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-<link rel="stylesheet" href="../style.css">
+<?php
+    require 'header.php';
+?>
+    <div class="container_12 boxsummary">
 
-
-    <form id="support_form">
-        <div class="row">
-            <div class="col-md-7">
-                <input type="text" class="form-control" placeholder="Payment Processor ID ">
-            </div>
-            <div class="col-md-3">
-                <select class="form-control">
-                    <option>Trial</option>
-                    <option>Active</option>
-                    <option>Delinquent</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <input type="text" class="form-control" placeholder="Account Activity Status">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                 <select class="form-control">
-                 <option>Product 1</option>
-                 <option>Product 2</option>
-                 <option>Product 3</option>
-                 <option>Product 4</option>
-                 </select>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <input type="text" class="form-control" placeholder="Lifetime Revenue">
-            </div>
-            <div class="col-md-4">
-                <input type="text" class="form-control" placeholder="Open/Next Task">
-            </div>
-            <div class="col-md-4">
-                <input type="text" class="form-control" placeholder="Last Update">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="well">
-                    <strong>Update History:</strong>
-                    <div class="well-lg">
-                        <?php
-                            for($i=1;$i<=10;$i++){
-                                echo "<p>Update ".$i." <sup>( Date & Time )</sup></p>";
-                            }
-                        ?>
-                    </div>
+        <div class="full-width-div">        
+            <div class="container_12" style="margin-top:-1em;">
+                <div id="boxes" class="row text-center">
+                    <div class="grid_2 push_1 alpha" style="padding: 1em;margin-right:1em;margin-bottom:1em;border:solid #A60800 2px;color:#A60800"><a href="#" onclick="return addTicket();"><strong>Ticket</strong></a></div>
+                    <div class="grid_2 push_1 omega" style="padding: 1em;margin-right:1em;margin-bottom:1em;border:solid #340570 2px;color:#340570"><strong>Talkdesk</strong></div>
+            
                 </div>
             </div>
-        </div>
-    </form>
+            <div style="margin-left: 60px; height: 200px; width: 200px; background-color: black; float: left;">
 
+            
+            </div>
+            <div style="height: 200px; width: 200px; background-color: green; float: left;">
+
+            
+            </div>
+            <div style="height: 200px; width: 200px; background-color: yellow; float: left;">
+
+            
+            </div>
+        </div>
+        
+    </div>
+   
+
+<?php
+    require "footer.php";
+?>
