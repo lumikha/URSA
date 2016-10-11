@@ -1,7 +1,7 @@
 <?php
     require 'header.php';
 
-    $test = false;
+    $test = true;
     if($test) {
         $unassigned = 0;
         $mine = 0;
@@ -145,7 +145,7 @@
                 }
 
                 if($obj2['ticket_status']['S'] == 'mine') {
-                    array_push($arr_unassigned, array(
+                    array_push($arr_mine, array(
                         "ticket_id" => $obj2[$tbid]['S'],
                         "no" => $obj2['ticket_number']['S'],
                         "id" => $obj2['ticket_gmail_id']['S'],
@@ -162,7 +162,7 @@
                 }
 
                 if($obj2['ticket_status']['S'] == 'assigned') {
-                    array_push($arr_unassigned, array(
+                    array_push($arr_assigned, array(
                         "ticket_id" => $obj2[$tbid]['S'],
                         "no" => $obj2['ticket_number']['S'],
                         "id" => $obj2['ticket_gmail_id']['S'],
@@ -173,13 +173,14 @@
                         "email" => $obj2['ticket_email_from']['S'],
                         "attachments" => $arr_att,
                         "updated" => $obj2['ticket_updated_at']['S'],
+                        "assigned" => $obj2['ticket_assigned_to']['S'],
                         "notes" => $noteLists
                     ));
                     $assigned++;
                 }
 
                 if($obj2['ticket_status']['S'] == 'closed') {
-                    array_push($arr_unassigned, array(
+                    array_push($arr_closed, array(
                         "ticket_id" => $obj2[$tbid]['S'],
                         "no" => $obj2['ticket_number']['S'],
                         "id" => $obj2['ticket_gmail_id']['S'],
@@ -196,7 +197,7 @@
                 }
 
                 if($obj2['ticket_status']['S'] == 'spam') {
-                    array_push($arr_unassigned, array(
+                    array_push($arr_spam, array(
                         "ticket_id" => $obj2[$tbid]['S'],
                         "no" => $obj2['ticket_number']['S'],
                         "id" => $obj2['ticket_gmail_id']['S'],
@@ -311,6 +312,10 @@
             min-height: 38px;
             height: 38px;
             overflow: hidden;
+        }
+        .table_email_content img {
+            width: 30% !important;
+            height: 30% !important;
         }
         .dataTables_filter {
             padding-right: 10px;
@@ -580,7 +585,7 @@
                                         <td>
                                             <div class="table_email_content">
                                                 <b><?=$aUN['subject']?></b><br/>
-                                                <?=$aUN['body']?>
+                                                <?=str_replace("<br>",'',$aUN['body'])?>
                                             </div>
                                         </td>
                                         <td><?=$aUN['no']?></td>
@@ -590,7 +595,6 @@
                                 </tbody>
                             </table>
                         </div>
-                        <!--
                         <div id="list_mine" class="folder_list_hide">
                             <table id="datatable_mine" class="table">
                                 <thead>
@@ -603,20 +607,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $j=0; while($j < $mine) { ?>
-                                    <tr onclick="document.location = '#<?=$i?>';">
+                                    <?php foreach($arr_mine as $aM) { ?>
+                                    <tr onclick="document.location = '#<?=$aM["no"]?>';">
                                         <td><input type="checkbox"></td>
-                                        <td><?=$customer_name."M"?></td>
+                                        <td><?=$aM['from']?></td>
                                         <td>
                                             <div class="table_email_content">
-                                                <b><?=$email_subject?></b><br/>
-                                                <?=$email_body?>
+                                                <b><?=$aM['subject']?></b><br/>
+                                                <?=str_replace("<br>",'',$aM['body'])?>
                                             </div>
                                         </td>
-                                        <td><?=$ticket_number.$j?></td>
-                                        <td><?=$ticket_updated_at?></td>
+                                        <td><?=$aM['no']?></td>
+                                        <td><?=$aM['updated']?></td>
                                     </tr>
-                                    <?php $j++; } ?>
+                                    <?php } ?>
                                 </tbody>
                             </table>
                         </div>
@@ -633,25 +637,21 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $k=0; while($k < $assigned) { ?>
-                                    <?php 
-                                        $test_arr_agents = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
-                                        $ran_agents = array_rand($test_arr_agents);
-                                    ?>
-                                    <tr onclick="document.location = '#<?=$i?>';">
+                                    <?php foreach($arr_assigned as $aAS) { ?>
+                                    <tr onclick="document.location = '#<?=$aAS["no"]?>';">
                                         <td><input type="checkbox"></td>
-                                        <td><?=$customer_name."A"?></td>
+                                        <td><?=$aAS['from']?></td>
                                         <td>
                                             <div class="table_email_content">
-                                                <b><?=$email_subject?></b><br/>
-                                                <?=$email_body?>
+                                                <b><?=$aAS['subject']?></b><br/>
+                                                <?=str_replace("<br>",'',$aAS['body'])?>
                                             </div>
                                         </td>
-                                        <td><?=$test_arr_agents[$ran_agents].$assigned_to?></td>
-                                        <td><?=$ticket_number.$k?></td>
-                                        <td><?=$ticket_updated_at?></td>
+                                        <td><?=$aAS['assigned']?></td>
+                                        <td><?=$aAS['no']?></td>
+                                        <td><?=$aAS['updated']?></td>
                                     </tr>
-                                    <?php $k++; } ?>
+                                    <?php } ?>
                                 </tbody>
                             </table>
                         </div>
@@ -667,20 +667,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $l=0; while($l < $closed) { ?>
-                                    <tr onclick="document.location = '#<?=$i?>';">
+                                    <?php foreach($arr_closed as $aC) { ?>
+                                    <tr onclick="document.location = '#<?=$aC["no"]?>';">
                                         <td><input type="checkbox"></td>
-                                        <td><?=$customer_name."C"?></td>
+                                        <td><?=$aC['from']?></td>
                                         <td>
                                             <div class="table_email_content">
-                                                <b><?=$email_subject?></b><br/>
-                                                <?=$email_body?>
+                                                <b><?=$aC['subject']?></b><br/>
+                                                <?=str_replace("<br>",'',$aC['body'])?>
                                             </div>
                                         </td>
-                                        <td><?=$ticket_number.$l?></td>
-                                        <td><?=$ticket_updated_at?></td>
+                                        <td><?=$aC['no']?></td>
+                                        <td><?=$aC['updated']?></td>
                                     </tr>
-                                    <?php $l++; } ?>
+                                    <?php } ?>
                                 </tbody>
                             </table>
                         </div>
@@ -696,24 +696,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $m=0; while($m < $spam) { ?>
-                                    <tr onclick="document.location = '#<?=$i?>';">
+                                    <?php foreach($arr_spam as $aS) { ?>
+                                    <tr onclick="document.location = '#<?=$aS["no"]?>';">
                                         <td><input type="checkbox"></td>
-                                        <td><?=$customer_name."S"?></td>
+                                        <td><?=$aS['from']?></td>
                                         <td>
                                             <div class="table_email_content">
-                                                <b><?=$email_subject?></b><br/>
-                                                <?=$email_body?>
+                                                <b><?=$aS['subject']?></b><br/>
+                                                <?=str_replace("<br>",'',$aS['body'])?>
                                             </div>
                                         </td>
-                                        <td><?=$ticket_number.$m?></td>
-                                        <td><?=$ticket_updated_at?></td>
+                                        <td><?=$aS['no']?></td>
+                                        <td><?=$aS['updated']?></td>
                                     </tr>
-                                    <?php $m++; } ?>
+                                    <?php } ?>
                                 </tbody>
                             </table>
                         </div>
-                        -->
                     <?php } ?>
                 </div>
 
@@ -746,7 +745,7 @@
                 "lengthChange": false,
                 "bFilter": true, 
                 "bInfo": true,
-                "order": [3, 'asc'],
+                "order": [3, 'desc'],
                 "columnDefs": [ {
                   "targets"  : [0,2],
                   "orderable": false,
@@ -768,7 +767,7 @@
                 "lengthChange": false,
                 "bFilter": true, 
                 "bInfo": true,
-                "order": [3, 'asc'],
+                "order": [3, 'desc'],
                 "columnDefs": [ {
                   "targets"  : [0,2],
                   "orderable": false,
@@ -790,7 +789,7 @@
                 "lengthChange": false,
                 "bFilter": true, 
                 "bInfo": true,
-                "order": [4, 'asc'],
+                "order": [4, 'desc'],
                 "columnDefs": [ {
                   "targets"  : [0,2],
                   "orderable": false,
@@ -811,7 +810,7 @@
                 "lengthChange": false,
                 "bFilter": true, 
                 "bInfo": true,
-                "order": [3, 'asc'],
+                "order": [3, 'desc'],
                 "columnDefs": [ {
                   "targets"  : [0,2],
                   "orderable": false,
@@ -833,7 +832,7 @@
                 "lengthChange": false,
                 "bFilter": true, 
                 "bInfo": true,
-                "order": [3, 'asc'],
+                "order": [3, 'desc'],
                 "columnDefs": [ {
                   "targets"  : [0,2],
                   "orderable": false,
