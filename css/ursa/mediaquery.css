@@ -194,19 +194,25 @@
   #glyph_resize
   {
     margin-top:-10em;
+    cursor: pointer;
   }
 
 #previewAtt
 {
- left: 3.5em;
+ margin-left: auto;
+ left:3.5em;
  right: 1.5em;
  background-color: rgba(0, 0, 0, 0.6);
 
 }
  #previewAtt img, #attfn
   {
-    
-  zoom: 60%;
+  margin-top: 100px;
+  margin-left: 45px;  
+  margin-right: auto;
+  min-width: 100%;
+
+  zoom: 55%;
 
 
   }
@@ -380,18 +386,23 @@
   #glyph_resize
   {
     margin-top:-10em;
+    cursor: pointer;
   }
 
 
 #previewAtt
 {
- left: 4em;
+ left: 1em;
  
  background-color: rgba(0, 0, 0, 0.6);
 
 }
  #previewAtt img, #attfn
   {
+     margin-top: 100px;
+    margin-left: 65px;  
+  margin-right: auto;
+  width: 100%;
     
   zoom: 80%;
  
@@ -575,6 +586,7 @@
   #glyph_resize
   {
     margin-top:-10em;
+    cursor: pointer;
   }
 
  #previewAtt
@@ -585,7 +597,12 @@
 
 }
  #previewAtt img, #attfn
+  
   {
+   margin-top: 100px;
+  margin-left: 45px;  
+  margin-right: auto;
+  width: 100%;
     
   zoom: 90%;
  
@@ -626,7 +643,10 @@
 }
  #previewAtt img, #attfn
   {
-    
+     margin-top: 100px;
+  margin-left: 45px;  
+  margin-right: auto;
+  width: 100%;
   zoom: 100%;
  
 
@@ -679,14 +699,14 @@
 
 #previewAtt
 {
- left: 4em;
+ left: 0em;
  
  background-color: rgba(0, 0, 0, 0.6);
 
 }
  #previewAtt img, #attfn
   {
-    
+   margin-top: 100px;
   zoom: 120%;
  
 

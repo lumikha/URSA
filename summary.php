@@ -285,7 +285,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="previewAtt" tabindex="-1" role="dialog">
+    <div class="modal fade" id="previewAtt" tabindex="-1" role="dialog" style="margin-left: -5em;">
         <div id="modal_cont" class="modal-dialog">
             <div class="modal-content" style="position: absolute; margin-left: auto; margin-right: auto; width: 0 !important; height: 0 !important; border: none; padding: none;">
                                     
@@ -549,7 +549,7 @@
     });
 
    
-    $(document).on("click", ".open-modal-previewAtt", function (e) {
+   $(document).on("click", ".open-modal-previewAtt", function (e) {
       var _self = $(this);
             src = _self.data('src'),
             fn = _self.data('fn');
@@ -561,10 +561,10 @@
          
          if($('#modal_dialog').hasClass('modal-lg')){
         
-         img.style.width = '950px';
-         img.style.height = '650px';
+         img.style.width = '650px';
+         img.style.height = '450px';
          $('#previewAtt').css('margin-top','-30px');
-         $('#previewAtt').css('margin-left','-350px');
+         //$('#previewAtt').css('margin-left','-350px');
          $('#attfn').css('text-align','center');
 
 
@@ -572,9 +572,9 @@
 
         else{
          img.style.width = '650px';
-         img.style.height = '650px';
+         img.style.height = '450px';
          $('#previewAtt').css('margin-top','-30px');
-         $('#previewAtt').css('margin-left','-50px');
+         //$('#previewAtt').css('margin-left','-50px');
          $('#attfn').css('text-align','center');
      }
 
