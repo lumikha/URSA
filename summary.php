@@ -29,13 +29,15 @@
             $n_ctnt = $_POST['message'];
         }
 
+        $updatedDateNow = date('Y/m/d H:i:s');
+
         //insert new ticket note in ursa-ticket-notes
         $new_note = $marshaler->marshalJson('
             {
                 "ticket_note_id": "'.$new_note_id.'",
                 "ticket_id": "'.@$_POST['cTID'].'",
                 "note_content": "'.$n_ctnt.'",
-                "note_created_at": "'.date('Y/m/d H:i:s').'",
+                "note_created_at": "'.$updatedDateNow.'",
                 "note_created_by": "'.$fname.'",
                 "ticket_current_status": "'.$_POST['status'].'"
             }
@@ -78,14 +80,15 @@
             $toUpdate = $marshaler->marshalJson('
                 {
                     ":ticket_notes": "'.$upd_note_lists.'",
-                    ":ticket_status": "'.$_POST['status'].'"
+                    ":ticket_status": "'.$_POST['status'].'",
+                    ":ticket_updated_at": "'.$updatedDateNow.'"
                 }
             ');
 
             $params = [
                 'TableName' => 'ursa-tickets',
                 'Key' => $current_ticketID,
-                'UpdateExpression' => 'set ticket_notes=:ticket_notes, ticket_status=:ticket_status', 
+                'UpdateExpression' => 'set ticket_notes=:ticket_notes, ticket_status=:ticket_status, ticket_updated_at=:ticket_updated_at', 
                 'ExpressionAttributeValues'=> $toUpdate,
                 'ReturnValues' => 'UPDATED_NEW'
             ];
@@ -260,7 +263,7 @@
                                 <label>New Status</label>
                                 <select class="form-control" id="commit_status" name="status">
                                     <optgroup label="Status">
-                                        <option value="active">Active</option>
+                                        <option value="unassigned">Unassigned</option>
                                         <option value="pending">Pending</option>
                                         <option value="closed">Closed</option>
                                         <option value="spam">Spam</option>

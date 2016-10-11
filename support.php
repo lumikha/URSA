@@ -1,18 +1,220 @@
 <?php
     require 'header.php';
 
-    $unassigned = 12;
-    $mine = 0;
-    $assigned = 5;
-    $closed = 30;
-    $spam = 0;
+    $test = false;
+    if($test) {
+        $unassigned = 0;
+        $mine = 0;
+        $assigned = 14;
+        $closed = 30;
+        $spam = 0;
 
-    $customer_name = "John Doe";
-    $email_subject = "Lorem Ipsum";
-    $email_body = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).";
-    $ticket_number = 26191;
-    $ticket_updated_at = "10/29/2016";
+        $customer_name = "John Doe";
+        $email_subject = "Lorem Ipsum";
+        $email_body = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).";
+        $ticket_number = 26191;
+        $ticket_updated_at = "10/29/2016";
+        $assigned_to = " Agent";
+    } else {
+        require_once 'dynamoDB/dbConnect.php';
 
+        $att_path = "../URSA_att/";
+        $tbname = 'ursa-tickets';
+        $tbid = 'ticket_id';
+
+        $params_t_check = [
+            'TableName' => $tbname,
+            'ProjectionExpression' => $tbid.',ticket_number,ticket_gmail_id,ticket_name_from,ticket_email_subject,ticket_email_from,ticket_email_body,ticket_embedded_image,ticket_email_attachment,ticket_notes,ticket_status,ticket_updated_at'
+        ];
+
+        try {
+            while (true) {
+                $ticket_check = $dynamodb->scan($params_t_check);
+
+                foreach ($ticket_check['Items'] as $i) {
+                    $movie = $marshaler->unmarshalItem($i);
+                }
+
+                if (isset($ticket_check['LastEvaluatedKey'])) {
+                    $params_t_check['ExclusiveStartKey'] = $ticket_check['LastEvaluatedKey'];
+                    $ticket_check = $dynamodb->scan($params_t_check);
+                } else {
+                    break;
+                }
+            }
+        } catch (DynamoDbException $e) {
+            echo "Unable to scan USERS:\n";
+            echo $e->getMessage() . "\n";
+        }
+
+        function decodeBody($body) {
+            $rawData = $body;
+            $sanitizedData = strtr($rawData,'-_', '+/');
+            $decodedMessage = base64_decode($sanitizedData);
+            if(!$decodedMessage){
+                $decodedMessage = FALSE;
+            }
+            return $decodedMessage;
+        }
+
+        $arr_unassigned = array();
+        $arr_mine = array();
+        $arr_assigned = array();
+        $arr_closed = array();
+        $arr_spam = array();
+        $unassigned = 0;
+        $mine = 0;
+        $assigned = 0;
+        $closed = 0;
+        $spam = 0;
+
+        $cnt_tckts = 0;
+        foreach ($ticket_check['Items'] as $obj2) {
+            if($obj2['ticket_gmail_id']['S'] && $obj2['ticket_status']['S'] != "closed"){
+                $bdy_image = decodeBody(@$obj2['ticket_email_body']['S']);
+
+                $arr_emb = explode(',', $obj2['ticket_embedded_image']['S']);
+
+                preg_match_all('/src="cid:(.*)"/Uims', $bdy_image, $matches);
+                if(count($matches)) {
+                    $cnt_emb = 0;
+                    foreach($matches[1] as $match) {
+                        $search = "src=\"cid:$match\"";
+                        $replace = "src=".$att_path.$obj2['ticket_gmail_id']['S']."/".$arr_emb[$cnt_emb];
+                        $bdy_image = str_replace($search, $replace, $bdy_image);  
+                        $cnt_emb++;       
+                    }
+                }
+                $arr_att = array();
+                $att_file = $obj2['ticket_email_attachment']['S'];
+                $arr = explode(',', $att_file);
+                         
+                if(preg_match('/.php/',$att_file)){
+                    foreach ($arr as $key) {
+                        @$attmts = file_get_contents($att_path.$obj2['ticket_gmail_id']['S'].'/attachments/'.$key);
+                        array_push($arr_att, $attmts);
+                    }
+                }
+                
+                if($obj2['ticket_notes']['S'] == "(null)") {
+                    $noteLists = null;
+                } else {
+                    $arr_notes = array();
+                    $nExp = explode(',', $obj2['ticket_notes']['S']);
+                    foreach($nExp as $tn) {
+                        $get_notes = $marshaler->marshalJson('
+                            {
+                                "ticket_note_id": "'.$tn.'"
+                            }
+                        ');
+                        $params_get_notes = [
+                            'TableName' => 'ursa-ticket-notes',
+                            'Key' => $get_notes
+                        ];
+
+                        try {
+                            $data_tNote = $dynamodb->getItem($params_get_notes);
+                            array_push($arr_notes, array(
+                                "n_id" => $data_tNote['Item']['ticket_note_id'],
+                                "n_created_at" => $data_tNote['Item']['note_created_at'],
+                                "n_created_by" => $data_tNote['Item']['note_created_by'],
+                                "n_content" => $data_tNote['Item']['note_content']
+                            ));
+                        } catch (DynamoDbException $e) {
+                            echo $e->getMessage() . "\n";
+                        }
+                    }
+                    $noteLists = $arr_notes;
+                }
+
+                if($obj2['ticket_status']['S'] == 'unassigned') {
+                    array_push($arr_unassigned, array(
+                        "ticket_id" => $obj2[$tbid]['S'],
+                        "no" => $obj2['ticket_number']['S'],
+                        "id" => $obj2['ticket_gmail_id']['S'],
+                        "status" => $obj2['ticket_status']['S'],
+                        "subject" => $obj2['ticket_email_subject']['S'],
+                        "body" => $bdy_image,
+                        "from" => $obj2['ticket_name_from']['S'],
+                        "email" => $obj2['ticket_email_from']['S'],
+                        "attachments" => $arr_att,
+                        "updated" => $obj2['ticket_updated_at']['S'],
+                        "notes" => $noteLists
+                    ));
+                    $unassigned++;
+                }
+
+                if($obj2['ticket_status']['S'] == 'mine') {
+                    array_push($arr_unassigned, array(
+                        "ticket_id" => $obj2[$tbid]['S'],
+                        "no" => $obj2['ticket_number']['S'],
+                        "id" => $obj2['ticket_gmail_id']['S'],
+                        "status" => $obj2['ticket_status']['S'],
+                        "subject" => $obj2['ticket_email_subject']['S'],
+                        "body" => $bdy_image,
+                        "from" => $obj2['ticket_name_from']['S'],
+                        "email" => $obj2['ticket_email_from']['S'],
+                        "attachments" => $arr_att,
+                        "updated" => $obj2['ticket_updated_at']['S'],
+                        "notes" => $noteLists
+                    ));
+                    $mine++;
+                }
+
+                if($obj2['ticket_status']['S'] == 'assigned') {
+                    array_push($arr_unassigned, array(
+                        "ticket_id" => $obj2[$tbid]['S'],
+                        "no" => $obj2['ticket_number']['S'],
+                        "id" => $obj2['ticket_gmail_id']['S'],
+                        "status" => $obj2['ticket_status']['S'],
+                        "subject" => $obj2['ticket_email_subject']['S'],
+                        "body" => $bdy_image,
+                        "from" => $obj2['ticket_name_from']['S'],
+                        "email" => $obj2['ticket_email_from']['S'],
+                        "attachments" => $arr_att,
+                        "updated" => $obj2['ticket_updated_at']['S'],
+                        "notes" => $noteLists
+                    ));
+                    $assigned++;
+                }
+
+                if($obj2['ticket_status']['S'] == 'closed') {
+                    array_push($arr_unassigned, array(
+                        "ticket_id" => $obj2[$tbid]['S'],
+                        "no" => $obj2['ticket_number']['S'],
+                        "id" => $obj2['ticket_gmail_id']['S'],
+                        "status" => $obj2['ticket_status']['S'],
+                        "subject" => $obj2['ticket_email_subject']['S'],
+                        "body" => $bdy_image,
+                        "from" => $obj2['ticket_name_from']['S'],
+                        "email" => $obj2['ticket_email_from']['S'],
+                        "attachments" => $arr_att,
+                        "updated" => $obj2['ticket_updated_at']['S'],
+                        "notes" => $noteLists
+                    ));
+                    $closed++;
+                }
+
+                if($obj2['ticket_status']['S'] == 'spam') {
+                    array_push($arr_unassigned, array(
+                        "ticket_id" => $obj2[$tbid]['S'],
+                        "no" => $obj2['ticket_number']['S'],
+                        "id" => $obj2['ticket_gmail_id']['S'],
+                        "status" => $obj2['ticket_status']['S'],
+                        "subject" => $obj2['ticket_email_subject']['S'],
+                        "body" => $bdy_image,
+                        "from" => $obj2['ticket_name_from']['S'],
+                        "email" => $obj2['ticket_email_from']['S'],
+                        "attachments" => $arr_att,
+                        "updated" => $obj2['ticket_updated_at']['S'],
+                        "notes" => $noteLists
+                    ));
+                    $spam++;
+                }
+            }
+            $cnt_tckts++;
+        }
+    }
 ?>
     <style>
         .left_container {
@@ -131,13 +333,27 @@
         .dataTables_info {
             padding-left: 20px;
         }
-        #list_mine .dataTables_empty {
-            height: 370px !important;
-            background: url(img/chill_bear.jpg);
-            background-size: 90%;
+        #list_unassigned .dataTables_empty, #list_mine .dataTables_empty, #list_assigned .dataTables_empty {
+            height: 300px !important;
+            background: url(img/chill_bear.png);
+            background-size: 50%;
+            background-position: center 30px; 
+            background-repeat: no-repeat;
+            cursor: default;
+        }
+        #list_spam .dataTables_empty {
+            height: 300px !important;
+            background: url(img/empty_garbage.png);
+            background-size: 35%;
             background-position: center; 
             background-repeat: no-repeat;
             cursor: default;
+        }
+        #list_unassigned .dataTables_empty:hover,  #list_mine .dataTables_empty:hover, #list_assigned .dataTables_empty:hover, #list_spam .dataTables_empty:hover {
+            background-color: #fafafa;
+        }
+        .sorting:focus, .sorting_asc:focus, .sorting_desc:focus {
+            outline: none;
         }
         .pagination {
             padding-right: 20px;
@@ -192,12 +408,12 @@
                     </div>
                 </div>
                 <div class="grid_4 middle_container">
-                    
+                    <?php if($test) { ?>
                         <div id="list_unassigned" class="folder_list_hide">
                             <table id="datatable_unassigned" class="table">
                                 <thead>
                                     <tr>
-                                        <th><input type="checkbox"></th>
+                                        <th><input type="checkbox" class="chckbx_all"></th>
                                         <th title="Sort">Customer</th>
                                         <th>Conversation</th>
                                         <th title="Sort">Number</th>
@@ -226,7 +442,7 @@
                             <table id="datatable_mine" class="table">
                                 <thead>
                                     <tr>
-                                        <th><input type="checkbox"></th>
+                                        <th><input type="checkbox" class="chckbx_all"></th>
                                         <th title="Sort">Customer</th>
                                         <th>Conversation</th>
                                         <th title="Sort">Number</th>
@@ -244,7 +460,7 @@
                                                 <?=$email_body?>
                                             </div>
                                         </td>
-                                        <td><?=$ticket_number.$i?></td>
+                                        <td><?=$ticket_number.$j?></td>
                                         <td><?=$ticket_updated_at?></td>
                                     </tr>
                                     <?php $j++; } ?>
@@ -255,15 +471,20 @@
                             <table id="datatable_assigned" class="table">
                                 <thead>
                                     <tr>
-                                        <th><input type="checkbox"></th>
+                                        <th><input type="checkbox" class="chckbx_all"></th>
                                         <th title="Sort">Customer</th>
                                         <th>Conversation</th>
+                                        <th title="Sort">Assigned To</th>
                                         <th title="Sort">Number</th>
                                         <th title="Sort">Last Update</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php $k=0; while($k < $assigned) { ?>
+                                    <?php 
+                                        $test_arr_agents = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+                                        $ran_agents = array_rand($test_arr_agents);
+                                    ?>
                                     <tr onclick="document.location = '#<?=$i?>';">
                                         <td><input type="checkbox"></td>
                                         <td><?=$customer_name."A"?></td>
@@ -273,7 +494,8 @@
                                                 <?=$email_body?>
                                             </div>
                                         </td>
-                                        <td><?=$ticket_number.$i?></td>
+                                        <td><?=$test_arr_agents[$ran_agents].$assigned_to?></td>
+                                        <td><?=$ticket_number.$k?></td>
                                         <td><?=$ticket_updated_at?></td>
                                     </tr>
                                     <?php $k++; } ?>
@@ -284,7 +506,7 @@
                             <table id="datatable_closed" class="table">
                                 <thead>
                                     <tr>
-                                        <th><input type="checkbox"></th>
+                                        <th><input type="checkbox" class="chckbx_all"></th>
                                         <th title="Sort">Customer</th>
                                         <th>Conversation</th>
                                         <th title="Sort">Number</th>
@@ -302,7 +524,7 @@
                                                 <?=$email_body?>
                                             </div>
                                         </td>
-                                        <td><?=$ticket_number.$i?></td>
+                                        <td><?=$ticket_number.$l?></td>
                                         <td><?=$ticket_updated_at?></td>
                                     </tr>
                                     <?php $l++; } ?>
@@ -313,7 +535,7 @@
                             <table id="datatable_spam" class="table">
                                 <thead>
                                     <tr>
-                                        <th><input type="checkbox"></th>
+                                        <th><input type="checkbox" class="chckbx_all"></th>
                                         <th title="Sort">Customer</th>
                                         <th>Conversation</th>
                                         <th title="Sort">Number</th>
@@ -331,15 +553,168 @@
                                                 <?=$email_body?>
                                             </div>
                                         </td>
-                                        <td><?=$ticket_number.$i?></td>
+                                        <td><?=$ticket_number.$m?></td>
                                         <td><?=$ticket_updated_at?></td>
                                     </tr>
                                     <?php $m++; } ?>
                                 </tbody>
                             </table>
                         </div>
-                        
-                    
+<!--TEST END HERE--><?php } else { ?>
+                        <div id="list_unassigned" class="folder_list_hide">
+                            <table id="datatable_unassigned" class="table">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" class="chckbx_all"></th>
+                                        <th title="Sort">Customer</th>
+                                        <th>Conversation</th>
+                                        <th title="Sort">Number</th>
+                                        <th title="Sort">Last Update</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach($arr_unassigned as $aUN) { ?>
+                                    <tr onclick="document.location = '#<?=$aUN["no"]?>';">
+                                        <td><input type="checkbox"></td>
+                                        <td><?=$aUN['from']?></td>
+                                        <td>
+                                            <div class="table_email_content">
+                                                <b><?=$aUN['subject']?></b><br/>
+                                                <?=$aUN['body']?>
+                                            </div>
+                                        </td>
+                                        <td><?=$aUN['no']?></td>
+                                        <td><?=$aUN['updated']?></td>
+                                    </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--
+                        <div id="list_mine" class="folder_list_hide">
+                            <table id="datatable_mine" class="table">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" class="chckbx_all"></th>
+                                        <th title="Sort">Customer</th>
+                                        <th>Conversation</th>
+                                        <th title="Sort">Number</th>
+                                        <th title="Sort">Last Update</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $j=0; while($j < $mine) { ?>
+                                    <tr onclick="document.location = '#<?=$i?>';">
+                                        <td><input type="checkbox"></td>
+                                        <td><?=$customer_name."M"?></td>
+                                        <td>
+                                            <div class="table_email_content">
+                                                <b><?=$email_subject?></b><br/>
+                                                <?=$email_body?>
+                                            </div>
+                                        </td>
+                                        <td><?=$ticket_number.$j?></td>
+                                        <td><?=$ticket_updated_at?></td>
+                                    </tr>
+                                    <?php $j++; } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="list_assigned" class="folder_list_hide">
+                            <table id="datatable_assigned" class="table">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" class="chckbx_all"></th>
+                                        <th title="Sort">Customer</th>
+                                        <th>Conversation</th>
+                                        <th title="Sort">Assigned To</th>
+                                        <th title="Sort">Number</th>
+                                        <th title="Sort">Last Update</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $k=0; while($k < $assigned) { ?>
+                                    <?php 
+                                        $test_arr_agents = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
+                                        $ran_agents = array_rand($test_arr_agents);
+                                    ?>
+                                    <tr onclick="document.location = '#<?=$i?>';">
+                                        <td><input type="checkbox"></td>
+                                        <td><?=$customer_name."A"?></td>
+                                        <td>
+                                            <div class="table_email_content">
+                                                <b><?=$email_subject?></b><br/>
+                                                <?=$email_body?>
+                                            </div>
+                                        </td>
+                                        <td><?=$test_arr_agents[$ran_agents].$assigned_to?></td>
+                                        <td><?=$ticket_number.$k?></td>
+                                        <td><?=$ticket_updated_at?></td>
+                                    </tr>
+                                    <?php $k++; } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="list_closed" class="folder_list_hide">
+                            <table id="datatable_closed" class="table">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" class="chckbx_all"></th>
+                                        <th title="Sort">Customer</th>
+                                        <th>Conversation</th>
+                                        <th title="Sort">Number</th>
+                                        <th title="Sort">Last Update</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $l=0; while($l < $closed) { ?>
+                                    <tr onclick="document.location = '#<?=$i?>';">
+                                        <td><input type="checkbox"></td>
+                                        <td><?=$customer_name."C"?></td>
+                                        <td>
+                                            <div class="table_email_content">
+                                                <b><?=$email_subject?></b><br/>
+                                                <?=$email_body?>
+                                            </div>
+                                        </td>
+                                        <td><?=$ticket_number.$l?></td>
+                                        <td><?=$ticket_updated_at?></td>
+                                    </tr>
+                                    <?php $l++; } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="list_spam" class="folder_list_hide">
+                            <table id="datatable_spam" class="table">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" class="chckbx_all"></th>
+                                        <th title="Sort">Customer</th>
+                                        <th>Conversation</th>
+                                        <th title="Sort">Number</th>
+                                        <th title="Sort">Last Update</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $m=0; while($m < $spam) { ?>
+                                    <tr onclick="document.location = '#<?=$i?>';">
+                                        <td><input type="checkbox"></td>
+                                        <td><?=$customer_name."S"?></td>
+                                        <td>
+                                            <div class="table_email_content">
+                                                <b><?=$email_subject?></b><br/>
+                                                <?=$email_body?>
+                                            </div>
+                                        </td>
+                                        <td><?=$ticket_number.$m?></td>
+                                        <td><?=$ticket_updated_at?></td>
+                                    </tr>
+                                    <?php $m++; } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        -->
+                    <?php } ?>
                 </div>
 
                 <!--<div class="grid_4 right_container">-->
@@ -365,7 +740,8 @@
                         "next": "&gt;",
                         "last": "&gt;&gt;"
                     },
-                    "sInfo": "_TOTAL_ total <b>unassigned</b> tickets | Viewing <b>_START_</b> - <b>_END_</b>"
+                    "sInfo": "_TOTAL_ total <b>unassigned</b> tickets | Viewing <b>_START_</b> - <b>_END_</b>",
+                    "sEmptyTable": "Amazing! All tickets were all handled, let's wait for new ones."
                 },
                 "lengthChange": false,
                 "bFilter": true, 
@@ -386,7 +762,8 @@
                         "next": "&gt;",
                         "last": "&gt;&gt;"
                     },
-                    "sInfo": "_TOTAL_ total <b>mine</b> tickets | Viewing <b>_START_</b> - <b>_END_</b>"
+                    "sInfo": "_TOTAL_ total <b>mine</b> tickets | Viewing <b>_START_</b> - <b>_END_</b>",
+                    "sEmptyTable": "Chill out and relax. No tickets assigned to you."
                 },
                 "lengthChange": false,
                 "bFilter": true, 
@@ -407,12 +784,13 @@
                         "next": "&gt;",
                         "last": "&gt;&gt;"
                     },
-                    "sInfo": "_TOTAL_ total <b>assigned</b> tickets | Viewing <b>_START_</b> - <b>_END_</b>"
+                    "sInfo": "_TOTAL_ total <b>assigned</b> tickets | Viewing <b>_START_</b> - <b>_END_</b>",
+                    "sEmptyTable": "Hurray! The team resolved all tickets that were assigned to them."
                 },
                 "lengthChange": false,
                 "bFilter": true, 
                 "bInfo": true,
-                "order": [3, 'asc'],
+                "order": [4, 'asc'],
                 "columnDefs": [ {
                   "targets"  : [0,2],
                   "orderable": false,
@@ -449,7 +827,8 @@
                         "next": "&gt;",
                         "last": "&gt;&gt;"
                     },
-                    "sInfo": "_TOTAL_ total <b>spam</b> tickets | Viewing <b>_START_</b> - <b>_END_</b>"
+                    "sInfo": "_TOTAL_ total <b>spam</b> tickets | Viewing <b>_START_</b> - <b>_END_</b>",
+                    "sEmptyTable": "<b>URSA</b> don't like spam emails! <b>URSA</b> thrown it all."
                 },
                 "lengthChange": false,
                 "bFilter": true, 
@@ -511,6 +890,24 @@
             }
 
             var rows  = tickets;
+
+            if(rows == 0) {
+                $(table+'_filter input').attr("readonly","true");
+                $(table+'_filter input').focus( function() {
+                   $(this).css("border","1px solid #ccc");
+                   $(this).css("outline","none");
+                   $(this).css("box-shadow","none");
+                });
+                $(table+' .sorting').off();
+                $(table+' .sorting_asc').off();
+                $(table+' .sorting_desc').off();
+                $(table+' .chckbx_all').attr("disabled", true);
+            } else {
+                $(table+' .sorting').on();
+                $(table+' .sorting_asc').on();
+                $(table+' .sorting_desc').on();
+            }
+
             if(rows > 10) {
                 $(table+'_paginate').css("display", "block");
                 $(table+'_info').css("display", "block");
@@ -552,20 +949,31 @@
             }
 
             $('.paginate_button').css("display", "none");
-            if($( activeFolderNow+'_first' ).hasClass("disabled")) {
-                $( activeFolderNow+'_first' ).css("display", "none");
-                $( activeFolderNow+'_previous' ).css("display", "none");
+            if($(activeFolderNow+'_first').hasClass("disabled")) {
+                $(activeFolderNow+'_first').css("display", "none");
+                $(activeFolderNow+'_previous').css("display", "none");
             } else {
-                $( activeFolderNow+'_first' ).css("display", "inline-block");
-                $( activeFolderNow+'_previous' ).css("display", "inline-block");
+                $(activeFolderNow+'_first').css("display", "inline-block");
+                $(activeFolderNow+'_previous').css("display", "inline-block");
             }
 
-            if($( activeFolderNow+'_next' ).hasClass("disabled")) {
-                $( activeFolderNow+'_next' ).css("display", "none");
-                $( activeFolderNow+'_last' ).css("display", "none");
+            if($(activeFolderNow+'_next').hasClass("disabled")) {
+                $(activeFolderNow+'_next').css("display", "none");
+                $(activeFolderNow+'_last').css("display", "none");
             } else {
-                $( activeFolderNow+'_next' ).css("display", "inline-block");
-                $( activeFolderNow+'_last' ).css("display", "inline-block");
+                $(activeFolderNow+'_next').css("display", "inline-block");
+                $(activeFolderNow+'_last').css("display", "inline-block");
+            }
+
+            if($(activeFolderNow).dataTable().fnSettings().aoData.length == 0) {
+                $(activeFolderNow+' .sorting').off();
+                $(activeFolderNow+' .sorting_asc').off();
+                $(activeFolderNow+' .sorting_desc').off();
+                
+            } else {
+                $(activeFolderNow+' .sorting').on();
+                $(activeFolderNow+' .sorting_asc').on();
+                $(activeFolderNow+' .sorting_desc').on();
             }
         }
     </script>

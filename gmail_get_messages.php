@@ -496,7 +496,7 @@ try{
                     "'.$tbid.'": "'.$t_id.'",
                     "ticket_number": "'.$cnt_tckts.'",
                     "ticket_notes": "(null)",
-                    "ticket_status": "active",
+                    "ticket_status": "unassigned",
                     "ticket_gmail_id": "'.$message_id.'",
                     "ticket_email_from": "'.$from_email.'",
                     "ticket_name_from": "'.$from.'",
@@ -504,7 +504,8 @@ try{
                     "ticket_email_date": "'.$date.'",
                     "ticket_email_body": "'.$body_msg.'",
                     "ticket_embedded_image": "'.$uniqueFilename.'",
-                    "ticket_email_attachment": "'.$comma_separated.'"
+                    "ticket_email_attachment": "'.$comma_separated.'",
+                    "ticket_updated_at": "(null)"
                 }
             ');
 
@@ -524,7 +525,7 @@ try{
                 $tbid => $t_id,
                 "no" => $cnt_tckts,
                 "id" => $message_id,
-                "status" => "active",
+                "status" => "unassigned",
                 "subject" => $subject,
                 "body" => $FOUND_BODY,
                 "from" => $from,
