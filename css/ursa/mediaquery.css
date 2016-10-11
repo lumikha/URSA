@@ -196,12 +196,19 @@
     margin-top:-10em;
   }
 
-  #previewAtt 
-  {
-    width: 200px;
-    height: 200px;
+#previewAtt
+{
+ left: 3.5em;
+ right: 1.5em;
+ background-color: rgba(0, 0, 0, 0.6);
 
+}
+ #previewAtt img, #attfn
+  {
     
+  zoom: 60%;
+
+
   }
 
  }
@@ -375,6 +382,22 @@
     margin-top:-10em;
   }
 
+
+#previewAtt
+{
+ left: 4em;
+ 
+ background-color: rgba(0, 0, 0, 0.6);
+
+}
+ #previewAtt img, #attfn
+  {
+    
+  zoom: 80%;
+ 
+
+
+  }
 }
 
 
@@ -554,6 +577,21 @@
     margin-top:-10em;
   }
 
+ #previewAtt
+{
+ left: 2em;
+ 
+ background-color: rgba(0, 0, 0, 0.6);
+
+}
+ #previewAtt img, #attfn
+  {
+    
+  zoom: 90%;
+ 
+
+
+  }
 }
 
 /*MEDIUM devices up to Large Devices*/
@@ -579,6 +617,21 @@
   margin-left: 25%;
 }
 
+#previewAtt
+{
+ left: 4em;
+ 
+ background-color: rgba(0, 0, 0, 0.6);
+
+}
+ #previewAtt img, #attfn
+  {
+    
+  zoom: 100%;
+ 
+
+
+  }
 
 
   }
@@ -624,5 +677,20 @@
     margin-top: 4em;
   }
 
+#previewAtt
+{
+ left: 4em;
+ 
+ background-color: rgba(0, 0, 0, 0.6);
+
+}
+ #previewAtt img, #attfn
+  {
+    
+  zoom: 120%;
+ 
+
+
+  }
 
   }
