@@ -413,7 +413,7 @@ try{
                         </a>
                         <img class='imgatt2'  src='".$att_path.$message_id."/attachments/".$ptest['filename']."'>
                         <a href='".$att_path.$message_id."/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
-                            <button ></button>
+                            <button></button>
                         </a>
                     </div>";
                 array_push($arr_att, $att);
@@ -428,7 +428,7 @@ try{
                         </div>
                         <img class='imgatt2'  src='img/pdf.png'>
                         <a href='".$att_path.$message_id."/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
-                            <button ></button>
+                            <button></button>
                         </a>
                     </div>";
                     array_push($arr_att, $att);
@@ -443,7 +443,7 @@ try{
                             </div>
                             <img class='imgatt2'  src='img/docx.png'></a>
                             <a href='".$att_path.$message_id."/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
-                                <button ></button>
+                                <button></button>
                             </a>
                         </div>";
                     array_push($arr_att, $att);
@@ -458,7 +458,7 @@ try{
                             </div>
                             <img class='imgatt2'  src='img/doc.png'></a>
                             <a href='".$att_path.$message_id."/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
-                                <button ></button>
+                                <button></button>
                             </a>
                         </div>";
                     array_push($arr_att, $att);
@@ -473,7 +473,7 @@ try{
                             </div>
                             <img class='imgatt2'  src='img/unknown.png'></a>
                             <a href='".$att_path.$message_id."/attachments/".$ptest['filename']."' download='".$ptest['filename']."' style=''>
-                                <button ></button>
+                                <button></button>
                             </a>
                         </div>";
                     array_push($arr_att, $att);

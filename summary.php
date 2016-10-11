@@ -305,54 +305,44 @@
         </div>
     </div>
 
-    <style>
-       .imgatt1 button {
-           width: 35px !important;   
-           height: 35px !important;
-           margin-left: 5%;
-           margin-top: 7%;
-           border: none;
-           position: absolute;
-           background: transparent;
-           background-image: url(img/down_icon.png);
-           background-size: 100%;
-       }
-
+<style>
        .imgatt1
        {
-        
-        display: inline-block !important;
-
+           position: relative; 
+           display: inline-block;
        }
-
-
+      .imgatt1 button {
+          position: absolute; 
+          width: 35px; 
+          height: 35px; 
+          top: 75%; 
+          left: 78%; 
+          background: transparent; 
+          background-image: url(img/down_icon.png); 
+          background-size: 100%; 
+          border-color: transparent; ;
+       }
        .att_title
        {
-        position: absolute; 
-         display: inline-block;
-        background: rgb(0, 0, 0); 
-        background: rgba(0, 0, 0, 0.7); 
-        width: 200px; 
-        height: 200px; 
-        display: none;
-        color: #ffffff; 
-        font-weight: bold; 
-        padding: 5px; 
-        word-wrap: break-word;
+           position: absolute; 
+           background: rgb(0, 0, 0); 
+           background: rgba(0, 0, 0, 0.7); 
+           width: 200px; 
+           height: 200px; 
+           display: none; 
+           color: #ffffff ; 
+           font-weight: bold; 
+           padding: 5px; 
+           word-wrap: break-word; 
+           cursor: zoom-in;
        }
-
        .imgatt2
        {
-        display: inline-block !important;
-
-        width: 200px; 
-        height: 200px; 
-        margin-bottom:35px;
-        
+           width: 200px; 
+           height: 200px; 
+           margin-bottom:25px;
        }
-
-
-   </style>
+  </style>
 
     <!--
     <div id="attModal" class="preview-modal">
@@ -620,15 +610,14 @@
             $('#modal_cont').removeClass('modal-md');
             $('#modal_dialog').addClass('modal-lg');
             $('#modal_cont').addClass('modal-lg');
-             //$('.imgatt1').css({'background-color': 'transparent', 'width': '400px', 'height': '300px', 'padding': '1em', 'display': 'inline-block'}).removeClass('modal-md'); 
-            // $('.imgatt1').css({'background-color': 'transparent', 'width': '400px', 'height': '300px', 'padding': '1em', 'display': 'inline-block'}).addClass('modal-lg'); 
+           
             $('.imgatt2').removeClass('modal-md'); 
-             $('.imgatt2').css({'background-color': 'transparent', 'width': '250px', 'height': '250px', 'margin': '1em', 'display': 'inline-block'}).addClass('modal-lg'); 
+            $('.imgatt2').css({'background-color': 'transparent', 'width': '250px', 'height': '250px', 'margin': '1em', 'display': 'inline-block'}).addClass('modal-lg'); 
             $('.att_title').removeClass('modal-md'); 
             $('.att_title').css({ 'width': '250px', 'height': '250px'}).addClass('modal-lg'); 
-            // $('#previewAtt').css({ 'width': '800px', 'height': '800px'}).addClass('modal-lg');
-            //$('#previewAtt').removeClass('modal-md');
            
+           //$('.imgatt1').css({ 'width': '250px', 'height': '250px'}).addClass('modal-lg'); 
+
 
         }else{
             $('#glyph_resize').removeClass('glyphicon-resize-small');
@@ -637,14 +626,11 @@
             $('#modal_cont').removeClass('modal-lg');
             $('#modal_dialog').addClass('modal-md');
             $('#modal_cont').addClass('modal-md');
-            //$('.imgatt1').css({'background-color': 'transparent', 'width': '200px' , 'height': '200px', 'padding': '1em', 'display': 'inline-block'}).removeClass('modal-lg'); 
-            //$('.imgatt1').css({'background-color': 'transparent', 'width': '200px' , 'height': '200px', 'padding': '1em', 'display': 'inline-block'}).addClass('modal-md'); 
+            
             $('.imgatt2').removeClass('modal-lg'); 
             $('.imgatt2').css({'background-color': 'transparent', 'width': '200px', 'height': '200px', 'margin': '1em', 'display': 'inline-block'}).addClass('modal-md'); 
             $('.att_title').removeClass('modal-lg'); 
             $('.att_title').css({ 'width': '200px', 'height': '200px'}).addClass('modal-md'); 
-            // $('#previewAtt').removeClass('modal-lg');
-            //$('#previewAtt').css({ 'width': '650px', 'height': '650px'}).addClass('modal-md');
-        }
+         }
     });
 </script>
