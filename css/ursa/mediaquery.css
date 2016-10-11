@@ -207,7 +207,7 @@
 }
  #previewAtt img, #attfn
   {
-  margin-top: 100px;
+  margin-top: 150px;
   margin-left: 45px;  
   margin-right: auto;
   min-width: 100%;
@@ -392,16 +392,17 @@
 
 #previewAtt
 {
- left: 1em;
+ left: 2em;
  
  background-color: rgba(0, 0, 0, 0.6);
 
 }
  #previewAtt img, #attfn
   {
-     margin-top: 100px;
-    margin-left: 65px;  
-  margin-right: auto;
+  margin-top: 100px;
+  margin-left: 60px;  
+  
+  position: block;
   width: 100%;
     
   zoom: 80%;
@@ -600,8 +601,8 @@
   
   {
    margin-top: 100px;
-  margin-left: 45px;  
-  margin-right: auto;
+  margin-left: 13px;  
+  position: block;
   width: 100%;
     
   zoom: 90%;
@@ -643,9 +644,9 @@
 }
  #previewAtt img, #attfn
   {
-     margin-top: 100px;
-  margin-left: 45px;  
-  margin-right: auto;
+  margin-top: 100px;
+  margin-left: -30px;
+ position: block;
   width: 100%;
   zoom: 100%;
  
@@ -705,9 +706,10 @@
 }
  #previewAtt img, #attfn
   {
-   margin-top: 100px;
-  zoom: 120%;
  
+  zoom: 120%;
+ margin: 0 auto;
+ position: block;
 
 
   }
