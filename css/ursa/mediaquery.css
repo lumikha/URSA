@@ -197,6 +197,32 @@
     cursor: pointer;
   }
 
+
+  /*START support.php*/
+
+.boxsummary2
+{
+  
+  position: static;
+  margin-left: 0px auto !important;
+  margin-right: 0 auto !important;
+  margin-top: 30em;
+  
+}
+
+.left_container
+{
+  min-width: 280px;
+}
+
+.middle_container
+{
+  max-width: 300px !important;
+  overflow-x:auto;
+  overflow-y: scroll; 
+}
+/* END support.php*/
+
 #previewAtt
 {
  margin-left: auto;
@@ -393,6 +419,30 @@
     cursor: pointer;
   }
 
+/*START support.php*/
+
+.boxsummary2
+{
+  
+  position: static;
+  margin-left: 0px auto !important;
+  margin-right: 0 auto !important;
+  margin-top: 30em;
+  
+}
+
+.left_container
+{
+  min-width: 420px;
+}
+
+.middle_container
+{
+  max-width: 420px !important;
+  overflow-x:auto;
+  overflow-y: scroll; 
+}
+/* END support.php*/
 
 #previewAtt
 {
@@ -644,6 +694,19 @@
   margin-left: 25%;
 }
 
+/*START support.php*/
+
+.boxsummary2
+{
+  
+  position: relative;
+
+  
+ 
+}
+
+/* END support.php*/
+
 #previewAtt
 {
  left: 4em;
@@ -651,6 +714,7 @@
  background-color: rgba(0, 0, 0, 0.6);
 
 }
+
  #previewAtt img, #attfn
   {
   
@@ -708,6 +772,20 @@
     margin-left: 57em;
     margin-top: 4em;
   }
+
+  /*START support.php*/
+
+.boxsummary2
+{
+  
+  position: relative;
+  margin-left: 12em;
+
+  
+ 
+}
+
+/* END support.php*/
 
 #previewAtt
 {

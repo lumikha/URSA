@@ -504,10 +504,10 @@
         
     </style>
 
-    <div class="container_12 boxsummary">
-        <div class="full-width-div">        
+    <div class="container_12 boxsummary2" style="left: 150px;">
+              
             <div class="container_12">
-                <div class="grid_4 left_container">
+                <div class="grid_4 alpha left_container">
                     <div class="folders">
                         <a href="#unassigned">
                             <button id="btn_fldr_1" onclick="openFolder(1, <?=$unassigned?>, '#datatable_unassigned')"><i class="glyphicon glyphicon-envelope"></i>
@@ -535,7 +535,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="grid_4 middle_container">
+                <div class="grid_4 omega middle_container">
                     <?php if($test) { ?>
                         <div id="list_unassigned" class="folder_list_hide">
                             <ul class="btngrpChckBxs">
