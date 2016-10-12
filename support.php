@@ -3,7 +3,7 @@
 
     $test = true;
     if($test) {
-        $unassigned = 0;
+        $unassigned = 14;
         $mine = 0;
         $assigned = 14;
         $closed = 30;
@@ -240,6 +240,7 @@
             width: 150px; 
             margin:0; 
             background-color: #e6e6e6;
+            display: none;
         }
         .folders {
             padding-top: 20px;
@@ -378,6 +379,105 @@
             background-color: transparent;
             font-weight: bold;
         }
+        .btngrpChckBxs {
+            position: absolute;
+            margin-top: 20px;
+            margin-left: 200px;
+            width: 200px;
+        }
+        .btngrpChckBxs li {
+            display: inline-block;
+            border: 1px solid #d4dce0;
+            display: table-cell;
+            position: relative;
+            padding: 5px 10px 5px 10px;
+            cursor: pointer;
+            background-color: #fff;;
+        }
+        .btngrpChckBxs li:hover {
+            background-color: #d6dde3;
+        }
+        .btngrpChckBxs .btnAssignTo {
+
+        }
+        .btngrpChckBxs .btnStatus {
+
+        }
+        .btngrpChckBxs .btnTagIt {
+
+        }
+        .ttAssignTo {
+            background-color: black;
+            position: absolute;
+            z-index: 1;
+            color: #fff;
+            padding: 5px 10px 5px 10px;
+            margin-top: 10px;
+            margin-left: -10px;
+            display: none;
+        }
+        .ttAssignTo::after {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background-color: black;
+            margin-top: -30px;
+            margin-left: 9px;
+            content: "";
+            z-index: -1;
+            -ms-transform: rotate(45deg); /* IE 9 */
+            -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+            transform: rotate(45deg);
+        }
+        .ttStatus {
+            background-color: black;
+            position: absolute;
+            z-index: 1;
+            color: #fff;
+            padding: 5px 10px 5px 10px;
+            margin-top: 10px;
+            margin-left: 24px;
+            display: none;
+        }
+        .ttStatus::after {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background-color: black;
+            margin-top: -30px;
+            margin-left: 9px;
+            content: "";
+            z-index: -1;
+            -ms-transform: rotate(45deg); /* IE 9 */
+            -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+            transform: rotate(45deg);
+        }
+        .ttTag {
+            background-color: black;
+            position: absolute;
+            z-index: 1;
+            color: #fff;
+            padding: 5px 10px 5px 10px;
+            margin-top: 10px;
+            margin-left: 69px;
+            display: none;
+        }
+        .ttTag::after {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background-color: black;
+            margin-top: -30px;
+            margin-left: 1px;
+            content: "";
+            z-index: -1;
+            -ms-transform: rotate(45deg); /* IE 9 */
+            -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+            transform: rotate(45deg);
+        }
         
     </style>
 
@@ -415,7 +515,20 @@
                 <div class="grid_4 middle_container">
                     <?php if($test) { ?>
                         <div id="list_unassigned" class="folder_list_hide">
+                            <ul class="btngrpChckBxs">
+                                <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
+                                <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
+                                <li class='btnTagIt'><i class="glyphicon glyphicon-tag"></i></li>
+                                <span class="ttAssignTo">Assign</span>
+                                <span class="ttStatus">Status</span>
+                                <div class="ttTag">
+                                    <span>Tag</span>
+                                </div>
+                            </ul>
                             <table id="datatable_unassigned" class="table">
+                                <!--<input type="text" id="chckdTNos">
+                                <span id="chckdTNos_disp"></span>
+                                <br><button onclick="checkedboxes()"></button>-->
                                 <thead>
                                     <tr>
                                         <th><input type="checkbox" class="chckbx_all"></th>
@@ -428,7 +541,7 @@
                                 <tbody>
                                     <?php $i=0; while($i < $unassigned) { ?>
                                     <tr onclick="document.location = '#<?=$i?>';">
-                                        <td><input type="checkbox"></td>
+                                        <td><input type="checkbox" id="chckbxid<?=$i?>" class="chckbx"></td>
                                         <td><?=$customer_name."U".$i?></td>
                                         <td>
                                             <div class="table_email_content">
@@ -716,7 +829,7 @@
                     <?php } ?>
                 </div>
 
-                <!--<div class="grid_4 right_container">-->
+                <div class="grid_4 right_container">
 
             </div>
          </div> 
@@ -840,6 +953,14 @@
             });
         });
 
+        $(document).on('change', '#datatable_unassigned .chckbx_all', function() {
+            if($('#datatable_unassigned .chckbx_all').is(':checked')) {
+                $('#datatable_unassigned .chckbx').prop('checked', true);
+            } else {
+                $('#datatable_unassigned .chckbx').prop('checked', false);
+            }
+        });
+        
         $(document).on('click', '.sorting', function () {
             activeFolder();
         });
@@ -974,5 +1095,18 @@
                 $(activeFolderNow+' .sorting_asc').on();
                 $(activeFolderNow+' .sorting_desc').on();
             }
+        }
+
+        function checkedboxes() {
+            var arrOfchckbxs_chckd = [];
+            $("#datatable_unassigned .chckbx").each(function(){
+                var id = $(this).attr('id');
+                var $this = $(this);
+
+                if($this.is(':checked')) {
+                    arrOfchckbxs_chckd.push($this.attr("id"))
+                }
+            });
+            alert(arrOfchckbxs_chckd);
         }
     </script>
