@@ -208,7 +208,7 @@
  #previewAtt img, #attfn
   {
   margin-top: 150px;
-  margin-left: 45px;  
+  margin-left: 40px;  
   margin-right: auto;
   min-width: 100%;
 
@@ -706,7 +706,7 @@
 }
  #previewAtt img, #attfn
   {
- 
+
   zoom: 120%;
  margin: 0 auto;
  position: block;
