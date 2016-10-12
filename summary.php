@@ -310,6 +310,7 @@
        {
            position: relative; 
            display: inline-block;
+           padding: 0.5em;
        }
       .imgatt1 button {
           position: absolute; 
@@ -341,6 +342,7 @@
            width: 200px; 
            height: 200px; 
            margin-bottom:25px;
+
        }
   </style>
 
