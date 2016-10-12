@@ -144,7 +144,7 @@
         }
     </style>
 
-    <div class="container_12 boxsummary">
+    <div class="container_12 boxsummary" style="left: 150px";> 
     <div class="modal fade" id="viewTicket" tabindex="-1" role="dialog">
         <div id="modal_dialog" class="modal-dialog modal-md" >
             <div class="modal-content">
@@ -321,7 +321,7 @@
           background: transparent; 
           background-image: url(img/down_icon.png); 
           background-size: 100%; 
-          border-color: transparent; ;
+         border: none;
        }
        .att_title
        {
@@ -617,7 +617,8 @@
             $('.imgatt2').css({'background-color': 'transparent', 'width': '250px', 'height': '250px', 'margin': '1em', 'display': 'inline-block'}).addClass('modal-lg'); 
             $('.att_title').removeClass('modal-md'); 
             $('.att_title').css({ 'width': '250px', 'height': '250px'}).addClass('modal-lg'); 
-           
+            $('a button').removeClass('modal-md'); 
+            $('a button').css({ 'width': '50px', 'height': '50px'}).addClass('modal-lg'); 
            //$('.imgatt1').css({ 'width': '250px', 'height': '250px'}).addClass('modal-lg'); 
 
 
@@ -633,6 +634,8 @@
             $('.imgatt2').css({'background-color': 'transparent', 'width': '200px', 'height': '200px', 'margin': '1em', 'display': 'inline-block'}).addClass('modal-md'); 
             $('.att_title').removeClass('modal-lg'); 
             $('.att_title').css({ 'width': '200px', 'height': '200px'}).addClass('modal-md'); 
+            $('a button').removeClass('modal-lg'); 
+            $('a button').css({ 'width': '35px', 'height': '35px'}).addClass('modal-md'); 
          }
     });
 </script>
