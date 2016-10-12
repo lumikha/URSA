@@ -407,8 +407,9 @@
   max-width: 480px;
   max-height: 300px;
   display: block; 
+  
   margin-top: 40px;
-  margin-left: 125px;
+  margin-left: 120px;
   margin-right: auto;
   width: 480px;
   word-wrap: break-word;
