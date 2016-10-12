@@ -290,14 +290,14 @@
 
     <div class="modal fade" id="previewAtt" tabindex="-1" role="dialog" style="margin-left: -5em;">
         <div id="modal_cont" class="modal-dialog">
-            <div class="modal-content" style="position: absolute; margin-left: auto; margin-right: auto; width: 0 !important; height: 0 !important; border: none; padding: none;">
+            <div class="modal-content" style="position: absolute; margin-left: auto; margin-right: auto; width: 0; height: 0; border: none; padding: none;">
                                     
                 <div class="modal-body">
 
                    
                 </div>
                     <div id="attid"></div>
-                     <span id="attfn" style="background-color: #000; font-size: 20px; color: #fff;" ></span>
+                     <span id="attfn" style="text-align:center !important; margin-top: 0em !important; background-color: transparent; font-size: 15px; color: #fff;" ></span>
                     
 
         
