@@ -217,7 +217,7 @@
 
 .middle_container
 {
-  max-width: 300px !important;
+  max-width: 280px !important;
   overflow-x:auto;
   overflow-y: scroll; 
 }
@@ -648,6 +648,32 @@
     cursor: pointer;
   }
 
+
+    /*START support.php*/
+
+.boxsummary2
+{
+  
+  position: static;
+  margin-left: 0px auto !important;
+  margin-right: 0 auto !important;
+  margin-top: 30em;
+  
+}
+
+.left_container
+{
+  min-width: 740px;
+}
+
+.middle_container
+{
+  max-width: 720px !important;
+  overflow-x:auto;
+  overflow-y: scroll; 
+}
+/* END support.php*/
+
  #previewAtt
 {
  left: 2em;
@@ -700,6 +726,7 @@
 {
   
   position: relative;
+  top: 1.5em;
 
   
  
@@ -780,6 +807,7 @@
   
   position: relative;
   margin-left: 12em;
+   top: 1.5em;
 
   
  
