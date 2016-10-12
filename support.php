@@ -384,7 +384,27 @@
             margin-top: 20px;
             margin-left: 200px;
             width: 200px;
+            display: none;
+            /*
+            animation:mymove .5s ease-out forwards;
+            -webkit-animation:mymove .5s;
+            */
         }
+        /*
+        @keyframes mymove
+        { 
+            from { top:180px; }
+            to { top:190px; }
+        }
+        */
+        /* Safari and Chrome */
+        /*
+        @-webkit-keyframes mymove 
+        {
+            from { top:180px; }
+            to { top:190px; }
+        }
+        */
         .btngrpChckBxs li {
             display: inline-block;
             border: 1px solid #d4dce0;
@@ -398,17 +418,18 @@
             background-color: #d6dde3;
         }
         .btngrpChckBxs .btnAssignTo {
-
+            border-radius: 5px 0px 0px 5px;
         }
         .btngrpChckBxs .btnStatus {
-
+            
         }
-        .btngrpChckBxs .btnTagIt {
-
+        .btngrpChckBxs .btnTag {
+            border-radius: 0px 5px 5px 0px;
         }
         .ttAssignTo {
             background-color: black;
             position: absolute;
+            border-radius: 5px;
             z-index: 1;
             color: #fff;
             padding: 5px 10px 5px 10px;
@@ -433,6 +454,7 @@
         .ttStatus {
             background-color: black;
             position: absolute;
+            border-radius: 5px;
             z-index: 1;
             color: #fff;
             padding: 5px 10px 5px 10px;
@@ -457,6 +479,7 @@
         .ttTag {
             background-color: black;
             position: absolute;
+            border-radius: 5px;
             z-index: 1;
             color: #fff;
             padding: 5px 10px 5px 10px;
@@ -518,12 +541,10 @@
                             <ul class="btngrpChckBxs">
                                 <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
                                 <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
-                                <li class='btnTagIt'><i class="glyphicon glyphicon-tag"></i></li>
+                                <li class='btnTag'><i class="glyphicon glyphicon-tag"></i></li>
                                 <span class="ttAssignTo">Assign</span>
                                 <span class="ttStatus">Status</span>
-                                <div class="ttTag">
-                                    <span>Tag</span>
-                                </div>
+                                <span class="ttTag">Tag</span>
                             </ul>
                             <table id="datatable_unassigned" class="table">
                                 <!--<input type="text" id="chckdTNos">
@@ -557,6 +578,14 @@
                             </table>
                         </div>
                         <div id="list_mine" class="folder_list_hide">
+                            <ul class="btngrpChckBxs">
+                                <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
+                                <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
+                                <li class='btnTag'><i class="glyphicon glyphicon-tag"></i></li>
+                                <span class="ttAssignTo">Assign</span>
+                                <span class="ttStatus">Status</span>
+                                <span class="ttTag">Tag</span>
+                            </ul>
                             <table id="datatable_mine" class="table">
                                 <thead>
                                     <tr>
@@ -569,8 +598,8 @@
                                 </thead>
                                 <tbody>
                                     <?php $j=0; while($j < $mine) { ?>
-                                    <tr onclick="document.location = '#<?=$i?>';">
-                                        <td><input type="checkbox"></td>
+                                    <tr onclick="document.location = '#<?=$j?>';">
+                                        <td><input type="checkbox" id="chckbxid<?=$j?>" class="chckbx"></td>
                                         <td><?=$customer_name."M"?></td>
                                         <td>
                                             <div class="table_email_content">
@@ -586,6 +615,14 @@
                             </table>
                         </div>
                         <div id="list_assigned" class="folder_list_hide">
+                            <ul class="btngrpChckBxs">
+                                <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
+                                <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
+                                <li class='btnTag'><i class="glyphicon glyphicon-tag"></i></li>
+                                <span class="ttAssignTo">Assign</span>
+                                <span class="ttStatus">Status</span>
+                                <span class="ttTag">Tag</span>
+                            </ul>
                             <table id="datatable_assigned" class="table">
                                 <thead>
                                     <tr>
@@ -603,8 +640,8 @@
                                         $test_arr_agents = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
                                         $ran_agents = array_rand($test_arr_agents);
                                     ?>
-                                    <tr onclick="document.location = '#<?=$i?>';">
-                                        <td><input type="checkbox"></td>
+                                    <tr onclick="document.location = '#<?=$k?>';">
+                                        <td><input type="checkbox" id="chckbxid<?=$k?>" class="chckbx"></td>
                                         <td><?=$customer_name."A"?></td>
                                         <td>
                                             <div class="table_email_content">
@@ -621,6 +658,14 @@
                             </table>
                         </div>
                         <div id="list_closed" class="folder_list_hide">
+                            <ul class="btngrpChckBxs">
+                                <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
+                                <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
+                                <li class='btnTag'><i class="glyphicon glyphicon-tag"></i></li>
+                                <span class="ttAssignTo">Assign</span>
+                                <span class="ttStatus">Status</span>
+                                <span class="ttTag">Tag</span>
+                            </ul>
                             <table id="datatable_closed" class="table">
                                 <thead>
                                     <tr>
@@ -633,8 +678,8 @@
                                 </thead>
                                 <tbody>
                                     <?php $l=0; while($l < $closed) { ?>
-                                    <tr onclick="document.location = '#<?=$i?>';">
-                                        <td><input type="checkbox"></td>
+                                    <tr onclick="document.location = '#<?=$l?>';">
+                                        <td><input type="checkbox" id="chckbxid<?=$l?>" class="chckbx"></td>
                                         <td><?=$customer_name."C"?></td>
                                         <td>
                                             <div class="table_email_content">
@@ -650,6 +695,14 @@
                             </table>
                         </div>
                         <div id="list_spam" class="folder_list_hide">
+                            <ul class="btngrpChckBxs">
+                                <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
+                                <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
+                                <li class='btnTag'><i class="glyphicon glyphicon-tag"></i></li>
+                                <span class="ttAssignTo">Assign</span>
+                                <span class="ttStatus">Status</span>
+                                <span class="ttTag">Tag</span>
+                            </ul>
                             <table id="datatable_spam" class="table">
                                 <thead>
                                     <tr>
@@ -662,8 +715,8 @@
                                 </thead>
                                 <tbody>
                                     <?php $m=0; while($m < $spam) { ?>
-                                    <tr onclick="document.location = '#<?=$i?>';">
-                                        <td><input type="checkbox"></td>
+                                    <tr onclick="document.location = '#<?=$m?>';">
+                                        <td><input type="checkbox" id="chckbxid<?=$m?>" class="chckbx"></td>
                                         <td><?=$customer_name."S"?></td>
                                         <td>
                                             <div class="table_email_content">
@@ -680,6 +733,14 @@
                         </div>
 <!--TEST END HERE--><?php } else { ?>
                         <div id="list_unassigned" class="folder_list_hide">
+                            <ul class="btngrpChckBxs">
+                                <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
+                                <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
+                                <li class='btnTag'><i class="glyphicon glyphicon-tag"></i></li>
+                                <span class="ttAssignTo">Assign</span>
+                                <span class="ttStatus">Status</span>
+                                <span class="ttTag">Tag</span>
+                            </ul>
                             <table id="datatable_unassigned" class="table">
                                 <thead>
                                     <tr>
@@ -693,7 +754,7 @@
                                 <tbody>
                                     <?php foreach($arr_unassigned as $aUN) { ?>
                                     <tr onclick="document.location = '#<?=$aUN["no"]?>';">
-                                        <td><input type="checkbox"></td>
+                                        <td><input type="checkbox" id="chckbxid<?=$aUN['no']?>" class="chckbx"></td>
                                         <td><?=$aUN['from']?></td>
                                         <td>
                                             <div class="table_email_content">
@@ -709,6 +770,14 @@
                             </table>
                         </div>
                         <div id="list_mine" class="folder_list_hide">
+                            <ul class="btngrpChckBxs">
+                                <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
+                                <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
+                                <li class='btnTag'><i class="glyphicon glyphicon-tag"></i></li>
+                                <span class="ttAssignTo">Assign</span>
+                                <span class="ttStatus">Status</span>
+                                <span class="ttTag">Tag</span>
+                            </ul>
                             <table id="datatable_mine" class="table">
                                 <thead>
                                     <tr>
@@ -722,7 +791,7 @@
                                 <tbody>
                                     <?php foreach($arr_mine as $aM) { ?>
                                     <tr onclick="document.location = '#<?=$aM["no"]?>';">
-                                        <td><input type="checkbox"></td>
+                                        <td><input type="checkbox" id="chckbxid<?=$aM['no']?>" class="chckbx"></td>
                                         <td><?=$aM['from']?></td>
                                         <td>
                                             <div class="table_email_content">
@@ -738,6 +807,14 @@
                             </table>
                         </div>
                         <div id="list_assigned" class="folder_list_hide">
+                            <ul class="btngrpChckBxs">
+                                <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
+                                <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
+                                <li class='btnTag'><i class="glyphicon glyphicon-tag"></i></li>
+                                <span class="ttAssignTo">Assign</span>
+                                <span class="ttStatus">Status</span>
+                                <span class="ttTag">Tag</span>
+                            </ul>
                             <table id="datatable_assigned" class="table">
                                 <thead>
                                     <tr>
@@ -752,7 +829,7 @@
                                 <tbody>
                                     <?php foreach($arr_assigned as $aAS) { ?>
                                     <tr onclick="document.location = '#<?=$aAS["no"]?>';">
-                                        <td><input type="checkbox"></td>
+                                        <td><input type="checkbox" id="chckbxid<?=$aAS['no']?>" class="chckbx"></td>
                                         <td><?=$aAS['from']?></td>
                                         <td>
                                             <div class="table_email_content">
@@ -769,6 +846,14 @@
                             </table>
                         </div>
                         <div id="list_closed" class="folder_list_hide">
+                            <ul class="btngrpChckBxs">
+                                <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
+                                <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
+                                <li class='btnTag'><i class="glyphicon glyphicon-tag"></i></li>
+                                <span class="ttAssignTo">Assign</span>
+                                <span class="ttStatus">Status</span>
+                                <span class="ttTag">Tag</span>
+                            </ul>
                             <table id="datatable_closed" class="table">
                                 <thead>
                                     <tr>
@@ -782,7 +867,7 @@
                                 <tbody>
                                     <?php foreach($arr_closed as $aC) { ?>
                                     <tr onclick="document.location = '#<?=$aC["no"]?>';">
-                                        <td><input type="checkbox"></td>
+                                        <td><input type="checkbox" id="chckbxid<?=$aC['no']?>" class="chckbx"></td>
                                         <td><?=$aC['from']?></td>
                                         <td>
                                             <div class="table_email_content">
@@ -798,6 +883,14 @@
                             </table>
                         </div>
                         <div id="list_spam" class="folder_list_hide">
+                            <ul class="btngrpChckBxs">
+                                <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
+                                <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
+                                <li class='btnTag'><i class="glyphicon glyphicon-tag"></i></li>
+                                <span class="ttAssignTo">Assign</span>
+                                <span class="ttStatus">Status</span>
+                                <span class="ttTag">Tag</span>
+                            </ul>
                             <table id="datatable_spam" class="table">
                                 <thead>
                                     <tr>
@@ -811,7 +904,7 @@
                                 <tbody>
                                     <?php foreach($arr_spam as $aS) { ?>
                                     <tr onclick="document.location = '#<?=$aS["no"]?>';">
-                                        <td><input type="checkbox"></td>
+                                        <td><input type="checkbox" id="chckbxid<?=$aS['no']?>" class="chckbx"></td>
                                         <td><?=$aS['from']?></td>
                                         <td>
                                             <div class="table_email_content">
@@ -953,11 +1046,54 @@
             });
         });
 
-        $(document).on('change', '#datatable_unassigned .chckbx_all', function() {
-            if($('#datatable_unassigned .chckbx_all').is(':checked')) {
-                $('#datatable_unassigned .chckbx').prop('checked', true);
+        var current_folder_list = "";
+        var current_datatable = "";
+        $(document).on('change', current_datatable+' .chckbx_all', function() {
+            if($(current_datatable+' .chckbx_all').is(':checked')) {
+                $(current_datatable+' .chckbx').prop('checked', true);
+                $('.btngrpChckBxs').css("display", "block");
             } else {
-                $('#datatable_unassigned .chckbx').prop('checked', false);
+                $(current_datatable+' .chckbx').prop('checked', false);
+                $('.btngrpChckBxs').css("display", "none");
+            }
+        });
+
+        $(document).on('change', current_datatable+' .chckbx', function() {
+            if($(current_datatable+' .chckbx').is(':checked')) {
+                $('.btngrpChckBxs').css("display", "block");
+            } else {
+                $('.btngrpChckBxs').css("display", "none");
+            }
+        });
+
+        $(current_folder_list+' .btnAssignTo').on({
+            mouseenter: function () {
+                $(current_folder_list+' .ttAssignTo').fadeIn(100);
+                $(current_folder_list+' .ttAssignTo').css("display", "block");
+
+            },
+            mouseleave: function () {
+                $(current_folder_list+' .ttAssignTo').css("display", "none");
+            }
+        });
+
+        $(current_folder_list+' .btnStatus').on({
+            mouseenter: function () {
+                $(current_folder_list+' .ttStatus').fadeIn(100);
+                $(current_folder_list+' .ttStatus').css("display", "block");
+            },
+            mouseleave: function () {
+                $(current_folder_list+' .ttStatus').css("display", "none");
+            }
+        });
+
+        $(current_folder_list+' .btnTag').on({
+            mouseenter: function () {
+                $(current_folder_list+' .ttTag').fadeIn(100);
+                $(current_folder_list+' .ttTag').css("display", "block");
+            },
+            mouseleave: function () {
+                $(current_folder_list+' .ttTag').css("display", "none");
             }
         });
         
@@ -1039,18 +1175,28 @@
             if(folder == 1) {
                 $('#list_unassigned').removeClass('folder_list_hide');
                 $('#btn_fldr_1').addClass('folders_button_active');
+                current_folder_list = "#list_unassigned";
+                current_datatable = "#datatable_unassigned";
             } else if(folder == 2) {
                 $('#list_mine').removeClass('folder_list_hide');
                 $('#btn_fldr_2').addClass('folders_button_active');
+                current_folder_list = "#list_mine";
+                current_datatable = "#datatable_mine";
             } else if(folder == 3) {
                 $('#list_assigned').removeClass('folder_list_hide');
                 $('#btn_fldr_3').addClass('folders_button_active');
+                current_folder_list = "#list_assigned";
+                current_datatable = "#datatable_assigned";
             } else if(folder == 4) {
                 $('#list_closed').removeClass('folder_list_hide');
                 $('#btn_fldr_4').addClass('folders_button_active');
+                current_folder_list = "#list_closed";
+                current_datatable = "#datatable_closed";
             } else {
                 $('#list_spam').removeClass('folder_list_hide');
                 $('#btn_fldr_5').addClass('folders_button_active');
+                current_folder_list = "#list_spam";
+                current_datatable = "#datatable_spam";
             }
         }
 
