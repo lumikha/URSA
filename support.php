@@ -3,10 +3,10 @@
 
     $test = false;
     if($test) {
-        $unassigned = 14;
+        $unassigned = 0;
         $mine = 0;
-        $assigned = 14;
-        $closed = 30;
+        $assigned = 0;
+        $closed = 0;
         $spam = 0;
 
         $ticket_id = "20161011152852722141";
@@ -1080,7 +1080,7 @@
                 "lengthChange": false,
                 "bFilter": true, 
                 "bInfo": true,
-                "order": [3, 'desc'],
+                "order": [3, 'asc'],
                 "columnDefs": [ {
                   "targets"  : [0,2],
                   "orderable": false,
@@ -1102,7 +1102,7 @@
                 "lengthChange": false,
                 "bFilter": true, 
                 "bInfo": true,
-                "order": [3, 'desc'],
+                "order": [3, 'asc'],
                 "columnDefs": [ {
                   "targets"  : [0,2],
                   "orderable": false,
@@ -1124,7 +1124,7 @@
                 "lengthChange": false,
                 "bFilter": true, 
                 "bInfo": true,
-                "order": [4, 'desc'],
+                "order": [4, 'asc'],
                 "columnDefs": [ {
                   "targets"  : [0,2],
                   "orderable": false,
