@@ -111,6 +111,7 @@ button
 }
 .disabledTab {
     pointer-events: none;
+    background-color: #e6e6e6 !important;
 }
 
 .error {

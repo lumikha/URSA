@@ -121,7 +121,11 @@
                                     <li><a id="btn_account" class="nl disabledTab hidden" data-toggle="tab">Hidden</a></li>
                                     <li><a id="btn_account" class="nl disabledTab" data-toggle="tab">Account</a></li>
                                     <li><a id="btn_provisioning" class="nl disabledTab" data-toggle="tab" >Provisioning</a></li>
-                                    <li><a id="btn_support" class="nl" href="support.php" >Support</a></li>
+                                        <?php if($current_page=="support.php") { ?>
+                                            <li class="active"><a id="btn_support" class="nl" href="support.php">Support</a></li>
+                                        <?php } else { ?>
+                                            <li><a id="btn_support" class="nl" href="support.php">Support</a></li>
+                                        <?php } ?>
                                     <li><a id="btn_customer" class="nl disabledTab" data-toggle="tab" >Customer</a></li>
                                     <li><a id="btn_quality" class="nl disabledTab" data-toggle="tab" >Quality</a></li>
                                     <li><a id="btn_dashboard" class="nl disabledTab" data-toggle="tab" >Dashboard</a></li>
@@ -131,7 +135,7 @@
                                     <li><a class="hidden">Hidden</a></li>
                                     <li><a id="btn_account" class="nl" href="#account" data-toggle="tab">Account</a></li>
                                     <li><a id="btn_provisioning" class="nl" href="#provisioning" data-toggle="tab" >Provisioning</a></li>
-                                    <li><a id="btn_support" class="nl" href="support" data-toggle="tab" >Support</a></li>
+                                    <li><a id="btn_support" class="nl" href="support">Support</a></li>
                                     <li><a id="btn_customer" class="nl" href="#customer" data-toggle="tab" >Customer</a></li>
                                     <li><a id="btn_quality" class="nl" href="#quality" data-toggle="tab" >Quality</a></li>
                                     <li><a id="btn_dashboard" class="nl" href="#dashboard" data-toggle="tab" >Dashboard</a></li>
