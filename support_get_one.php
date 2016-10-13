@@ -91,7 +91,16 @@
 /*
 	echo "<pre>"; print_r($result); echo "</pre>";
 */
-	echo $result['Item']['ticket_email_subject']['S']."||+||".$result['Item']['ticket_number']['S']."||+||".$result['Item']['ticket_status']['S']."||+||".$result['Item']['ticket_email_from']['S']."||+||".$result['Item']['ticket_updated_at']['S']."||+||".$bdy_image;
+	echo $result['Item']['ticket_email_subject']['S']."||+||".$result['Item']['ticket_number']['S']."||+||".$result['Item']['ticket_status']['S']."||+||".$result['Item']['ticket_name_from']['S']."||+||".$result['Item']['ticket_updated_at']['S']."||+||".$bdy_image/*."||+||".$arr_att*/;
+	
+	if(!empty($arr_att)) {
+		echo "||+||<br><br><b>Attachments: <b><br>";
+		foreach($arr_att as $at) {
+			echo $at;
+		}
+		//print_r($arr_att);
+	}
+	
 	//echo $bdy_image;
 	//echo $result['Item']['ticket_status']['S'];
 

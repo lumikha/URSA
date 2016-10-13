@@ -9,13 +9,14 @@
         $closed = 30;
         $spam = 0;
 
-        $ticket_id = 20161011152852722141;
+        $ticket_id = "20161011152852722141";
         $customer_name = "John Doe";
         $email_subject = "Lorem Ipsum";
         $email_body = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).";
         $ticket_number = 26191;
         $ticket_updated_at = "10/29/2016";
         $assigned_to = " Agent";
+        $attach = "[attachments_here]";
     } else {
         require_once 'dynamoDB/dbConnect.php';
 
@@ -511,6 +512,30 @@
             -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
             transform: rotate(45deg);
         }
+        .mc_loading {
+            position: absolute;
+            min-height: 500px;
+            max-height: 750px;
+            height: 100%;
+            width: 700px;
+            margin:0;
+            margin-bottom: 20px;
+            z-index: 1;
+            display: none;
+        }
+        .mc_loading .bg {
+            position: absolute;
+            background-color: #ffffff;
+            opacity: .6;
+            height: 100%;
+            width: 100%;
+        }
+        .mc_loading img {
+            width: 100px;
+            position: absolute;
+            top: 180px;
+            left: 290px;
+        }
         .email_opt_top {
             padding-top: 5px;
             padding-bottom: 5px;
@@ -571,8 +596,78 @@
             padding-right: 10px;
             padding-top: 20px;
         }
+        .mattach {
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 20px;
+        }
+        .prevConvo {
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 10px;
+        }
+        .prevConvo span {
+            color: #000;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        /* attachments preview */
+        .imgatt1
+       {
+           position: relative; 
+           display: inline-block;
+           padding: 0.5em;
+       }
+      .imgatt1 button {
+          position: absolute; 
+          width: 35px; 
+          height: 35px; 
+          top: 75%; 
+          left: 78%; 
+          background: transparent; 
+          background-image: url(img/down_icon.png); 
+          background-size: 100%; 
+         border: none;
+       }
+       .att_title
+       {
+           position: absolute; 
+           background: rgb(0, 0, 0); 
+           background: rgba(0, 0, 0, 0.7); 
+           width: 200px; 
+           height: 200px; 
+           display: none; 
+           color: #ffffff ; 
+           font-weight: bold; 
+           padding: 5px; 
+           word-wrap: break-word; 
+           cursor: zoom-in;
+       }
+       .imgatt2
+       {
+           width: 200px; 
+           height: 200px; 
+           margin-bottom:25px;
+
+       }
         
     </style>
+
+    <?php 
+        function divChckBxs() {
+            ?>
+                <ul class="btngrpChckBxs">
+                    <li class='btnAssignTo' onclick="checkedboxes()"><i class="glyphicon glyphicon-user"></i></li>
+                    <li class='btnStatus' onclick="checkedboxes()"><i class="glyphicon glyphicon-flag"></i></li>
+                    <li class='btnTag' onclick="checkedboxes()"><i class="glyphicon glyphicon-tag"></i></li>
+                    <span class="ttAssignTo">Assign</span>
+                    <span class="ttStatus">Status</span>
+                    <span class="ttTag">Tag</span>
+                </ul>
+            <?php
+        }
+    ?>
 
     <div class="container_12 boxsummary2" style="left: 150px;">
               
@@ -606,17 +701,13 @@
                     </div>
                 </div>
                 <div class="grid_4 omega middle_container">
-                    <div></div>
+                    <div class="mc_loading">
+                        <div class="bg"></div>
+                        <img src="img/35.gif">
+                    </div>
                     <?php if($test) { ?>
                         <div id="list_unassigned" class="folder_list_hide">
-                            <ul class="btngrpChckBxs">
-                                <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
-                                <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
-                                <li class='btnTag'><i class="glyphicon glyphicon-tag"></i></li>
-                                <span class="ttAssignTo">Assign</span>
-                                <span class="ttStatus">Status</span>
-                                <span class="ttTag">Tag</span>
-                            </ul>
+                            <?php divChckBxs(); ?>
                             <table id="datatable_unassigned" class="table">
                                 <!--<input type="text" id="chckdTNos">
                                 <span id="chckdTNos_disp"></span>
@@ -632,31 +723,24 @@
                                 </thead>
                                 <tbody>
                                     <?php $i=0; while($i < $unassigned) { ?>
-                                    <tr onclick="getTicketData('20161011152852722141')">
+                                    <tr>
                                         <td><input type="checkbox" id="chckbxid<?=$i?>" class="chckbx"></td>
-                                        <td><?=$customer_name."U".$i?></td>
-                                        <td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')"><?=$customer_name."U".$i?></td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')">
                                             <div class="table_email_content">
                                                 <b><?=$email_subject?></b><br/>
                                                 <?=$email_body?>
                                             </div>
                                         </td>
-                                        <td><?=$ticket_number+$i?></td>
-                                        <td><?=$ticket_updated_at?></td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')"><?=$ticket_number+$i?></td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')"><?=$ticket_updated_at?></td>
                                     </tr>
                                     <?php $i++; } ?>
                                 </tbody>
                             </table>
                         </div>
                         <div id="list_mine" class="folder_list_hide">
-                            <ul class="btngrpChckBxs">
-                                <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
-                                <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
-                                <li class='btnTag'><i class="glyphicon glyphicon-tag"></i></li>
-                                <span class="ttAssignTo">Assign</span>
-                                <span class="ttStatus">Status</span>
-                                <span class="ttTag">Tag</span>
-                            </ul>
+                            <?php divChckBxs(); ?>
                             <table id="datatable_mine" class="table">
                                 <thead>
                                     <tr>
@@ -669,31 +753,24 @@
                                 </thead>
                                 <tbody>
                                     <?php $j=0; while($j < $mine) { ?>
-                                    <tr onclick="document.location = '#<?=$j?>';">
+                                    <tr>
                                         <td><input type="checkbox" id="chckbxid<?=$j?>" class="chckbx"></td>
-                                        <td><?=$customer_name."M"?></td>
-                                        <td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')"><?=$customer_name."M"?></td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')">
                                             <div class="table_email_content">
                                                 <b><?=$email_subject?></b><br/>
                                                 <?=$email_body?>
                                             </div>
                                         </td>
-                                        <td><?=$ticket_number.$j?></td>
-                                        <td><?=$ticket_updated_at?></td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')"><?=$ticket_number.$j?></td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')"><?=$ticket_updated_at?></td>
                                     </tr>
                                     <?php $j++; } ?>
                                 </tbody>
                             </table>
                         </div>
                         <div id="list_assigned" class="folder_list_hide">
-                            <ul class="btngrpChckBxs">
-                                <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
-                                <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
-                                <li class='btnTag'><i class="glyphicon glyphicon-tag"></i></li>
-                                <span class="ttAssignTo">Assign</span>
-                                <span class="ttStatus">Status</span>
-                                <span class="ttTag">Tag</span>
-                            </ul>
+                            <?php divChckBxs(); ?>
                             <table id="datatable_assigned" class="table">
                                 <thead>
                                     <tr>
@@ -711,32 +788,25 @@
                                         $test_arr_agents = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
                                         $ran_agents = array_rand($test_arr_agents);
                                     ?>
-                                    <tr onclick="document.location = '#<?=$k?>';">
+                                    <tr>
                                         <td><input type="checkbox" id="chckbxid<?=$k?>" class="chckbx"></td>
-                                        <td><?=$customer_name."A"?></td>
-                                        <td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')"><?=$customer_name."A"?></td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')">
                                             <div class="table_email_content">
                                                 <b><?=$email_subject?></b><br/>
                                                 <?=$email_body?>
                                             </div>
                                         </td>
-                                        <td><?=$test_arr_agents[$ran_agents].$assigned_to?></td>
-                                        <td><?=$ticket_number.$k?></td>
-                                        <td><?=$ticket_updated_at?></td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')"><?=$test_arr_agents[$ran_agents].$assigned_to?></td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')"><?=$ticket_number.$k?></td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')"><?=$ticket_updated_at?></td>
                                     </tr>
                                     <?php $k++; } ?>
                                 </tbody>
                             </table>
                         </div>
                         <div id="list_closed" class="folder_list_hide">
-                            <ul class="btngrpChckBxs">
-                                <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
-                                <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
-                                <li class='btnTag'><i class="glyphicon glyphicon-tag"></i></li>
-                                <span class="ttAssignTo">Assign</span>
-                                <span class="ttStatus">Status</span>
-                                <span class="ttTag">Tag</span>
-                            </ul>
+                            <?php divChckBxs(); ?>
                             <table id="datatable_closed" class="table">
                                 <thead>
                                     <tr>
@@ -749,31 +819,24 @@
                                 </thead>
                                 <tbody>
                                     <?php $l=0; while($l < $closed) { ?>
-                                    <tr onclick="document.location = '#<?=$l?>';">
+                                    <tr>
                                         <td><input type="checkbox" id="chckbxid<?=$l?>" class="chckbx"></td>
-                                        <td><?=$customer_name."C"?></td>
-                                        <td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')"><?=$customer_name."C"?></td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')">
                                             <div class="table_email_content">
                                                 <b><?=$email_subject?></b><br/>
                                                 <?=$email_body?>
                                             </div>
                                         </td>
-                                        <td><?=$ticket_number.$l?></td>
-                                        <td><?=$ticket_updated_at?></td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')"><?=$ticket_number.$l?></td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')"><?=$ticket_updated_at?></td>
                                     </tr>
                                     <?php $l++; } ?>
                                 </tbody>
                             </table>
                         </div>
                         <div id="list_spam" class="folder_list_hide">
-                            <ul class="btngrpChckBxs">
-                                <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
-                                <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
-                                <li class='btnTag'><i class="glyphicon glyphicon-tag"></i></li>
-                                <span class="ttAssignTo">Assign</span>
-                                <span class="ttStatus">Status</span>
-                                <span class="ttTag">Tag</span>
-                            </ul>
+                            <?php divChckBxs(); ?>
                             <table id="datatable_spam" class="table">
                                 <thead>
                                     <tr>
@@ -786,17 +849,17 @@
                                 </thead>
                                 <tbody>
                                     <?php $m=0; while($m < $spam) { ?>
-                                    <tr onclick="document.location = '#<?=$m?>';">
+                                    <tr>
                                         <td><input type="checkbox" id="chckbxid<?=$m?>" class="chckbx"></td>
-                                        <td><?=$customer_name."S"?></td>
-                                        <td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')"><?=$customer_name."S"?></td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')">
                                             <div class="table_email_content">
                                                 <b><?=$email_subject?></b><br/>
                                                 <?=$email_body?>
                                             </div>
                                         </td>
-                                        <td><?=$ticket_number.$m?></td>
-                                        <td><?=$ticket_updated_at?></td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')"><?=$ticket_number.$m?></td>
+                                        <td onclick="getTicketData('<?=$ticket_id?>')"><?=$ticket_updated_at?></td>
                                     </tr>
                                     <?php $m++; } ?>
                                 </tbody>
@@ -804,14 +867,7 @@
                         </div>
 <!--TEST END HERE--><?php } else { ?>
                         <div id="list_unassigned" class="folder_list_hide">
-                            <ul class="btngrpChckBxs">
-                                <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
-                                <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
-                                <li class='btnTag'><i class="glyphicon glyphicon-tag"></i></li>
-                                <span class="ttAssignTo">Assign</span>
-                                <span class="ttStatus">Status</span>
-                                <span class="ttTag">Tag</span>
-                            </ul>
+                            <?php divChckBxs(); ?>
                             <table id="datatable_unassigned" class="table">
                                 <thead>
                                     <tr>
@@ -824,31 +880,24 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach($arr_unassigned as $aUN) { ?>
-                                    <tr onclick="getTicketData('<?=$aUN["ticket_id"]?>')">
+                                    <tr>
                                         <td><input type="checkbox" id="chckbxid<?=$aUN['no']?>" class="chckbx"></td>
-                                        <td><?=$aUN['from']?></td>
-                                        <td>
+                                        <td onclick="getTicketData('<?=$aUN["ticket_id"]?>')"><?=$aUN['from']?></td>
+                                        <td onclick="getTicketData('<?=$aUN["ticket_id"]?>')">
                                             <div class="table_email_content">
                                                 <b><?=$aUN['subject']?></b><br/>
                                                 <?=str_replace("<br>",'',$aUN['body'])?>
                                             </div>
                                         </td>
-                                        <td><?=$aUN['no']?></td>
-                                        <td><?=$aUN['updated']?></td>
+                                        <td onclick="getTicketData('<?=$aUN["ticket_id"]?>')"><?=$aUN['no']?></td>
+                                        <td onclick="getTicketData('<?=$aUN["ticket_id"]?>')"><?=$aUN['updated']?></td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>
                             </table>
                         </div>
                         <div id="list_mine" class="folder_list_hide">
-                            <ul class="btngrpChckBxs">
-                                <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
-                                <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
-                                <li class='btnTag'><i class="glyphicon glyphicon-tag"></i></li>
-                                <span class="ttAssignTo">Assign</span>
-                                <span class="ttStatus">Status</span>
-                                <span class="ttTag">Tag</span>
-                            </ul>
+                            <?php divChckBxs(); ?>
                             <table id="datatable_mine" class="table">
                                 <thead>
                                     <tr>
@@ -861,31 +910,24 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach($arr_mine as $aM) { ?>
-                                    <tr onclick="document.location = '#<?=$aM["no"]?>';">
+                                    <tr>
                                         <td><input type="checkbox" id="chckbxid<?=$aM['no']?>" class="chckbx"></td>
-                                        <td><?=$aM['from']?></td>
-                                        <td>
+                                        <td onclick="getTicketData('<?=$aM["ticket_id"]?>')"><?=$aM['from']?></td>
+                                        <td onclick="getTicketData('<?=$aM["ticket_id"]?>')">
                                             <div class="table_email_content">
                                                 <b><?=$aM['subject']?></b><br/>
                                                 <?=str_replace("<br>",'',$aM['body'])?>
                                             </div>
                                         </td>
-                                        <td><?=$aM['no']?></td>
-                                        <td><?=$aM['updated']?></td>
+                                        <td onclick="getTicketData('<?=$aM["ticket_id"]?>')"><?=$aM['no']?></td>
+                                        <td onclick="getTicketData('<?=$aM["ticket_id"]?>')"><?=$aM['updated']?></td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>
                             </table>
                         </div>
                         <div id="list_assigned" class="folder_list_hide">
-                            <ul class="btngrpChckBxs">
-                                <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
-                                <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
-                                <li class='btnTag'><i class="glyphicon glyphicon-tag"></i></li>
-                                <span class="ttAssignTo">Assign</span>
-                                <span class="ttStatus">Status</span>
-                                <span class="ttTag">Tag</span>
-                            </ul>
+                            <?php divChckBxs(); ?>
                             <table id="datatable_assigned" class="table">
                                 <thead>
                                     <tr>
@@ -899,32 +941,25 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach($arr_assigned as $aAS) { ?>
-                                    <tr onclick="document.location = '#<?=$aAS["no"]?>';">
+                                    <tr>
                                         <td><input type="checkbox" id="chckbxid<?=$aAS['no']?>" class="chckbx"></td>
-                                        <td><?=$aAS['from']?></td>
-                                        <td>
+                                        <td onclick="getTicketData('<?=$aAS["ticket_id"]?>')"><?=$aAS['from']?></td>
+                                        <td onclick="getTicketData('<?=$aAS["ticket_id"]?>')">
                                             <div class="table_email_content">
                                                 <b><?=$aAS['subject']?></b><br/>
                                                 <?=str_replace("<br>",'',$aAS['body'])?>
                                             </div>
                                         </td>
-                                        <td><?=$aAS['assigned']?></td>
-                                        <td><?=$aAS['no']?></td>
-                                        <td><?=$aAS['updated']?></td>
+                                        <td onclick="getTicketData('<?=$aAS["ticket_id"]?>')"><?=$aAS['assigned']?></td>
+                                        <td onclick="getTicketData('<?=$aAS["ticket_id"]?>')"><?=$aAS['no']?></td>
+                                        <td onclick="getTicketData('<?=$aAS["ticket_id"]?>')"><?=$aAS['updated']?></td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>
                             </table>
                         </div>
                         <div id="list_closed" class="folder_list_hide">
-                            <ul class="btngrpChckBxs">
-                                <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
-                                <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
-                                <li class='btnTag'><i class="glyphicon glyphicon-tag"></i></li>
-                                <span class="ttAssignTo">Assign</span>
-                                <span class="ttStatus">Status</span>
-                                <span class="ttTag">Tag</span>
-                            </ul>
+                            <?php divChckBxs(); ?>
                             <table id="datatable_closed" class="table">
                                 <thead>
                                     <tr>
@@ -937,31 +972,24 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach($arr_closed as $aC) { ?>
-                                    <tr onclick="document.location = '#<?=$aC["no"]?>';">
+                                    <tr>
                                         <td><input type="checkbox" id="chckbxid<?=$aC['no']?>" class="chckbx"></td>
-                                        <td><?=$aC['from']?></td>
-                                        <td>
+                                        <td onclick="getTicketData('<?=$aC["ticket_id"]?>')"><?=$aC['from']?></td>
+                                        <td onclick="getTicketData('<?=$aC["ticket_id"]?>')">
                                             <div class="table_email_content">
                                                 <b><?=$aC['subject']?></b><br/>
                                                 <?=str_replace("<br>",'',$aC['body'])?>
                                             </div>
                                         </td>
-                                        <td><?=$aC['no']?></td>
-                                        <td><?=$aC['updated']?></td>
+                                        <td onclick="getTicketData('<?=$aC["ticket_id"]?>')"><?=$aC['no']?></td>
+                                        <td onclick="getTicketData('<?=$aC["ticket_id"]?>')"><?=$aC['updated']?></td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>
                             </table>
                         </div>
                         <div id="list_spam" class="folder_list_hide">
-                            <ul class="btngrpChckBxs">
-                                <li class='btnAssignTo'><i class="glyphicon glyphicon-user"></i></li>
-                                <li class='btnStatus'><i class="glyphicon glyphicon-flag"></i></li>
-                                <li class='btnTag'><i class="glyphicon glyphicon-tag"></i></li>
-                                <span class="ttAssignTo">Assign</span>
-                                <span class="ttStatus">Status</span>
-                                <span class="ttTag">Tag</span>
-                            </ul>
+                            <?php divChckBxs(); ?>
                             <table id="datatable_spam" class="table">
                                 <thead>
                                     <tr>
@@ -974,17 +1002,17 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach($arr_spam as $aS) { ?>
-                                    <tr onclick="document.location = '#<?=$aS["no"]?>';">
+                                    <tr>
                                         <td><input type="checkbox" id="chckbxid<?=$aS['no']?>" class="chckbx"></td>
-                                        <td><?=$aS['from']?></td>
-                                        <td>
+                                        <td onclick="getTicketData('<?=$aS["ticket_id"]?>')"><?=$aS['from']?></td>
+                                        <td onclick="getTicketData('<?=$aS["ticket_id"]?>')">
                                             <div class="table_email_content">
                                                 <b><?=$aS['subject']?></b><br/>
                                                 <?=str_replace("<br>",'',$aS['body'])?>
                                             </div>
                                         </td>
-                                        <td><?=$aS['no']?></td>
-                                        <td><?=$aS['updated']?></td>
+                                        <td onclick="getTicketData('<?=$aS["ticket_id"]?>')"><?=$aS['no']?></td>
+                                        <td onclick="getTicketData('<?=$aS["ticket_id"]?>')"><?=$aS['updated']?></td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>
@@ -1009,13 +1037,24 @@
                             <span class="mdate"></span>
                         </div>
                         <div class="mbody"></div>
+                        <div class="mattach">
+                        <?php 
+                            if(!empty($attach) && $test == true) {
+                                echo "<br/><br/><b>Attachments: </b><br/>";
+                            }
+                        ?>
+                        </div>
                     </div>
                 </div>
 
                 <div class="grid_4 right_container">
+                    <div class="prevConvo">
+                        <span>Previous Conversations</span>
+                    </div>
+                </div>
 
             </div>
-         </div> 
+        </div> 
     </div>
    
 
@@ -1204,6 +1243,9 @@
         });
 
         function openFolder(folder, tickets, table) {
+            $('.chckbx').prop('checked', false);
+            $('.chckbx_all').prop('checked', false);
+            $('.btngrpChckBxs').css("display", "none");
             $('.middle_container').css("display", "block");
             $('.middle_container_2').css("display", "none");
             $('.right_container').css("display", "none");
@@ -1338,7 +1380,7 @@
 
         function checkedboxes() {
             var arrOfchckbxs_chckd = [];
-            $("#datatable_unassigned .chckbx").each(function(){
+            $(current_datatable+" .chckbx").each(function(){
                 var id = $(this).attr('id');
                 var $this = $(this);
 
@@ -1356,12 +1398,14 @@
         }
 
         function getTicketData(id) {
+            $('.mc_loading').css("display", "block");
             $('.msubj').empty();
             $('.tNO').empty();
             $('.tSTAT').empty();
             $('.mfrom').empty();
             $('.mdate').empty();
             $('.mbody').empty();
+            $('.mattach').empty();
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function() {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -1373,7 +1417,10 @@
                     $('.mfrom').text("FROM: "+field[3]);
                     $('.mdate').text(field[4]);
                     $('.mbody').append(field[5]);
+                    $('.mattach').append(field[6]);
+                    
                     if(res) {
+                        $('.mc_loading').css("display", "none");
                         openOneTicket();
                     }
                 }
