@@ -158,15 +158,16 @@
                             <label>Ticket Entry No.</label>
                             <input type="text" class="form-control" id="tNo" value="" style="text-align: center; font-weight: bold;" readonly>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <label style="display: none;">Ticket ID</label>
                             <input type="text" class="form-control" id="tID" value="" style="text-align: center; font-weight: bold; display: none;" readonly>
                         </div>
 
 
 
-                        <div class="col-md-2 text-right" style="top:-20px">
+                        <div class="col-md-3 text-right" style="top:-20px">
                             <a id="expand" href="#"><span id="glyph_resize" class="btn btn-info btn-sm glyphicon glyphicon-resize-full " aria-hidden="true"></span></a>
+                            <a id="close_modal" href="#"><span id="glyph_close" class="btn btn-danger btn-sm glyphicon glyphicon-remove " aria-hidden="true"></span></a>
                         </div>
                        
                     </div>
@@ -244,7 +245,7 @@
     </div>
 
     <div class="modal fade" id="updateTicket" tabindex="-1" role="dialog">
-        <div id="modal_cont" class="modal-dialog modal-lg">
+        <div id="modal_cont" class="modal-dialog modal-md">
             <div class="modal-content">
                                     
                 <div class="modal-body">
@@ -639,4 +640,8 @@
             $('a button').css({ 'width': '35px', 'height': '35px'}).addClass('modal-md'); 
          }
     });
+
+$('#close_modal').click(function() {
+    $('#viewTicket').modal('hide');
+});
 </script>
