@@ -1428,4 +1428,44 @@
             xmlhttp.open("GET", "support_get_one?tid="+id, true);
             xmlhttp.send(null);   
         }
+
+
+                    $(function() {
+            var offset = $(".left_container").offset();
+            var topPadding = 15;
+            $(window).scroll(function() {
+                if ($(window).scrollTop() > offset.top) {
+                    $(".left_container").stop().animate({
+                        marginTop: $(window).scrollTop() - offset.top + topPadding
+                    });
+                } else {
+                    $(".left_container").stop().animate({
+                        marginTop: 0
+                    });
+                };
+            });
+        });
+
+
+
+
+            $(function() {
+            var offset = $(".right_container").offset();
+            var topPadding = 15;
+            $(window).scroll(function() {
+                if ($(window).scrollTop() > offset.top) {
+                    $(".right_container").stop().animate({
+                        marginTop: $(window).scrollTop() - offset.top + topPadding
+                    });
+                } else {
+                    $(".right_container").stop().animate({
+                        marginTop: 0
+                    });
+                };
+            });
+        });
+       
+
+
+
     </script>
