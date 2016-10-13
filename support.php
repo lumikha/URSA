@@ -1430,41 +1430,26 @@
         }
 
 
-                    $(function() {
-            var offset = $(".left_container").offset();
-            var topPadding = 15;
-            $(window).scroll(function() {
-                if ($(window).scrollTop() > offset.top) {
-                    $(".left_container").stop().animate({
-                        marginTop: $(window).scrollTop() - offset.top + topPadding
-                    });
-                } else {
-                    $(".left_container").stop().animate({
-                        marginTop: 0
-                    });
-                };
-            });
-        });
-
-
-
-
+//fixed position for right and left containers when a ticket is clicked
             $(function() {
-            var offset = $(".right_container").offset();
+            var offset = $(".left_container, .right_container").offset();
             var topPadding = 15;
             $(window).scroll(function() {
                 if ($(window).scrollTop() > offset.top) {
-                    $(".right_container").stop().animate({
+                    $(".left_container, .right_container").stop().animate({
                         marginTop: $(window).scrollTop() - offset.top + topPadding
                     });
                 } else {
-                    $(".right_container").stop().animate({
+                    $(".left_container, .right_container").stop().animate({
                         marginTop: 0
                     });
                 };
             });
         });
-       
+
+
+
+
 
 
 
