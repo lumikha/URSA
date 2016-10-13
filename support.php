@@ -622,44 +622,42 @@
 
         /* attachments preview */
         .imgatt1
-       {
-           position: relative; 
-           display: inline-block;
-           padding: 0.5em;
-       }
-      .imgatt1 button {
-          position: absolute; 
-          width: 35px; 
-          height: 35px; 
-          top: 75%; 
-          left: 78%; 
-          background: transparent; 
-          background-image: url(img/down_icon.png); 
-          background-size: 100%; 
-         border: none;
-       }
+        {
+            position: relative; 
+            display: inline-block;
+            padding: 0.5em;
+        }
+        .imgatt1 button {
+            position: absolute; 
+            width: 35px; 
+            height: 35px; 
+            top: 75%; 
+            left: 78%; 
+            background: transparent; 
+            background-image: url(img/down_icon.png); 
+            background-size: 100%; 
+            border: none;
+        }
        .att_title
-       {
-           position: absolute; 
-           background: rgb(0, 0, 0); 
-           background: rgba(0, 0, 0, 0.7); 
-           width: 200px; 
-           height: 200px; 
-           display: none; 
-           color: #ffffff ; 
-           font-weight: bold; 
-           padding: 5px; 
-           word-wrap: break-word; 
-           cursor: zoom-in;
+        {
+            position: absolute; 
+            background: rgb(0, 0, 0); 
+            background: rgba(0, 0, 0, 0.7); 
+            width: 200px; 
+            height: 200px; 
+            display: none; 
+            color: #ffffff ; 
+            font-weight: bold; 
+            padding: 5px; 
+            word-wrap: break-word; 
+            cursor: zoom-in;
+        }
+        .imgatt2
+        {
+            width: 200px; 
+            height: 200px; 
+            margin-bottom:25px;
        }
-       .imgatt2
-       {
-           width: 200px; 
-           height: 200px; 
-           margin-bottom:25px;
-
-       }
-        
     </style>
 
     <?php 
