@@ -25,7 +25,7 @@
         position: relative;
         top: 7px;
         }
-    </style>"
+    </style>
         <div class="full-width-div">
         <div class="container_12 boxcustomer">
         
