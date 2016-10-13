@@ -129,6 +129,7 @@
                         }
                     }
                     $noteLists = $arr_notes;
+                }
 
                 
                 if($live_server) {
