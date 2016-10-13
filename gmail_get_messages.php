@@ -3,6 +3,9 @@
     require_once realpath(dirname(__FILE__) . '/lib/google/apiclient/src/Google/autoload.php');
     require_once 'liveServer.php';
 
+    $tbname = 'ursa-tickets';
+    $tbid = 'ticket_id';
+
     $params_t_check = [
     'TableName' => $tbname,
     'ProjectionExpression' => $tbid.',ticket_number,ticket_gmail_id,ticket_name_from,ticket_email_subject,ticket_email_from,ticket_email_body,ticket_embedded_image,ticket_email_attachment,ticket_notes,ticket_status'
@@ -95,9 +98,11 @@
                 $noteLists = $arr_notes;
             }
 
-            $locpath = "../URSA_att";
-            $replace_livepath = $att_path; 
-            $arr_att = str_replace($locpath, $replace_livepath, $arr_att);
+            if($live_server) {
+                $locpath = "../URSA_att";
+                $replace_livepath = "attachments";
+                $arr_att = str_replace($locpath, $replace_livepath, $arr_att);
+            }
 
             array_push($arr_msgs, array(
                 $tbid => $obj2[$tbid]['S'],

@@ -4,6 +4,9 @@
 
 	$id = $_REQUEST["tid"];
 
+	$tbname = 'ursa-tickets';
+    $tbid = 'ticket_id';
+
     $key = $marshaler->marshalJson('
 	    {
 	        "ticket_id": "'.$id.'"
@@ -86,9 +89,11 @@
 		$noteLists = $arr_notes;
 	}
 
-    $locpath = "../URSA_att";
-    $replace_livepath = $att_path;
-    $arr_att = str_replace($locpath, $replace_livepath, $arr_att);
+    if($live_server) {
+        $locpath = "../URSA_att";
+        $replace_livepath = "attachments";
+        $arr_att = str_replace($locpath, $replace_livepath, $arr_att);
+    }
 
 	echo $result['Item']['ticket_email_subject']['S']."||+||".$result['Item']['ticket_number']['S']."||+||".$result['Item']['ticket_status']['S']."||+||".$result['Item']['ticket_name_from']['S']."||+||".$result['Item']['ticket_updated_at']['S']."||+||".$bdy_image/*."||+||".$arr_att*/;
 	
