@@ -1,5 +1,5 @@
 <?php
-	$live_server = true;
+	$live_server = false;
     if($live_server) {
         $att_path = "attachments/";
         $tbname = 'ursa-tickets';
