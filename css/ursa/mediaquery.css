@@ -732,6 +732,14 @@
  
 }
 
+.middle_container
+{
+  height: 500px !important;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+
 /* END support.php*/
 
 #previewAtt

@@ -1,6 +1,5 @@
 <?php
     require 'header.php';
-    require_once 'liveServer.php';
 
     $test = false;
     if($test) {
@@ -20,6 +19,9 @@
         $attach = "[attachments_here]";
     } else {
         require_once 'dynamoDB/dbConnect.php';
+
+
+        $att_path = "../URSA_att/";
 
         $tbname = 'ursa-tickets';
         $tbid = 'ticket_id';
@@ -127,13 +129,14 @@
                         }
                     }
                     $noteLists = $arr_notes;
-                }
+
                 
                 if($live_server) {
                     $locpath = "../URSA_att";
                     $replace_livepath = "attachments";
                     $arr_att = str_replace($locpath, $replace_livepath, $arr_att);
                 }
+
 
                 if($obj2['ticket_status']['S'] == 'unassigned') {
                     array_push($arr_unassigned, array(
@@ -674,7 +677,7 @@
             <?php
         }
     ?>
-
+<div class="full-width-div">
     <div class="container_12 boxsummary2" style="left: 150px;">
               
             <div class="container_12">
@@ -1437,11 +1440,15 @@
 
 
 //fixed position for right and left containers when a ticket is clicked
-            $(function() {
+           /** $(function() {
             var offset = $(".left_container, .right_container").offset();
             var topPadding = 15;
             $(window).scroll(function() {
-                if ($(window).scrollTop() > offset.top) {
+
+                if($(window).width() >= 959)
+                if ($(window).scrollTop() > offset.top) 
+                 
+                {
                     $(".left_container, .right_container").stop().animate({
                         marginTop: $(window).scrollTop() - offset.top + topPadding
                     });
@@ -1454,7 +1461,7 @@
         });
 
 
-
+**/
 
 
 
