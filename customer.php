@@ -90,25 +90,34 @@
                     
                     if(isset($_GET['id'])) {
                         $touch_cnt = 0;
-                        foreach (array_reverse($all_logs) as $object) {
+                        $logs_this_cust = array();
+                        foreach ($all_logs as $object) {
                             $log_customer_id = $object['customer_id']['S'];
                             if($log_customer_id == $_GET['id'])
                             {
+                                
+                                array_push($logs_this_cust, array(
+                                    "log_user_id" => $object['user_id']['S'],
+                                    "log_customer_id" => $object['customer_id']['S'],
+                                    "log_event" => $object['event']['S'],
+                                    "log_data" => $object['data']['S'],
+                                    "log_date" => $object['date']['S'],
+                                ));
+                                $logs_this_cust[$object['date']['S']] = $logs_this_cust[$touch_cnt];
+                                unset($logs_this_cust[$touch_cnt]);
                                 $touch_cnt++;
                             }
                         }
-                        foreach (array_reverse($all_logs) as $object) {
-                            //$log_id = $object->value->id;
-                            $log_user_id = $object['user_id']['S'];
-                            $log_customer_id = $object['customer_id']['S'];
-                            $log_event = $object['event']['S'];
-                            $log_data = $object['data']['S'];
-                            $log_date = $object['date']['S'];
-                            if($log_customer_id == $_GET['id'])
-                            {
-                                echo "<p><b>#</b>".$touch_cnt." - <b>".$log_event."</b> ".$log_data." - ".$log_date."</p>";
-                                $touch_cnt--;
-                            }
+
+                        krsort($logs_this_cust);
+                        foreach ($logs_this_cust as $log) {
+                            $log_user_id = $log['log_user_id'];
+                            $log_customer_id = $log['log_customer_id'];
+                            $log_event = $log['log_event'];
+                            $log_data = $log['log_data'];
+                            $log_date = $log['log_date'];
+                            echo "<p><b>#</b>".$touch_cnt." - <b>".$log_event."</b> ".$log_data." - ".$log_date."</p>";
+                            $touch_cnt--;
                         }
                     }
                     

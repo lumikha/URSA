@@ -1,5 +1,6 @@
 <?php
     require 'header.php';
+    require_once 'liveServer.php';
 
     $test = false;
     if($test) {
@@ -19,9 +20,6 @@
         $attach = "[attachments_here]";
     } else {
         require_once 'dynamoDB/dbConnect.php';
-
-
-        $att_path = "../URSA_att/";
 
         $tbname = 'ursa-tickets';
         $tbid = 'ticket_id';
