@@ -1,7 +1,7 @@
 <?php
     require 'header.php';
 
-    $test = true;
+    $test = false;
     if($test) {
         $unassigned = 14;
         $mine = 0;
@@ -9,6 +9,7 @@
         $closed = 30;
         $spam = 0;
 
+        $ticket_id = 20161011152852722141;
         $customer_name = "John Doe";
         $email_subject = "Lorem Ipsum";
         $email_body = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).";
@@ -232,12 +233,21 @@
             margin:0;
             margin-bottom: 20px;
             background-color: #fafafa;
+            display: block;
+        }
+        .middle_container_2 {
+            min-height: 500px;
+            height: auto;
+            width: 500px !important;
+            margin:0;
+            background-color: #fafafa;
+            display: none;
         }
         .right_container {
-            min-height: 500px;
-            max-height: 750px;
-            height: auto; 
-            width: 150px; 
+            min-height: 100px;
+            max-height: 500px;
+            height: 500px; 
+            width: 200px !important; 
             margin:0; 
             background-color: #e6e6e6;
             display: none;
@@ -501,6 +511,66 @@
             -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
             transform: rotate(45deg);
         }
+        .email_opt_top {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 10px;
+            height: 40px;
+            border-bottom: 1px solid black;
+        }
+        .mail_subj {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 10px;
+            border-bottom: 1px solid black;
+        }
+        .mail_subj .msubj {
+            font-weight: bold;
+            font-size: 20px;
+            width: 70%;
+            word-wrap: break-word; 
+            display: inline-block;
+        }
+        .mail_subj .right_side {
+            padding-right: 10px;
+            display: inline-block;
+            height: 30px;
+            margin-left: 40px;
+            top: 0;
+        }
+        .mail_subj .tNO {
+            font-weight: bold;
+            font-size: 18px;
+            width: 10%;
+            display: block;
+        }
+        .mail_subj .tSTAT {
+            font-size: 15px;
+            width: 10%;
+            display: block;
+        }
+        .mail_body {
+            min-height: 100px;
+            height: auto;
+            padding-top: 15px;
+        }
+        .mail_body .mfrom {
+            width: 60%;
+            padding-left: 10px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        .mail_body .mdate {
+            width: 20%;
+            float: right;
+            padding-right: 10px;
+            color: #a5b2bd;
+        }
+        .mbody {
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 20px;
+        }
         
     </style>
 
@@ -536,6 +606,7 @@
                     </div>
                 </div>
                 <div class="grid_4 omega middle_container">
+                    <div></div>
                     <?php if($test) { ?>
                         <div id="list_unassigned" class="folder_list_hide">
                             <ul class="btngrpChckBxs">
@@ -561,7 +632,7 @@
                                 </thead>
                                 <tbody>
                                     <?php $i=0; while($i < $unassigned) { ?>
-                                    <tr onclick="document.location = '#<?=$i?>';">
+                                    <tr onclick="getTicketData('20161011152852722141')">
                                         <td><input type="checkbox" id="chckbxid<?=$i?>" class="chckbx"></td>
                                         <td><?=$customer_name."U".$i?></td>
                                         <td>
@@ -753,7 +824,7 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach($arr_unassigned as $aUN) { ?>
-                                    <tr onclick="document.location = '#<?=$aUN["no"]?>';">
+                                    <tr onclick="getTicketData('<?=$aUN["ticket_id"]?>')">
                                         <td><input type="checkbox" id="chckbxid<?=$aUN['no']?>" class="chckbx"></td>
                                         <td><?=$aUN['from']?></td>
                                         <td>
@@ -920,6 +991,25 @@
                             </table>
                         </div>
                     <?php } ?>
+                </div>
+                <div class="grid_4 omega middle_container_2">
+                    <div class="email_opt_top">
+                        <span>[action_buttons here]</span>
+                    </div>
+                    <div class="mail_subj">
+                        <span class="msubj"></span>
+                        <div class="right_side">
+                            <span class="tNO"></span>
+                            <span class="tSTAT"></span>
+                        </div>
+                    </div>
+                    <div class="mail_body">
+                        <div class="mdetails">
+                            <span class="mfrom"></span>
+                            <span class="mdate"></span>
+                        </div>
+                        <div class="mbody"></div>
+                    </div>
                 </div>
 
                 <div class="grid_4 right_container">
@@ -1114,6 +1204,9 @@
         });
 
         function openFolder(folder, tickets, table) {
+            $('.middle_container').css("display", "block");
+            $('.middle_container_2').css("display", "none");
+            $('.right_container').css("display", "none");
             $('#list_unassigned').addClass('folder_list_hide');
             $('#list_mine').addClass('folder_list_hide');
             $('#list_assigned').addClass('folder_list_hide');
@@ -1254,5 +1347,38 @@
                 }
             });
             alert(arrOfchckbxs_chckd);
+        }
+
+        function openOneTicket() {
+            $('.middle_container').css("display", "none");
+            $('.middle_container_2').css("display", "block");
+            $('.right_container').css("display", "block");
+        }
+
+        function getTicketData(id) {
+            $('.msubj').empty();
+            $('.tNO').empty();
+            $('.tSTAT').empty();
+            $('.mfrom').empty();
+            $('.mdate').empty();
+            $('.mbody').empty();
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    var res = String(xmlhttp.responseText);
+                    field = res.split("||+||");
+                    $('.msubj').text(field[0]);
+                    $('.tNO').text("#"+field[1]);
+                    $('.tSTAT').text(field[2]);
+                    $('.mfrom').text("FROM: "+field[3]);
+                    $('.mdate').text(field[4]);
+                    $('.mbody').append(field[5]);
+                    if(res) {
+                        openOneTicket();
+                    }
+                }
+            }
+            xmlhttp.open("GET", "support_get_one?tid="+id, true);
+            xmlhttp.send(null);   
         }
     </script>
