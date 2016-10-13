@@ -1,11 +1,8 @@
 <?php
 	require_once 'dynamoDB/dbConnect.php';
+	require_once 'liveServer.php';
 
 	$id = $_REQUEST["tid"];
-
-	$att_path = "../URSA_att/";
-   	$tbname = 'ursa-tickets';
-    $tbid = 'ticket_id';
 
     $key = $marshaler->marshalJson('
 	    {
@@ -88,9 +85,11 @@
 			}
 		$noteLists = $arr_notes;
 	}
-/*
-	echo "<pre>"; print_r($result); echo "</pre>";
-*/
+
+    $locpath = "../URSA_att";
+    $replace_livepath = $att_path;
+    $arr_att = str_replace($locpath, $replace_livepath, $arr_att);
+
 	echo $result['Item']['ticket_email_subject']['S']."||+||".$result['Item']['ticket_number']['S']."||+||".$result['Item']['ticket_status']['S']."||+||".$result['Item']['ticket_name_from']['S']."||+||".$result['Item']['ticket_updated_at']['S']."||+||".$bdy_image/*."||+||".$arr_att*/;
 	
 	if(!empty($arr_att)) {
@@ -98,10 +97,8 @@
 		foreach($arr_att as $at) {
 			echo $at;
 		}
-		//print_r($arr_att);
 	}
+
 	
-	//echo $bdy_image;
-	//echo $result['Item']['ticket_status']['S'];
 
 ?>

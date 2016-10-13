@@ -1,5 +1,6 @@
 <?php
     require 'header.php';
+    require_once 'liveServer.php';
 
     $test = false;
     if($test) {
@@ -19,10 +20,6 @@
         $attach = "[attachments_here]";
     } else {
         require_once 'dynamoDB/dbConnect.php';
-
-        $att_path = "../URSA_att/";
-        $tbname = 'ursa-tickets';
-        $tbid = 'ticket_id';
 
         $params_t_check = [
             'TableName' => $tbname,
@@ -127,6 +124,14 @@
                         }
                     }
                     $noteLists = $arr_notes;
+                }
+
+                $live_server = true;
+                if($live_server) {
+                    $locpath = "../URSA_att";
+                    $replace_livepath = "attachments";
+                    $bdy_image = str_replace($locpath, $replace_livepath, $bdy_image);  
+                    $arr_att = str_replace($locpath, $replace_livepath, $arr_att);
                 }
 
                 if($obj2['ticket_status']['S'] == 'unassigned') {

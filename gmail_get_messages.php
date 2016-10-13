@@ -1,17 +1,7 @@
 <?php
     require_once 'dynamoDB/dbConnect.php';
     require_once realpath(dirname(__FILE__) . '/lib/google/apiclient/src/Google/autoload.php');
-
-    $live_server = true;
-    if($live_server) {
-        $att_path = "../URSA_att/";
-        $tbname = 'ursa-tickets';
-        $tbid = 'ticket_id';
-    } else {
-        $att_path = "../URSA_att/";
-        $tbname = 'ursa-ticket-notes';
-        $tbid = 'ticket_note_id';
-    }
+    require_once 'liveServer.php';
 
     $params_t_check = [
     'TableName' => $tbname,
@@ -104,6 +94,10 @@
                 }
                 $noteLists = $arr_notes;
             }
+
+            $locpath = "../URSA_att";
+            $replace_livepath = $att_path; 
+            $arr_att = str_replace($locpath, $replace_livepath, $arr_att);
 
             array_push($arr_msgs, array(
                 $tbid => $obj2[$tbid]['S'],
