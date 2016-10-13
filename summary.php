@@ -449,6 +449,7 @@
 
 <script>
     $(document).ready(function() {
+        $.cookie('last_tab', '#account');
         $('#viewTicket').on('hidden.bs.modal', function (e) {
             $("#magic_buttons").empty();
             $("#lbl_th").empty();

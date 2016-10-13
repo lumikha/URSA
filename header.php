@@ -122,7 +122,7 @@
                                     <li><a id="btn_account" class="nl disabledTab" data-toggle="tab">Account</a></li>
                                     <li><a id="btn_provisioning" class="nl disabledTab" data-toggle="tab" >Provisioning</a></li>
                                         <?php if($current_page=="support.php") { ?>
-                                            <li class="active"><a id="btn_support" class="nl" href="support.php">Support</a></li>
+                                            <li class="active"><a id="btn_support" class="nl" href="#">Support</a></li>
                                         <?php } else { ?>
                                             <li><a id="btn_support" class="nl" href="support.php">Support</a></li>
                                         <?php } ?>
