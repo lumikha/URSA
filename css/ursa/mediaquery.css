@@ -277,6 +277,15 @@
   
   }
 
+  /*START OF accounts.php*/
+
+  .accounts
+  {
+    top: 30em;
+  }
+
+  /* END OFaccounts.php*/
+
 
  }
 
@@ -528,6 +537,15 @@
   }
 
 
+  /*START OF accounts.php*/
+
+  .accounts
+  {
+    top: 30em;
+  }
+
+  /* END OFaccounts.php*/
+
 }
 
 
@@ -777,6 +795,16 @@
  
   
   }
+
+  
+  /*START OF accounts.php*/
+
+  .accounts
+  {
+    top: 30em;
+  }
+
+  /* END OFaccounts.php*/
 }
 
 /*MEDIUM devices up to Large Devices*/
