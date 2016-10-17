@@ -227,7 +227,7 @@
         }
     }
 ?>
-    <style>
+   <style>
         .left_container {
             height: 500px; 
             width: 200px !important;
@@ -586,6 +586,9 @@
             min-height: 100px;
             height: auto;
             padding-top: 15px;
+            max-height:380px;
+            overflow: scroll; 
+            overflow-x:hidden;
         }
         .mail_body .mfrom {
             width: 60%;
@@ -658,8 +661,12 @@
             height: 200px; 
             margin-bottom:25px;
        }
-    </style>
 
+  
+    </style> 
+
+<div class="full-width-div">
+    <div class="container_12 boxsummary2" style="left: 150px;">
     <?php 
         function divChckBxs() {
             ?>
@@ -674,8 +681,8 @@
             <?php
         }
     ?>
-<div class="full-width-div">
-    <div class="container_12 boxsummary2" style="left: 150px;">
+    
+
               
             <div class="container_12">
                 <div class="grid_4 alpha left_container">
@@ -706,7 +713,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="grid_4 omega middle_container">
+                <div class="grid_4  middle_container">
                     <div class="mc_loading">
                         <div class="bg"></div>
                         <img src="img/35.gif">
@@ -1026,7 +1033,7 @@
                         </div>
                     <?php } ?>
                 </div>
-                <div class="grid_4 omega middle_container_2">
+                <div class="grid_4  middle_container_2">
                     <div class="email_opt_top">
                         <span>[action_buttons here]</span>
                     </div>
@@ -1053,7 +1060,7 @@
                     </div>
                 </div>
 
-                <div class="grid_4 right_container">
+                <div class="grid_4 omega right_container">
                     <div class="prevConvo">
                         <span>Previous Conversations</span>
                     </div>
@@ -1062,11 +1069,13 @@
             </div>
         </div> 
     </div>
+
    
 
 <?php
     require "footer.php";
 ?>
+
 
     <script>
         $(document).ready(function() {

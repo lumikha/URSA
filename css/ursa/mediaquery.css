@@ -213,6 +213,7 @@
 .left_container
 {
   min-width: 280px;
+  height: 300px !important;
 }
 
 .middle_container
@@ -221,6 +222,13 @@
   overflow-x:auto;
   overflow-y: scroll; 
 }
+
+.mail_body
+{
+  max-width: 280px;
+}
+
+
 /* END support.php*/
 
 #previewAtt
@@ -441,6 +449,11 @@
   max-width: 420px !important;
   overflow-x:auto;
   overflow-y: scroll; 
+}
+
+.mail_body
+{
+  max-width: 420px;
 }
 /* END support.php*/
 
@@ -705,7 +718,7 @@
   body, .full-width-div 
   {
     min-width: 960px;
-    margin-left:auto;
+    margin-left: 3em auto;
     margin-right: auto;
   }
 
@@ -718,6 +731,11 @@
 .boxsummary
 {
  position: relative;
+}
+
+#sumArea
+{
+  padding-left: 3em;
 }
 
 /*START support.php*/
@@ -739,6 +757,11 @@
   overflow-x: hidden;
 }
 
+
+.mail_body
+{
+  max-width: 720px;
+}
 
 /* END support.php*/
 
@@ -765,7 +788,6 @@
   
   }
 
-  }
 
   /*Large devices up to extra Large Devices*/
 @media only screen and (min-width: 1600px) and (max-width: 2040px) 
@@ -825,6 +847,14 @@
   
  
 }
+
+.middle_container
+{
+  height: 500px !important;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
 
 /* END support.php*/
 

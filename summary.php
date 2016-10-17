@@ -371,7 +371,7 @@
         }
         </style>
 
-        <div id="sumArea" class="grid_5 push_1 alpha" style="overflow-y: scroll; overflow-x: hidden; height: 550px; padding-left:0em; margin-left:auto;">
+        <div id="sumArea" class="grid_5 alpha" style="overflow-y: scroll; overflow-x: hidden; height: 550px; ">
 
         <?php 
             foreach($arr_msgs as $a_m) { 
