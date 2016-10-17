@@ -223,10 +223,33 @@
   overflow-y: scroll; 
 }
 
+
+.middle_container_2 
+{
+  max-width: 280px !important;
+}
 .mail_body
 {
   max-width: 280px;
 }
+
+.msubj
+{
+ font-weight: bold;
+ font-size: 15px !important;
+ width: 50% !important;
+ word-wrap: break-word; 
+ display: inline-block; 
+}
+
+.mail_body .mfrom {
+            width: 60%;
+            padding-left: 8px;
+            font-size: 10px !important;
+            font-weight: bold;
+        }
+
+
 
 
 /* END support.php*/
@@ -454,6 +477,30 @@
 .mail_body
 {
   max-width: 420px;
+}
+
+.msubj
+{
+ font-weight: bold;
+ font-size: 17px !important;
+ width: 60% !important;
+ word-wrap: break-word; 
+ display: inline-block; 
+}
+
+.mail_body .mfrom {
+            width: 60%;
+            padding-left: 8px;
+            font-size: 12px !important;
+            font-weight: bold;
+        }
+
+
+
+
+.middle_container_2, .prevConvo
+{
+  max-width: 420px !important;
 }
 /* END support.php*/
 
@@ -685,6 +732,28 @@
   overflow-x:auto;
   overflow-y: scroll; 
 }
+
+.middle_container_2, .prevConvo
+{
+  max-width: 720px !important;
+}
+
+.msubj
+{
+ font-weight: bold;
+ font-size: 20px !important;
+ width: 70% !important;
+ word-wrap: break-word; 
+ display: inline-block; 
+}
+
+.mail_body .mfrom {
+            width: 60%;
+            padding-left: 8px;
+            font-size: 15px !important;
+            font-weight: bold;
+        }
+
 /* END support.php*/
 
  #previewAtt
@@ -763,6 +832,8 @@
   max-width: 720px;
 }
 
+
+
 /* END support.php*/
 
 #previewAtt
@@ -837,16 +908,11 @@
 
   /*START support.php*/
 
-.boxsummary2
-{
-  
-  position: relative;
-  margin-left: 12em;
-  top: 1.5em;
 
   
  
 }
+
 
 .middle_container
 {

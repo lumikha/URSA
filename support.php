@@ -533,7 +533,7 @@
         }
         .mc_loading .bg {
             position: absolute;
-            background-color: #ffffff;
+            background-color: transparent;
             opacity: .6;
             height: 100%;
             width: 100%;
@@ -629,13 +629,14 @@
             position: relative; 
             display: inline-block;
             padding: 0.5em;
+
         }
         .imgatt1 button {
             position: absolute; 
-            width: 35px; 
-            height: 35px; 
-            top: 75%; 
-            left: 78%; 
+            width: 20px; 
+            height: 20px; 
+            top: 70%; 
+            left: 75%; 
             background: transparent; 
             background-image: url(img/down_icon.png); 
             background-size: 100%; 
@@ -646,8 +647,8 @@
             position: absolute; 
             background: rgb(0, 0, 0); 
             background: rgba(0, 0, 0, 0.7); 
-            width: 200px; 
-            height: 200px; 
+            width: 100px; 
+            height: 100px; 
             display: none; 
             color: #ffffff ; 
             font-weight: bold; 
@@ -657,10 +658,13 @@
         }
         .imgatt2
         {
-            width: 200px; 
-            height: 200px; 
+            width: 100px; 
+            height: 100px; 
             margin-bottom:25px;
        }
+
+
+
 
   
     </style> 
@@ -716,7 +720,7 @@
                 <div class="grid_4  middle_container">
                     <div class="mc_loading">
                         <div class="bg"></div>
-                        <img src="img/35.gif">
+                        <img src="img/loader1.gif">
                     </div>
                     <?php if($test) { ?>
                         <div id="list_unassigned" class="folder_list_hide">
@@ -1033,7 +1037,7 @@
                         </div>
                     <?php } ?>
                 </div>
-                <div class="grid_4  middle_container_2">
+                <div class="grid_4 middle_container_2">
                     <div class="email_opt_top">
                         <span>[action_buttons here]</span>
                     </div>
@@ -1470,6 +1474,6 @@
 **/
 
 
+</script>
 
 
-    </script>
