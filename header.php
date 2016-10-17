@@ -142,6 +142,21 @@
                                     <li><a id="btn_center" class="nl" href="#center" data-toggle="tab" >Center</a></li>
                                     <li><a id="btn_admin" href="#admin" data-toggle="tab" class="nl <?php if($_SESSION['type'] == 'agent'): ?> hidden <?php endif;?>" >Admin</a></li>
                                     <?php } ?>
+<!--ako ra nagbutang butang ani, please ra ko change ani-->
+
+                                     <?php  if($current_page=="accounts.php") { ?>  
+                                    <li><a class="hidden">Hidden</a></li>
+                                    <li><a id="btn_account" class="nl" href="#account" data-toggle="tab">Account</a></li>
+                                    <li><a id="btn_provisioning" class="nl" href="#provisioning" data-toggle="tab" >Provisioning</a></li>
+                                    <li><a id="btn_support" class="nl" href="support">Support</a></li>
+                                    <li><a id="btn_customer" class="nl" href="#customer" data-toggle="tab" >Customer</a></li>
+                                    <li><a id="btn_quality" class="nl" href="#quality" data-toggle="tab" >Quality</a></li>
+                                    <li><a id="btn_dashboard" class="nl" href="#dashboard" data-toggle="tab" >Dashboard</a></li>
+                                    <li><a id="btn_center" class="nl" href="#center" data-toggle="tab" >Center</a></li>
+                                    <li><a id="btn_admin" href="#admin" data-toggle="tab" class="nl <?php if($_SESSION['type'] == 'agent'): ?> hidden <?php endif;?>" >Admin</a></li>
+                                    <?php } ?>
+
+ <!---->                                   
                                 </ul>
                                     <?php if($current_page == "customer.php") { ?>
                                      <div class="container_12" hidden>
