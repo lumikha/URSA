@@ -533,7 +533,7 @@
         }
         .mc_loading .bg {
             position: absolute;
-            background-color: transparent;
+            background-color: #FFF;
             opacity: .6;
             height: 100%;
             width: 100%;

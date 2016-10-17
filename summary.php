@@ -142,7 +142,81 @@
         input[readonly], span[readonly] {
             background-color: #fff !important;
         }
+
+        .mc_loading {
+            position: absolute;
+            min-height: 500px;
+            max-height: 750px;
+            height: 100%;
+            width: 700px;
+            margin:0;
+            margin-bottom: 20px;
+            z-index: 1;
+            display: none;
+        }
+        .mc_loading .bg {
+            position: absolute;
+            background-color: #FFF;
+            opacity: .6;
+            height: 100%;
+            width: 100%;
+        }
+        .mc_loading img {
+            width: 200px;
+            position: absolute;
+            top: 120px;
+            left: 320px;
+        }
     </style>
+
+    <div class="container_12">
+
+        <style>
+            .table tbody tr {
+            cursor: pointer;
+            }
+            .table tbody tr:hover {
+                background-color: #e6f1ff;
+            }
+            #accountsArea::-webkit-scrollbar { 
+                display: none; 
+            }
+            .glyphicon.glyphicon-briefcase {
+                font-size: 15px;
+            }
+        </style>
+
+        <div class="grid_12 push_1 alpha accounts" style="height: 500px; width: 93%; position: relative; margin-left: 20px; margin-top: -25px;">
+            <h2 style="font-weight: bold; margin-left: 10px;">Business Accounts</h2>
+            <div id="accountsArea" style="width: 100%; height: 100%; margin-top: -20px; backgroun-color: black; overflow-y: scroll;">
+                <table id="datatable_accounts" class="table">
+                    <div class="mc_loading">
+                        <div class="bg"></div>
+                        <img src="img/loader1.gif">
+                    </div>
+                    <thead>
+                        <tr>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php   
+                            foreach ($result_db_customers['Items'] as $i) {
+                                $cust = $marshaler->unmarshalItem($i); ?>
+                                <tr style="margin-left: 10px;"><td class="oneAcc" onclick="oneAccount('<?=$cust["chargify_id"]?>')">
+                                <?php
+                                echo '<span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> &nbsp;&nbsp;&nbsp;<strong style="font-size: 20px; color: #31708f;">'.$cust['business_name'].'</strong><br>
+                                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;'.$cust['customer_first_name'].' '.$cust['customer_last_name'].'&nbsp;&nbsp;&nbsp; 
+                                        <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp; '.$cust['business_email'].'';
+                                echo '</td></tr>';
+                            }
+                        ?>
+                        <tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
     <div class="container_12 boxsummary" style="left: 150px";> 
     <div class="modal fade" id="viewTicket" tabindex="-1" role="dialog">
@@ -473,6 +547,29 @@
             document.getElementById("commit_subj").value = "";
             document.getElementById("commit_msg").value = "";
         })
+
+        $('#datatable_accounts').DataTable({
+                "bPaginate": true,
+                "pagingType": "full_numbers",
+                "language": {
+                    "paginate": {
+                        "first": "&lt;&lt;",
+                        "previous": "&lt;",
+                        "next": "&gt;",
+                        "last": "&gt;&gt;"
+                    },
+                    "sInfo": "_TOTAL_ total <b>unassigned</b> tickets | Viewing <b>_START_</b> - <b>_END_</b>",
+                    "sEmptyTable": "Amazing! All tickets were all handled, let's wait for new ones."
+                },
+                "lengthChange": false,
+                "bFilter": true, 
+                "bInfo": true,
+                "order": [3, 'asc'],
+                "columnDefs": [ {
+                  "targets"  : [0,2],
+                  "orderable": false,
+                }]
+            });
     });
     
     function showTitle(x) {
@@ -644,4 +741,9 @@
 $('#close_modal').click(function() {
     $('#viewTicket').modal('hide');
 });
+
+function oneAccount(accountid) {
+    $('.mc_loading').css("display", "block");
+    window.location.href = 'customer?id=' + accountid;
+}
 </script>
