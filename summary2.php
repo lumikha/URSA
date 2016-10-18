@@ -1,6 +1,6 @@
 <?php
     require 'header.php';
-    require 'gmail_get_messages2.php';
+    require 'gmail_get_messages.php';
     $em_check = array();
     foreach ($result_db_customers['Items'] as $obj) {
         if($obj['customer_email']['S']){
@@ -12,6 +12,94 @@
                 "lname" => $obj['customer_last_name']['S'],
                 "bphone" => $obj['business_phone_no']['S']
             ));
+        }
+    }
+
+    if(@$_POST['new_thread']){
+        $new_note_id = GUID();
+        
+        if($_POST['status'] != $_POST['curr_status']) {
+            if(empty($_POST['message'])) {
+                $n_ctnt = $_POST['message']."<b>~</b> changed status from ";
+            } else {
+                $n_ctnt = $_POST['message']."<br/></br><b>~</b> changed status from ";
+            }
+            $n_ctnt .= "<b>".strtoupper($_POST['curr_status'])."</b> to <b>".strtoupper($_POST['status'])."</b>.";
+        } else {
+            $n_ctnt = $_POST['message'];
+        }
+
+        $updatedDateNow = date('Y/m/d H:i:s');
+
+        //insert new ticket note in ursa-ticket-notes
+        $new_note = $marshaler->marshalJson('
+            {
+                "ticket_note_id": "'.$new_note_id.'",
+                "ticket_id": "'.@$_POST['cTID'].'",
+                "note_content": "'.$n_ctnt.'",
+                "note_created_at": "'.$updatedDateNow.'",
+                "note_created_by": "'.$fname.'",
+                "ticket_current_status": "'.$_POST['status'].'"
+            }
+        ');
+
+        $params_new_note = [
+            'TableName' => 'ursa-ticket-notes',
+            'Item' => $new_note
+        ];
+
+        //get list of existing notes for the current ticket_id
+        $get_notes = $marshaler->marshalJson('
+            {
+                "ticket_id": "'.$_POST['cTID'].'"
+            }
+        ');
+        $params_get_ticket = [
+            'TableName' => 'ursa-tickets',
+            'Key' => $get_notes
+        ];
+
+        try {
+            $dynamodb->putItem($params_new_note);
+            $ticket = $dynamodb->getItem($params_get_ticket);
+            json_encode($ticket["Item"]);
+            $existing_notes = $ticket['Item']['ticket_notes']['S'];
+
+            if($existing_notes == "(null)") {
+                $upd_note_lists = $new_note_id;
+            } else {
+                $upd_note_lists = $existing_notes.",".$new_note_id;
+            }
+
+            $current_ticketID = $marshaler->marshalJson('
+            {
+                "ticket_id": "'.$_POST['cTID'].'"
+            }
+            ');
+
+            $toUpdate = $marshaler->marshalJson('
+                {
+                    ":ticket_notes": "'.$upd_note_lists.'",
+                    ":ticket_status": "'.$_POST['status'].'",
+                    ":ticket_updated_at": "'.$updatedDateNow.'"
+                }
+            ');
+
+            $params = [
+                'TableName' => 'ursa-tickets',
+                'Key' => $current_ticketID,
+                'UpdateExpression' => 'set ticket_notes=:ticket_notes, ticket_status=:ticket_status, ticket_updated_at=:ticket_updated_at', 
+                'ExpressionAttributeValues'=> $toUpdate,
+                'ReturnValues' => 'UPDATED_NEW'
+            ];
+
+            $dynamodb->updateItem($params);
+            ?><script>
+                window.location.href = "summary";
+            </script><?php
+   
+        } catch (DynamoDbException $e) {
+            echo $e->getMessage() . "\n";
         }
     }
 ?>
@@ -54,9 +142,65 @@
         input[readonly], span[readonly] {
             background-color: #fff !important;
         }
-    </style>
 
-    <div class="container_12 boxsummary">
+        .mc_loading {
+            position: absolute;
+            min-height: 500px;
+            max-height: 750px;
+            height: 100%;
+            width: 100%;
+            margin:0;
+            margin-bottom: 20px;
+            z-index: 1;
+            display: none;
+        }
+        .mc_loading .bg {
+            position: absolute;
+            background-color: #FFF;
+            opacity: .6;
+            height: 100%;
+            width: 100%;
+        }
+        .mc_loading img {
+            width: 200px;
+            position: absolute;
+            top: 120px;
+            left: 320px;
+        }
+        #datatable_accounts_filter{
+            display:none;
+        }
+    </style>
+    <!--<div class="tab-content">-->
+    <!--<div class="tab-pane fade" id="accounts">-->
+        <div class="container_12 hidden" id="accounts_display">
+
+            <style>
+                .table tbody tr {
+                cursor: pointer;
+                }
+                .table tbody tr:hover {
+                    background-color: #e6f1ff;
+                }
+                #accountsArea::-webkit-scrollbar { 
+                    display: none; 
+                }
+                .glyphicon.glyphicon-briefcase {
+                    font-size: 15px;
+                }
+            </style>
+
+            <div class="grid_12 push_1 alpha" style="height: 500px; width: 93%; position: relative; margin-left: 20px; margin-top: -25px;">
+                <?php
+                    include "forms/accounts_form.php";
+                ?>
+            </div>
+        </div>
+    <!--</div>-->
+
+<!--<div class="tab-pane fade" id="account">-->
+
+    <div class="container_12 boxsummary" style="left: 150px;" id="tickets_display">  
     <div class="modal fade" id="viewTicket" tabindex="-1" role="dialog">
         <div id="modal_dialog" class="modal-dialog modal-md" >
             <div class="modal-content">
@@ -70,13 +214,18 @@
                             <label>Ticket Entry No.</label>
                             <input type="text" class="form-control" id="tNo" value="" style="text-align: center; font-weight: bold;" readonly>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                             <label style="display: none;">Ticket ID</label>
                             <input type="text" class="form-control" id="tID" value="" style="text-align: center; font-weight: bold; display: none;" readonly>
                         </div>
-                        <div class="col-md-2 text-right" style="top:-20px">
+
+
+
+                        <div class="col-md-3 text-right" style="top:-20px">
                             <a id="expand" href="#"><span id="glyph_resize" class="btn btn-info btn-sm glyphicon glyphicon-resize-full " aria-hidden="true"></span></a>
+                            <a id="close_modal" href="#"><span id="glyph_close" class="btn btn-danger btn-sm glyphicon glyphicon-remove " aria-hidden="true"></span></a>
                         </div>
+                       
                     </div>
                     <div class="row">
                         <div class="col-md-12">
@@ -152,26 +301,26 @@
     </div>
 
     <div class="modal fade" id="updateTicket" tabindex="-1" role="dialog">
-        <div id="modal_cont" class="modal-dialog modal-lg">
+        <div id="modal_cont" class="modal-dialog modal-md">
             <div class="modal-content">
                                     
                 <div class="modal-body">
                     <form method="POST">
                         <input type="type" id="cID_new_thread" name="cTID" hidden>
+                        <input type="type" id="curr_status" name="curr_status" hidden>
                         <div class="row">
                             <div class="col-md-6">
                                 <label>New Thread Type</label>
                                 <div class="radio" style="margin-left: 30px;">
-                                    <label><input type="radio" id="rad1" name="type" value="note" onclick="tType(1);">Note</label>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label><input type="radio" id="rad2" name="type" value="message" onclick="tType(2);">Message</label>
+                                    <label><input type="radio" id="rad1" name="type" value="note" onclick="tType(1);" checked>Note</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <!--<label><input type="radio" id="rad2" name="type" value="message" onclick="tType(2);">Message</label>-->
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <label>New Status</label>
                                 <select class="form-control" id="commit_status" name="status">
                                     <optgroup label="Status">
-                                        <option value="" disabled selected>No Change</option>
-                                        <option value="active">Active</option>
+                                        <option value="unassigned">Unassigned</option>
                                         <option value="pending">Pending</option>
                                         <option value="closed">Closed</option>
                                         <option value="spam">Spam</option>
@@ -192,69 +341,67 @@
                         </div>
                     </form>
                 </div>
-        
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="updateTicket" tabindex="-1" role="dialog">
-        <div id="modal_cont" class="modal-dialog modal-lg">
-            <div class="modal-content">
-                                    
-                <div class="modal-body">
-                    <form method="POST">
-                        <input type="type" id="cID_new_thread" name="cTID" hidden>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label>New Thread Type</label>
-                                <div class="radio" style="margin-left: 30px;">
-                                    <label><input type="radio" id="rad1" name="type" value="note" onclick="tType(1);">Note</label>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <label><input type="radio" id="rad2" name="type" value="message" onclick="tType(2);">Message</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label>New Status</label>
-                                <select class="form-control" id="commit_status" name="status">
-                                    <optgroup label="Status">
-                                        <option value="" disabled selected>No Change</option>
-                                        <option value="active">Active</option>
-                                        <option value="pending">Pending</option>
-                                        <option value="closed">Closed</option>
-                                        <option value="spam">Spam</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <label>Message</label>
-                                <textarea class="form-control" id="commit_msg" name="message" style="height: 300px;"></textarea>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <center>
-                                <input type="Submit" class="btn btn-danger" name="new_thread" value="Create Thread">
-                            </center>
-                        </div>
-                    </form>
-                </div>
-        
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="previewAtt" tabindex="-1" role="dialog">
+    <div class="modal fade" id="previewAtt" tabindex="-1" role="dialog" style="margin-left: -5em;">
         <div id="modal_cont" class="modal-dialog">
-            <div class="modal-content" style="position: absolute; margin-left: auto; margin-right: auto; width: 0 !important; height: 0 !important; border: none; padding: none;">
+            <div class="modal-content" style="position: absolute; margin-left: auto; margin-right: auto; width: 0; height: 0; border: none; padding: none;">
                                     
                 <div class="modal-body">
-                    <div id="attid"></div>
-                    <span id="attfn" style="background-color: #000; font-size: 20px; color: #fff;"></span>
+
+                   
                 </div>
+                    <div id="attid"></div>
+                     <span id="attfn" style="text-align:center !important; margin-top: 0em !important; background-color: transparent; font-size: 15px; color: #fff;" ></span>
+                    
+
         
             </div>
         </div>
     </div>
+
+<style>
+       .imgatt1
+       {
+           position: relative; 
+           display: inline-block;
+           padding: 0.5em;
+       }
+      .imgatt1 button {
+          position: absolute; 
+          width: 35px; 
+          height: 35px; 
+          top: 75%; 
+          left: 78%; 
+          background: transparent; 
+          background-image: url(img/down_icon.png); 
+          background-size: 100%; 
+         border: none;
+       }
+       .att_title
+       {
+           position: absolute; 
+           background: rgb(0, 0, 0); 
+           background: rgba(0, 0, 0, 0.7); 
+           width: 200px; 
+           height: 200px; 
+           display: none; 
+           color: #ffffff ; 
+           font-weight: bold; 
+           padding: 5px; 
+           word-wrap: break-word; 
+           cursor: zoom-in;
+       }
+       .imgatt2
+       {
+           width: 200px; 
+           height: 200px; 
+           margin-bottom:25px;
+
+       }
+  </style>
 
     <!--
     <div id="attModal" class="preview-modal">
@@ -274,13 +421,38 @@
     </div>
     <div class="container_12">
 
-        <div class="grid_5 push_1 alpha" style="overflow-y: scroll; overflow-x: hidden; height: 550px; padding-left:0em; margin-left:auto;">
+        <style>
+        #sumArea::-webkit-scrollbar { 
+            display: none; 
+        }
+        </style>
+
+        <div id="sumArea" class="grid_5 alpha" style="overflow-y: scroll; overflow-x: hidden; height: 550px; ">
 
         <?php 
             foreach($arr_msgs as $a_m) { 
-                $mID = $a_m['id'];
+                $mID = $a_m['ticket_id'];
+                $tNo = $a_m['no'];
+                $sts = $a_m['status'];
                 $sbj = $a_m['subject'];
                 $bdy = htmlentities($a_m['body']);
+
+                if($a_m['notes']) {
+                    $th_arr_fin = "";
+                    $th_arr = array();
+                    foreach($a_m['notes'] as $nl) {
+                        array_push($th_arr, "<i><b>".$nl['n_created_by']['S']."</b></i> added note||+||<span style='float: right;'>".$nl['n_created_at']['S']."</span>||+||<p>".$nl['n_content']['S']."</p>~^^^~");
+                    }
+
+                    $thArrCnt = 0;
+                    while(!empty($th_arr[$thArrCnt])) {
+                        $th_arr_fin .= $th_arr[$thArrCnt];
+                        $thArrCnt++;
+                    }
+                } else {
+                    $th_arr_fin = "";
+                }
+
                 $ats_title = "";
                 $ats = "";
                 if($a_m['attachments']) {
@@ -299,19 +471,23 @@
                         $bp = $em_check[$em_cnt]['bphone'];
         ?>
                         <div class="container_12">
-                            <div class="grid_1 alpha round-div">
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                           
+                            <div class="ticketsummary">
+                                <div class="grid_1 alpha round-div">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </div>
+                                <div class="grid_2 omega">
+                                    <a href="#" class="open-modal" data-cid="<?=$cID?>" data-id="<?=$mID?>" data-no="<?=$tNo?>" data-status="<?=$sts?>" data-subject="<?=$sbj?>" data-mes="<?=$bdy?>" data-atturl="<?=$ats_title.$ats?>" data-threadmsg="<?=$th_arr_fin?>">
+                                    <strong><?php echo $bn; ?></strong></a> <br>
+                                    <?php
+                                        echo $fn." ".$ln."<br>".
+                                             $bp."<br>".
+                                             $cID;
+                                    ?>
+                                </div>
                             </div>
-                            <div class="grid_2 omega">
-                                <a href="#" class="open-modal" data-cid="<?=$cID?>" data-id="<?=$mID?>" data-no="" data-subject="<?=$sbj?>" data-mes="<?=$bdy?>" data-atturl="<?=$ats_title.$ats?>" data-threadmsg="">
-                                <strong><?php echo $bn; ?></strong></a> <br>
-                                <?php
-                                    echo $fn." ".$ln."<br>".
-                                         $bp."<br>".
-                                         $cID;
-                                ?>
-                            </div>
-                        </div><br/>
+                        </div>
+                        <br/>
         <?php 
                     }
                     $em_cnt++;
@@ -322,14 +498,22 @@
         </div>
     </div>
    </div>
-   
-
+   <!--<div> <!-- tickets end -->
+<!--</div> <!-- tab-content end -->
 <?php
     require "footer.php";
 ?>
 
 <script>
+var table = $('#datatable_accounts');
+     
+    // #myInput is a <input type="text"> element
+    $('#search').on( 'keyup', function () {
+        table.search( this.value ).draw();
+} );
+
     $(document).ready(function() {
+        $.cookie('last_tab', '#account');
         $('#viewTicket').on('hidden.bs.modal', function (e) {
             $("#magic_buttons").empty();
             $("#lbl_th").empty();
@@ -352,7 +536,42 @@
             document.getElementById("commit_subj").value = "";
             document.getElementById("commit_msg").value = "";
         })
+        $('#datatable_accounts').dataTable({"bPaginate": false});
+        /*
+        $('#datatable_accounts').dataTable({
+                "bPaginate": true,
+                "pagingType": "full_numbers",
+                "language": {
+                    "paginate": {
+                        "first": "&lt;&lt;",
+                        "previous": "&lt;",
+                        "next": "&gt;",
+                        "last": "&gt;&gt;"
+                    },
+                    "sInfo": "_TOTAL_ total <b>unassigned</b> tickets | Viewing <b>_START_</b> - <b>_END_</b>",
+                    "sEmptyTable": "Amazing! All tickets were all handled, let's wait for new ones."
+                },
+                "lengthChange": false,
+                "bFilter": true, 
+                "bInfo": true,
+                "order": [3, 'asc'],
+                "columnDefs": [ {
+                  "targets"  : [0,2],
+                  "orderable": false,
+                }]
+            });
+*/
     });
+    
+    function showTitle(x) {
+        var targetDiv = x.getElementsByClassName("att_title")[0];
+        targetDiv.style.display = "block";
+    }
+
+    function hideTitle(x) {
+        var targetDiv = x.getElementsByClassName("att_title")[0];
+        targetDiv.style.display = "none";
+    }
     
     function testClick(val) {
         if(document.getElementById('id_you_like_div_'+val).style.display == "block") {
@@ -367,6 +586,7 @@
         var _self = $(this);
             tID = _self.data('id'),
             tNo = _self.data('no'),
+            tSts = _self.data('status'),
             tSubj = _self.data('subject'),
             tMsg = _self.data('mes'),
             tMsgAtt = _self.data('atturl'),
@@ -378,6 +598,8 @@
         $("#tMsg").html(tMsg);
         $("#tMsgAtt").html(tMsgAtt);
         $("#cID").val(cID);
+        $("#commit_status").val(tSts);
+        $("#curr_status").val(tSts);
 
         if(threads) {
             fields = threads.split("~^^^~");
@@ -400,21 +622,19 @@
                 var element = document.getElementById("magic_buttons");
                 i++;
             }
-            $('#id_you_like_'+(i-1)).remove();
-            $('#id_you_like_div_'+(i-1)).remove();
-            if(i == 1) {
-                var no = document.createElement("SPAN");
+        } else {
+            var no = document.createElement("SPAN");
                 no.setAttribute("id", "id_you_like_div_none");
                 no.setAttribute("class", "col-md-12");
                 document.getElementById('lbl_th').appendChild(no);
                 document.getElementById('id_you_like_div_none').innerHTML = "<span>No thread(s) found.</span";
-            }
         }
 
         $("#viewTicket").modal('show');
     });
 
-    $(document).on("click", ".open-modal-previewAtt", function (e) {
+   
+   $(document).on("click", ".open-modal-previewAtt", function (e) {
       var _self = $(this);
             src = _self.data('src'),
             fn = _self.data('fn');
@@ -423,9 +643,33 @@
         document.getElementById('attid').appendChild(img);
         document.getElementById('attfn').innerHTML = fn;
         $("#previewAtt").modal('show');
+         
+         if($('#modal_dialog').hasClass('modal-lg')){
+        
+         img.style.width = '650px';
+         img.style.height = '450px';
+         $('#previewAtt').css('margin-top','-30px');
+         //$('#previewAtt').css('margin-left','-350px');
+         $('#attfn').css('text-align','center');
+
+
+     }
+
+        else{
+         img.style.width = '650px';
+         img.style.height = '450px';
+         $('#previewAtt').css('margin-top','-30px');
+         //$('#previewAtt').css('margin-left','-50px');
+         $('#attfn').css('text-align','center');
+     }
+
     });
 
+
+
+
     $(document).on("click", ".open-modal-updTicket", function (e) {
+        document.getElementById('cID_new_thread').value = document.getElementById('tID').value;
         document.getElementById('cID_new_thread').value = document.getElementById('tID').value;
         $("#updateTicket").modal('show');
     });
@@ -448,13 +692,26 @@
         referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
     }
     $('#expand').click(function(){
+
+
         if($('#modal_dialog').hasClass('modal-md')){
+
             $('#glyph_resize').removeClass('glyphicon-resize-full');
             $('#glyph_resize').addClass('glyphicon-resize-small');
             $('#modal_dialog').removeClass('modal-md');
             $('#modal_cont').removeClass('modal-md');
             $('#modal_dialog').addClass('modal-lg');
             $('#modal_cont').addClass('modal-lg');
+           
+            $('.imgatt2').removeClass('modal-md'); 
+            $('.imgatt2').css({'background-color': 'transparent', 'width': '250px', 'height': '250px', 'margin': '1em', 'display': 'inline-block'}).addClass('modal-lg'); 
+            $('.att_title').removeClass('modal-md'); 
+            $('.att_title').css({ 'width': '250px', 'height': '250px'}).addClass('modal-lg'); 
+            $('a button').removeClass('modal-md'); 
+            $('a button').css({ 'width': '50px', 'height': '50px'}).addClass('modal-lg'); 
+           //$('.imgatt1').css({ 'width': '250px', 'height': '250px'}).addClass('modal-lg'); 
+
+
         }else{
             $('#glyph_resize').removeClass('glyphicon-resize-small');
             $('#glyph_resize').addClass('glyphicon-resize-full');
@@ -462,6 +719,23 @@
             $('#modal_cont').removeClass('modal-lg');
             $('#modal_dialog').addClass('modal-md');
             $('#modal_cont').addClass('modal-md');
-        }
+            
+            $('.imgatt2').removeClass('modal-lg'); 
+            $('.imgatt2').css({'background-color': 'transparent', 'width': '200px', 'height': '200px', 'margin': '1em', 'display': 'inline-block'}).addClass('modal-md'); 
+            $('.att_title').removeClass('modal-lg'); 
+            $('.att_title').css({ 'width': '200px', 'height': '200px'}).addClass('modal-md'); 
+            $('a button').removeClass('modal-lg'); 
+            $('a button').css({ 'width': '35px', 'height': '35px'}).addClass('modal-md'); 
+         }
     });
+
+$('#close_modal').click(function() {
+    $('#viewTicket').modal('hide');
+});
+
+function oneAccount(accountid) {
+    $('.mc_loading').css("display", "block");
+    $.cookie('last_tab', '#account');
+    window.location.href = 'customer?id=' + accountid;
+}
 </script>
