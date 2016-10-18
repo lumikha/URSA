@@ -148,7 +148,7 @@
             min-height: 500px;
             max-height: 750px;
             height: 100%;
-            width: 700px;
+            width: 100%;
             margin:0;
             margin-bottom: 20px;
             z-index: 1;
