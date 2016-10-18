@@ -476,11 +476,11 @@
   min-width: 420px;
 }
 
-.middle_container
+/*.middle_container
 {
   max-width: 420px !important;
   overflow-x:auto;
-  overflow-y: scroll; 
+  overflow-y: scroll; */
 }
 
 .mail_body
@@ -744,12 +744,12 @@
   min-width: 720px;
 }
 
-.middle_container
+/*.middle_container
 {
   min-width: 720px !important;
   overflow-x:auto;
   overflow-y: scroll; 
-}
+}*/
 
 .middle_container_2, .prevConvo
 {
@@ -847,12 +847,12 @@
  
 }
 
-.middle_container
+/*.middle_container
 {
   height: 500px !important;
   overflow-y: scroll;
   overflow-x: hidden;
-}
+}*/
 
 
 .mail_body
@@ -942,12 +942,12 @@
 }
 
 
-.middle_container
+/*.middle_container
 {
   height: 500px !important;
   overflow-y: scroll;
   overflow-x: hidden;
-}
+}*/
 
 
 /* END support.php*/

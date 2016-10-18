@@ -587,7 +587,7 @@
             height: auto;
             padding-top: 15px;
             max-height:380px;
-            overflow: scroll; 
+            overflow-y: auto; 
             overflow-x:hidden;
         }
         .mail_body .mfrom {
@@ -1447,6 +1447,10 @@
             xmlhttp.open("GET", "support_get_one?tid="+id, true);
             xmlhttp.send(null);   
         }
+
+
+
+
 
 
 //fixed position for right and left containers when a ticket is clicked
