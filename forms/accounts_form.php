@@ -1,6 +1,6 @@
 <h2 style="font-weight: bold; margin-left: 10px;">Business Accounts</h2>
 <div id="accountsArea" style="width: 100%; height: 100%; margin-top: -20px; backgroun-color: black; overflow-y: scroll;">
-    <table id="datatable_accounts" class="table">
+    <table id="datatable_accounts" class="table" style="width: 100% !important;">
         <div class="mc_loading">
             <div class="bg"></div>
             <img src="img/loader1.gif">

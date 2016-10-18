@@ -104,7 +104,9 @@
     }
 ?>
     <style>
-
+        #output {
+            display: none;
+        }
         .modal.fade .modal-dialog {
             -webkit-transform: scale(0.1);
             -moz-transform: scale(0.1);
@@ -168,7 +170,28 @@
             left: 320px;
         }
         #datatable_accounts_filter{
-            display:none;
+            display: none;
+        }
+        #datatable_accounts_filter thead{
+            display: none;
+        }
+        .pagination {
+            padding-right: 20px;
+        }
+        .pagination li {
+            display: inline-block;
+            margin: 0;
+        }
+        .pagination li a {
+            background-color: transparent;
+            font-size: 20px;
+            margin-top: -8px;
+            color: #cccccc;
+            border: none;
+        }
+        .pagination li a:hover {
+            background-color: transparent;
+            font-weight: bold;
         }
     </style>
     <!--<div class="tab-content">-->
@@ -505,12 +528,7 @@
 ?>
 
 <script>
-var table = $('#datatable_accounts');
-     
-    // #myInput is a <input type="text"> element
-    $('#search').on( 'keyup', function () {
-        table.search( this.value ).draw();
-} );
+
 
     $(document).ready(function() {
         $.cookie('last_tab', '#account');
@@ -519,6 +537,26 @@ var table = $('#datatable_accounts');
             $("#lbl_th").empty();
             $("#id_you_like_div_none").empty();
         })
+
+        $('#datatable_accounts').DataTable({
+            "bDestroy": true,
+           "bPaginate": true,
+                "pagingType": "full_numbers",
+                "language": {
+                    "paginate": {
+                        "first": "&lt;&lt;",
+                        "previous": "&lt;",
+                        "next": "&gt;",
+                        "last": "&gt;&gt;"
+                    },
+                    "sInfo": "_TOTAL_ total <b>account(s)</b> | Viewing <b>_START_</b> - <b>_END_</b>"
+                },
+                "lengthChange": false,
+                "bFilter": true, 
+                "bInfo": true,
+                "bSort": false,
+                
+        });
 
         $('#viewTicket').on('shown.bs.modal', function () {
             $('#tBody').scrollTop(0);
@@ -536,31 +574,11 @@ var table = $('#datatable_accounts');
             document.getElementById("commit_subj").value = "";
             document.getElementById("commit_msg").value = "";
         })
-        $('#datatable_accounts').dataTable({"bPaginate": false});
-        /*
-        $('#datatable_accounts').dataTable({
-                "bPaginate": true,
-                "pagingType": "full_numbers",
-                "language": {
-                    "paginate": {
-                        "first": "&lt;&lt;",
-                        "previous": "&lt;",
-                        "next": "&gt;",
-                        "last": "&gt;&gt;"
-                    },
-                    "sInfo": "_TOTAL_ total <b>unassigned</b> tickets | Viewing <b>_START_</b> - <b>_END_</b>",
-                    "sEmptyTable": "Amazing! All tickets were all handled, let's wait for new ones."
-                },
-                "lengthChange": false,
-                "bFilter": true, 
-                "bInfo": true,
-                "order": [3, 'asc'],
-                "columnDefs": [ {
-                  "targets"  : [0,2],
-                  "orderable": false,
-                }]
-            });
-*/
+    });
+
+    $('#search').on( 'keyup', function () {
+        var table = $('#datatable_accounts').DataTable();
+        table.search( this.value ).draw();
     });
     
     function showTitle(x) {
