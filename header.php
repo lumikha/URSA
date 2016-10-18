@@ -46,7 +46,7 @@
  <div class="container_12" style="margin-top:60px;">
                               
                             <div class="grid_2 alpha logo text-center">
-                                <a id="home" href="summary"> 
+                                <a id="home" class="disp_tickets" href="<?php if($current_page == 'summary.php' || $current_page == 'summary'):?>#<?php else:?>summary<?php endif;?>" <?php if($current_page == 'summary.php' || $current_page == 'summary'):?>onclick="return remAccounts();"<?php endif;?>> 
                                     <img src="img/ursa_logo_red.gif" height="130" align="middle" >
                                 </a>
                             </div>
@@ -118,8 +118,23 @@
                                     <?php }else { ?>
                                     <ul class="nav nav-pills nav-stacked text-center" id="myTab">
                                     <?php  if($current_page=="summary.php" || $current_page=="support.php") { ?>
-                                    <li><a id="btn_account" class="nl disabledTab hidden" data-toggle="tab">Hidden</a></li>
-                                    <li><a id="btn_account" class="nl disabledTab" data-toggle="tab">Account</a></li>
+                                    <script type="text/javascript">
+                                    
+                                        function remTks(){
+                                        $("#tickets_display").addClass('hidden');
+                                        $("#accounts_display").removeClass('hidden');
+                                        }
+                                        function remAccounts(){
+                                        $("#accounts_display").addClass('hidden');
+                                        $("#accounts_tab").removeClass('active');
+                                        $("#tickets_display").removeClass('hidden');
+                                        }
+
+                                        
+                                    </script>
+                                    <li><a class="nl disabledTab hidden">Hidden</a></li>
+                                    <!--<li><a class="nl" href="#account" data-toggle="tab" onclick="return remAccounts();" class="hide_tickets">Tickets</a></li>-->
+                                    <li id="accounts_tab"><a  href="#" class="nl" data-toggle="tab" onclick="return remTks();">Accounts</a></li>
                                     <li><a id="btn_provisioning" class="nl disabledTab" data-toggle="tab" >Provisioning</a></li>
                                         <?php if($current_page=="support.php") { ?>
                                             <li class="active"><a id="btn_support" class="nl" href="#">Support</a></li>

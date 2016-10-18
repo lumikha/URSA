@@ -168,57 +168,36 @@
             left: 320px;
         }
     </style>
+    <!--<div class="tab-content">-->
+    <!--<div class="tab-pane fade" id="accounts">-->
+        <div class="container_12 hidden" id="accounts_display">
 
-    <div class="container_12">
+            <style>
+                .table tbody tr {
+                cursor: pointer;
+                }
+                .table tbody tr:hover {
+                    background-color: #e6f1ff;
+                }
+                #accountsArea::-webkit-scrollbar { 
+                    display: none; 
+                }
+                .glyphicon.glyphicon-briefcase {
+                    font-size: 15px;
+                }
+            </style>
 
-        <style>
-            .table tbody tr {
-            cursor: pointer;
-            }
-            .table tbody tr:hover {
-                background-color: #e6f1ff;
-            }
-            #accountsArea::-webkit-scrollbar { 
-                display: none; 
-            }
-            .glyphicon.glyphicon-briefcase {
-                font-size: 15px;
-            }
-        </style>
-
-        <div class="grid_12 push_1 alpha accounts" style="height: 500px; width: 93%; position: relative; margin-left: 20px; margin-top: -25px;">
-            <h2 style="font-weight: bold; margin-left: 10px;">Business Accounts</h2>
-            <div id="accountsArea" style="width: 100%; height: 100%; margin-top: -20px; backgroun-color: black; overflow-y: scroll;">
-                <table id="datatable_accounts" class="table">
-                    <div class="mc_loading">
-                        <div class="bg"></div>
-                        <img src="img/loader1.gif">
-                    </div>
-                    <thead>
-                        <tr>
-                            <td></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php   
-                            foreach ($result_db_customers['Items'] as $i) {
-                                $cust = $marshaler->unmarshalItem($i); ?>
-                                <tr style="margin-left: 10px;"><td class="oneAcc" onclick="oneAccount('<?=$cust["chargify_id"]?>')">
-                                <?php
-                                echo '<span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> &nbsp;&nbsp;&nbsp;<strong style="font-size: 20px; color: #31708f;">'.$cust['business_name'].'</strong><br>
-                                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;'.$cust['customer_first_name'].' '.$cust['customer_last_name'].'&nbsp;&nbsp;&nbsp; 
-                                        <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp; '.$cust['business_email'].'';
-                                echo '</td></tr>';
-                            }
-                        ?>
-                        <tr>
-                    </tbody>
-                </table>
+            <div class="grid_12 push_1 alpha accounts" style="height: 500px; width: 93%; position: relative; margin-left: 20px; margin-top: -25px;">
+                <?php
+                    include "forms/accounts_form.php"
+                ?>
             </div>
         </div>
-    </div>
+    <!--</div>-->
 
-    <div class="container_12 boxsummary" style="left: 150px";> 
+<!--<div class="tab-pane fade" id="account">-->
+
+    <div class="container_12 boxsummary" style="left: 150px;" id="tickets_display">  
     <div class="modal fade" id="viewTicket" tabindex="-1" role="dialog">
         <div id="modal_dialog" class="modal-dialog modal-md" >
             <div class="modal-content">
@@ -516,8 +495,8 @@
         </div>
     </div>
    </div>
-   
-
+   <!--<div> <!-- tickets end -->
+<!--</div> <!-- tab-content end -->
 <?php
     require "footer.php";
 ?>
