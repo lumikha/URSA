@@ -1083,6 +1083,7 @@
 
     <script>
         $(document).ready(function() {
+            $.cookie('last_tab', '#support');
             $('#datatable_unassigned').DataTable({
                 "bPaginate": true,
                 "pagingType": "full_numbers",

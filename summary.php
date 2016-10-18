@@ -197,7 +197,7 @@
 
 <!--<div class="tab-pane fade" id="account">-->
 
-    <div class="container_12 boxsummary" style="left: 150px;" id="tickets_display">  
+    <div class="container_12 boxsummary hidden" style="left: 150px;" id="tickets_display">  
     <div class="modal fade" id="viewTicket" tabindex="-1" role="dialog">
         <div id="modal_dialog" class="modal-dialog modal-md" >
             <div class="modal-content">
@@ -503,7 +503,16 @@
 
 <script>
     $(document).ready(function() {
-        $.cookie('last_tab', '#account');
+        if($.cookie('last_tab') == '#accountsFromSup') {
+            $("#tickets_display").addClass('hidden');
+            $("#accounts_display").removeClass('hidden');
+            $.cookie('last_tab', '#account');
+            $('#accounts_tab').addClass('active');
+        } else {
+            $("#tickets_display").removeClass('hidden');
+            $.cookie('last_tab', '#');
+        }
+        
         $('#viewTicket').on('hidden.bs.modal', function (e) {
             $("#magic_buttons").empty();
             $("#lbl_th").empty();
@@ -528,27 +537,27 @@
         })
 
         $('#datatable_accounts').DataTable({
-                "bPaginate": true,
-                "pagingType": "full_numbers",
-                "language": {
-                    "paginate": {
-                        "first": "&lt;&lt;",
-                        "previous": "&lt;",
-                        "next": "&gt;",
-                        "last": "&gt;&gt;"
-                    },
-                    "sInfo": "_TOTAL_ total <b>unassigned</b> tickets | Viewing <b>_START_</b> - <b>_END_</b>",
-                    "sEmptyTable": "Amazing! All tickets were all handled, let's wait for new ones."
+            "bPaginate": true,
+            "pagingType": "full_numbers",
+            "language": {
+                "paginate": {
+                    "first": "&lt;&lt;",
+                    "previous": "&lt;",
+                    "next": "&gt;",
+                    "last": "&gt;&gt;"
                 },
-                "lengthChange": false,
-                "bFilter": true, 
-                "bInfo": true,
-                "order": [3, 'asc'],
-                "columnDefs": [ {
-                  "targets"  : [0,2],
-                  "orderable": false,
-                }]
-            });
+                "sInfo": "_TOTAL_ total <b>unassigned</b> tickets | Viewing <b>_START_</b> - <b>_END_</b>",
+                "sEmptyTable": "Amazing! All tickets were all handled, let's wait for new ones."
+            },
+            "lengthChange": false,
+            "bFilter": true, 
+            "bInfo": true,
+            "order": [3, 'asc'],
+            "columnDefs": [{
+                "targets"  : [0,2],
+                "orderable": false,
+            }]
+        });
     });
     
     function showTitle(x) {
