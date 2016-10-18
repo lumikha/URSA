@@ -187,7 +187,7 @@
                 }
             </style>
 
-            <div class="grid_12 push_1 alpha accounts" style="height: 500px; width: 93%; position: relative; margin-left: 20px; margin-top: -25px;">
+            <div class="grid_12 push_1 alpha" style="height: 500px; width: 93%; position: relative; margin-left: 20px; margin-top: -25px;">
                 <?php
                     include "forms/accounts_form.php"
                 ?>
