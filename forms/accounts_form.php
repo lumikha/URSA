@@ -21,7 +21,6 @@
                         <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp; '.$cust['business_email'].'';
                     echo '</td></tr>';
             } ?>
-                <tr>
         </tbody>
     </table>
 </div>
