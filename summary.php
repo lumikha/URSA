@@ -510,6 +510,7 @@
             $('#accounts_tab').addClass('active');
         } else {
             $("#tickets_display").removeClass('hidden');
+            $('#accounts_tab').removeClass('active');
             $.cookie('last_tab', '#');
         }
         
