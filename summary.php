@@ -723,6 +723,7 @@ $('#close_modal').click(function() {
 
 function oneAccount(accountid) {
     $('.mc_loading').css("display", "block");
+    $.cookie('last_tab', '#account');
     window.location.href = 'customer?id=' + accountid;
 }
 </script>
