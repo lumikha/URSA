@@ -211,6 +211,11 @@
 
 
 <style type="text/css">
+
+body
+{
+   margin-left: 10% !important;
+}
   .modal.fade .modal-dialog {
             -webkit-transform: scale(0.1);
             -moz-transform: scale(0.1);
@@ -255,14 +260,14 @@
 	{
 		 /*background-color: rgba(0, 0, 0, 0.2);*/
 		 height: 500px;
-		 width: 92% !important;
+		 width: 92% ;
 		 margin-left: 0.5em;
 		 top: 1.25em;
 	}
 
 	.boxsupport
 	{
-		margin-left: 6.25em !important;
+		margin-left: 6.25em;
 	}
   .folder_list_hide {
             display: none;
@@ -571,7 +576,7 @@
 <div class="full-width-div">
   <div class="container_12">
     <div class="grid_12 push_1 boxsupport">
-      <div id="boxes" class="row text-center">
+      <div id="boxesSup" class="row text-center">
         <a href="#unassigned" onclick="openFolder(1, <?=$unassigned?>, '#datatable_unassigned')">
           <div class="grid_2" style="padding: 1em;margin-right:2.75em; margin-bottom:1em;border:solid #340570 2px;color:#340570">
             <strong>Unassigned</strong><i class="glyphicon glyphicon-envelope"></i>
@@ -605,7 +610,7 @@
 
     <div class="container_12">
 
-    	<div class="grid_12 push_2 alpha ticketsummary2">
+    	<div class="grid_1 push_2 alpha ticketsummary2">
         <?php 
         function divChckBxs() {
             ?>

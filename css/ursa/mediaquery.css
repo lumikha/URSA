@@ -178,6 +178,7 @@
    margin-left: -2em;
   }
 
+
 /**tickets summary and round-div **/
   .ticketsummary
   {
@@ -492,7 +493,8 @@
  display: inline-block; 
 }
 
-.mail_body .mfrom {
+.mail_body .mfrom 
+{
             width: 60%;
             padding-left: 8px;
             font-size: 12px !important;
@@ -701,6 +703,7 @@
   .ticketsummary
   {
     text-align: center;
+
     
   }
 
@@ -812,13 +815,22 @@
 
 .boxsummary
 {
- position: relative;
+   position: relative;
+   left: 8em !important;
+   right: auto;
 }
 
 #sumArea
 {
   padding-left: 3em;
 }
+
+.round-div
+  {
+   max-width: 60px;
+   max-height: 60px;
+   
+  }
 
 /*START support.php*/
 
@@ -845,7 +857,51 @@
   max-width: 720px;
 }
 
+/*START support2.php*/
 
+
+  #boxes
+  {
+  
+    margin-top: -5.25em;
+
+  }
+
+  #boxesSup
+  {
+  
+    margin-top: -5.25em;
+
+  }
+
+ 
+  {
+     /*background-color: rgba(0, 0, 0, 0.2);*/
+     height: 500px;
+     width: 92% !important;
+     margin-left: 0.5em;
+     top: 1.25em;
+  }
+
+  .boxsupport
+  {
+    margin-left: 7.25em !important;
+  }
+
+
+ .ticketsummary2
+  {
+     /*background-color: rgba(0, 0, 0, 0.2);*/
+     height: 500px;
+     width: 91% !important;
+     margin-left: 1em !important;
+     top: -3em;
+  }
+
+
+/* END support2.php*/
+
+}
 
 /* END support.php*/
 
@@ -886,6 +942,7 @@
     margin-right: auto;
   }
 
+
   .container_12
    
   {
@@ -895,11 +952,30 @@
 .boxsummary
 {
   position: relative;
+   margin-left:-2.5em !important;
+    right: auto;
+
 }
 
 #sumArea
 {
-  left: 20em;
+  margin-left: 9.5em !important;
+  right: auto;
+
+}
+
+.round-div
+  {
+   max-width: 60px;
+   max-height: 60px;
+   
+  }
+
+
+
+.ticketsummary
+{
+  margin-left: 10em !important;
 }
 
 
@@ -920,16 +996,46 @@
     margin-top: 4em;
   }
 
-  /*START support.php*/
+  /*START support2.php*/
 
 
+  #boxes
+  {
   
- 
+    margin-top: -5.25em !important;
+    margin-left: -1.5em;
+
+  }
+
+  #boxesSup
+  {
+  
+    margin-top: -5.25em !important;
+    margin-left: 0em !important;
+
+  }
+
+  .ticketsummary2
+  {
+     /*background-color: rgba(0, 0, 0, 0.2);*/
+     height: 500px;
+     width: 55% !important;
+     margin-left: 1em !important;
+     top: -2em;
+  }
+
+  .boxsupport
+  {
+    margin-left: 6.25em !important;
+  
+  }
+
+
+
+
+/* END support2.php*/
+
 }
-
-
-
-/* END support.php*/
 
 #previewAtt
 {
