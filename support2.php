@@ -474,6 +474,15 @@ body
         }
 </style>
 
+<style type="text/css">
+  
+  .text-right
+  {
+    top: -12em !important;
+    left: 15em !important;
+  }
+</style>
+
 <div class="modal fade" id="viewTicket" tabindex="-1" role="dialog">
         <div id="modal_dialog" class="modal-dialog modal-md" >
             <div class="modal-content">
@@ -481,12 +490,62 @@ body
                           
                 </span>
                 <div class="modal-body">
+
+<!--action buttons-->
+                    <div class="row">
+                            <div class=" col-md-12  email_opt_top">
+                                 
+          
+                             <a id="reply" href="#" class="btn btn-primary btn-md">
+                                <span class="glyphicon glyphicon-pencil"></span> Reply
+                            </a>
+
+                             <a id="note" href="#" class="btn btn-primary btn-md">
+                                <span class="glyphicon glyphicon-comment"></span> Add Note
+                            </a>
+
+                             <a id="assign" href="#" class="btn btn-primary btn-md">
+                                <span class="glyphicon glyphicon-user"></span> Assign
+                            </a>
+
+                             <a id="status" href="#" class="btn btn-primary btn-md">
+                                <span class="glyphicon glyphicon-flag"></span> Status
+                            </a>
+
+                             <a id="tag" href="#" class="btn btn-primary btn-md">
+                                <span class="glyphicon glyphicon-tags"></span> Tag
+                            </a>
+
+                              <a id="tag" href="#" class="btn btn-primary btn-md">
+                                <span class="glyphicon glyphicon-trash"></span> Delete
+                            </a>
+
+
+                            </div>
+                       </div>
+
+
+
                     <input type="type" id="cID" hidden>
                     <div class="row">
-                        <div class="col-md-4">
-                            <label>Ticket Entry No.</label>
-                            <input type="text" class="form-control" id="tNo" value="" style="text-align: center; font-weight: bold;" readonly>
+                    <br>
+
+                        <div class="col-md-6 col-md-offset-6">
+
+                             <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="tNO"/ readonly="">
+                                           <span class="input-group-addon">||</span>
+                                    <input type="text" class="form-control" placeholder="tSTAT"/ readonly="">
+                             </div>
                         </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <label>Subject:</label>
+                            <input type="text" class="form-control tNO" value="" style="text-align: center; font-weight: bold;" readonly>
+                           </div>
+
+
                         <div class="col-md-5">
                             <label style="display: none;">Ticket ID</label>
                             <input type="text" class="form-control" id="tID" value="" style="text-align: center; font-weight: bold; display: none;" readonly>
@@ -494,15 +553,20 @@ body
 
 
 
-                        <div class="col-md-3 text-right" style="top:-20px">
+                        <div class="col-md-3 text-right">
                             <a id="expand" href="#"><span id="glyph_resize" class="btn btn-info btn-sm glyphicon glyphicon-resize-full " aria-hidden="true"></span></a>
                             <a id="close_modal" href="#"><span id="glyph_close" class="btn btn-danger btn-sm glyphicon glyphicon-remove " aria-hidden="true"></span></a>
                         </div>
                        
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
-                            <label>Subject</label>
+                        <div class="col-md-8">
+                            <label>From:</label>
+                            <input type="text" class="form-control" id="tSubj" name="ticket_subject" readonly>
+                        </div>
+
+                         <div class="col-md-4">
+                            <label>Date:</label>
                             <input type="text" class="form-control" id="tSubj" name="ticket_subject" readonly>
                         </div>
                     </div>
@@ -579,27 +643,27 @@ body
       <div id="boxesSup" class="row text-center">
         <a href="#unassigned" onclick="openFolder(1, <?=$unassigned?>, '#datatable_unassigned')">
           <div class="grid_2" style="padding: 1em;margin-right:2.75em; margin-bottom:1em;border:solid #340570 2px;color:#340570">
-            <strong>Unassigned</strong><i class="glyphicon glyphicon-envelope"></i>
+            <i class="glyphicon glyphicon-envelope"></i> &nbsp<strong>Unassigned</strong>
           </div>
         </a>
         <a href="#mine" onclick="openFolder(2, <?=$mine?>, '#datatable_mine')">
           <div class="grid_2" style="padding: 1em;margin-right:2.75em; margin-bottom:1em;border:solid #340570 2px;color:#340570">
-            <strong>Mine</strong><i class="glyphicon glyphicon-inbox"></i>
+            <i class="glyphicon glyphicon-inbox"></i>&nbsp<strong>Mine</strong>
           </div>
         </a>
         <a href="#assigned"  onclick="openFolder(3, <?=$assigned?>, '#datatable_assigned')">
           <div class="grid_2" style="padding: 1em;margin-right:2.75em; margin-bottom:1em;border:solid #340570 2px;color:#340570">
-            <strong>Assigned</strong><i class="glyphicon glyphicon-user"></i>
+            <i class="glyphicon glyphicon-user"></i>&nbsp<strong>Assigned</strong>
           </div>
         </a>
         <a href="#closed">
           <div onclick="openFolder(4, <?=$closed?>, '#datatable_closed')" class="grid_2" style="padding: 1em;margin-right:2.75em; margin-bottom:1em;border:solid #340570 2px;color:#340570">
-            <strong>Closed</strong><i class="glyphicon glyphicon-trash"></i>
+            <i class="glyphicon glyphicon-trash"></i>&nbsp<strong>Closed</strong>
           </div>
         </a>
         <a href="#spam">
           <div onclick="openFolder(5, <?=$spam?>, '#datatable_spam')" class="grid_2" style="padding: 1em;margin-right:2.78em; margin-bottom:1em;border:solid #340570 2px;color:#340570">
-            <strong>Spam</strong><i class="glyphicon glyphicon-ban-circle"></i>
+           <i class="glyphicon glyphicon-ban-circle"></i>&nbsp <strong>Spam</strong>
           </div>
         </a>
       </div>

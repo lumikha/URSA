@@ -70,7 +70,7 @@
                                
                                     <?php if(!isset($_SESSION['user_now_db_customer_id'])) { ?>
                                     <div class="search">
-                                    <div class="grid_2 push_6 omega"  style="margin-left:1.5em;">
+                                    <div class="grid_3 push_6 omega"  style="margin-left:1.5em;">
                                         <div ng-app="myapp" id="search_result_view" >
                                             <div ng-controller="newController">
                                                 <div id="toggleContainer" style=" position:relative">

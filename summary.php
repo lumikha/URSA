@@ -209,7 +209,11 @@
                     <div class="row">
                         <div class="col-md-4">
                             <label>Ticket Entry No.</label>
-                            <input type="text" class="form-control" id="tNo" value="" style="text-align: center; font-weight: bold;" readonly>
+                            <input type="text" class="form-control tNO" id="tNo" value="" style="text-align: center; font-weight: bold;" readonly>
+                        </div>
+                        <div class="col-md-3 col-md-offset-3">
+                            <label>Status:</label><br>
+                            <span type="text" id="tSTAT" class="tSTAT" name="status" value="" style="text-align: center; font-weight: bold; color: green;" readonly> &nbsp &nbspACTIVE <br></span>
                         </div>
                         <div class="col-md-5">
                             <label style="display: none;">Ticket ID</label>
@@ -217,8 +221,15 @@
                         </div>
 
 
+<style type="text/css">
+    .text-right
+    {
+        margin-top: -4em;
+    }
+</style>
 
-                        <div class="col-md-3 text-right" style="top:-20px">
+
+                        <div class="col-md-3 text-right">
                             <a id="expand" href="#"><span id="glyph_resize" class="btn btn-info btn-sm glyphicon glyphicon-resize-full " aria-hidden="true"></span></a>
                             <a id="close_modal" href="#"><span id="glyph_close" class="btn btn-danger btn-sm glyphicon glyphicon-remove " aria-hidden="true"></span></a>
                         </div>
@@ -226,8 +237,20 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <label>Subject</label>
-                            <input type="text" class="form-control" id="tSubj" name="ticket_subject" readonly>
+                            <label>Subject:</label>
+                            <input type="text" class="form-control"  readonly>
+                        </div>
+                    </div>
+
+                     <div class="row">
+                        <div class="col-md-8">
+                            <label>From:</label>
+                            <input type="text" class="form-control mfrom"  readonly>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label>Date:</label>
+                            <input type="text" class="form-control mfrom"  readonly>
                         </div>
                     </div>
                     <style>
@@ -285,6 +308,15 @@
                                     padding: 5px;
                                 }
                             </style>
+
+                            <style type="text/css">
+                                
+                                .btn-lg
+                                {
+                                    background-color: rgba(0,0,0,1);
+                                }
+                            </style>
+
                         <label class="col-md-12">Thread(s)</label>
                         <div id="lbl_th" class="col-md-12">
                         </div>
@@ -305,26 +337,41 @@
                     <form method="POST">
                         <input type="type" id="cID_new_thread" name="cTID" hidden>
                         <input type="type" id="curr_status" name="curr_status" hidden>
+                      
+
                         <div class="row">
-                            <div class="col-md-6">
-                                <label>New Thread Type</label>
-                                <div class="radio" style="margin-left: 30px;">
-                                    <label><input type="radio" id="rad1" name="type" value="note" onclick="tType(1);" checked>Note</label>&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <!--<label><input type="radio" id="rad2" name="type" value="message" onclick="tType(2);">Message</label>-->
-                                </div>
+                            <div class=" col-md-12  email_opt_top">
+                                 
+          
+                             <a id="reply" href="#" class="btn btn-primary btn-md">
+                                <span class="glyphicon glyphicon-pencil"></span> Reply
+                            </a>
+
+                             <a id="note" href="#" class="btn btn-primary btn-md">
+                                <span class="glyphicon glyphicon-comment"></span> Add Note
+                            </a>
+
+                             <a id="assign" href="#" class="btn btn-primary btn-md">
+                                <span class="glyphicon glyphicon-user"></span> Assign
+                            </a>
+
+                             <a id="status" href="#" class="btn btn-primary btn-md">
+                                <span class="glyphicon glyphicon-flag"></span> Status
+                            </a>
+
+                             <a id="tag" href="#" class="btn btn-primary btn-md">
+                                <span class="glyphicon glyphicon-tags"></span> Tag
+                            </a>
+
+                              <a id="tag" href="#" class="btn btn-primary btn-md" style="display: none;">
+                                <span class="glyphicon glyphicon-trash"></span> Delete
+                            </a>
+
+
                             </div>
-                            <div class="col-md-6">
-                                <label>New Status</label>
-                                <select class="form-control" id="commit_status" name="status">
-                                    <optgroup label="Status">
-                                        <option value="unassigned">Unassigned</option>
-                                        <option value="pending">Pending</option>
-                                        <option value="closed">Closed</option>
-                                        <option value="spam">Spam</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                        </div>
+                       </div>
+
+
                         <div class="row">
                             <div class="col-md-12">
                                 <label>Message</label>
