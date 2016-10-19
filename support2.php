@@ -573,7 +573,7 @@
     <div class="grid_12 push_1 boxsupport">
       <div id="boxes" class="row text-center">
         <a href="#unassigned" onclick="openFolder(1, <?=$unassigned?>, '#datatable_unassigned')">
-          <div class="grid_2" style="padding: 1em;margin-right:2.75em;margin-left: 1.5em; margin-bottom:1em;border:solid #340570 2px;color:#340570">
+          <div class="grid_2" style="padding: 1em;margin-right:2.75em; margin-bottom:1em;border:solid #340570 2px;color:#340570">
             <strong>Unassigned</strong><i class="glyphicon glyphicon-envelope"></i>
           </div>
         </a>
