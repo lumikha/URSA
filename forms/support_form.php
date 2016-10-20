@@ -34,14 +34,16 @@ a #spam:hover
   color: white !important;
 }
 
-/*table thead
+table thead
 {
   background-color: rgba(52,141,192, 0.8);
   width: 100% !important;
-}*/
+
+}
 
 .dataTables_wrapper
 {
+  margin-top: -1em !important;
   margin-top: -1em !important;
 }
 </style>

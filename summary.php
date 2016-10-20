@@ -541,14 +541,6 @@ body
         }
 </style>
 
-<style type="text/css">
-  
-  .text-right
-  {
-    top: -12em !important;
-    left: 15em !important;
-  }
-</style>
 <!-- SUPPORT MODAL
 <div class="modal fade" id="viewTicket" tabindex="-1" role="dialog">
         <div id="modal_dialog" class="modal-dialog modal-md" >

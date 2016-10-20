@@ -243,7 +243,8 @@
  display: inline-block; 
 }
 
-.mail_body .mfrom {
+.mail_body .mfrom 
+{
             width: 60%;
             padding-left: 8px;
             font-size: 10px !important;
@@ -251,6 +252,10 @@
         }
 
 
+#boxesSup
+{
+  margin-top: 30em;
+}
 
 
 /* END support.php*/
@@ -275,7 +280,6 @@
   width: 280px;
   word-wrap: break-word;
  
-  
   }
 
   /*START OF accounts.php*/
@@ -508,6 +512,12 @@
 {
   max-width: 420px !important;
 }
+
+#boxesSup
+{
+  margin-top: 30em;
+}
+
 /* END support.php*/
 
 #previewAtt
@@ -534,7 +544,7 @@
   }
 
 
-  /*START OF accounts.php*/
+ 
 
  
 
@@ -820,17 +830,21 @@
    right: auto;
 }
 
+
 #sumArea
 {
-  padding-left: 3em;
+  padding-left: 2.25em;
 }
 
 .round-div
   {
-   max-width: 60px;
-   max-height: 60px;
+   max-width: 45px;
+   max-height: 45px;
+   margin-right: 4.5em;
    
   }
+
+
 
 /*START support.php*/
 
@@ -844,12 +858,6 @@
  
 }
 
-/*.middle_container
-{
-  height: 500px !important;
-  overflow-y: scroll;
-  overflow-x: hidden;
-}*/
 
 
 .mail_body
@@ -899,11 +907,6 @@
   }
 
 
-/* END support2.php*/
-
-}
-
-/* END support.php*/
 
 #previewAtt
 {
@@ -914,6 +917,7 @@
 }
 
  #previewAtt img, #attfn
+  
   {
   
   max-width: 960px;
@@ -927,10 +931,10 @@
  
   
   }
+}
   
 
 
-  /*Large devices up to extra Large Devices*/
 @media only screen and (min-width: 1600px) and (max-width: 2040px) 
 
 {
@@ -966,8 +970,8 @@
 
 .round-div
   {
-   max-width: 60px;
-   max-height: 60px;
+   max-width: 160px;
+   max-height: 160px;
    
   }
 
@@ -1033,16 +1037,19 @@
 
 
 
+
 /* END support2.php*/
 
-}
+
 
 #previewAtt
+
 {
  left: 0em;
  background-color: rgba(0, 0, 0, 0.6);
 
 }
+
  #previewAtt img, #attfn
   {
   
@@ -1057,4 +1064,7 @@
  
   
   }
-  }
+
+ 
+
+  
