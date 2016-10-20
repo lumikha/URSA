@@ -823,6 +823,11 @@
     width: 960px;
   }
 
+  .boxcustomer
+  {
+    margin-top: 1em;
+  }
+
 .boxsummary
 {
    position: relative;
@@ -965,6 +970,7 @@
 {
   margin-left: 9.5em !important;
   right: auto;
+  padding-left: 0em;
 
 }
 
@@ -1034,6 +1040,10 @@
   
   }
 
+  .accountsArea
+  {
+    margin-left: 3em;
+  }
 
 
 

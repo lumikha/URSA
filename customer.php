@@ -26,6 +26,14 @@
         top: 7px;
         }
     </style>
+
+    <style type="text/css">
+        body
+        {
+            margin-left: 10%;
+        }
+
+    </style>
         <div class="full-width-div">
         <div class="container_12 boxcustomer">
         
