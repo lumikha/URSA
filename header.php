@@ -70,14 +70,14 @@
                                
                                     <?php if(!isset($_SESSION['user_now_db_customer_id'])) { ?>
                                     <div class="search">
-                                    <div class="grid_3 push_6 omega"  style="margin-left:1.5em;">
+                                    <div class="grid_2 push_6 omega"  style="margin-left:1.5em;">
                                         <div ng-app="myapp" id="search_result_view" >
                                             <div ng-controller="newController">
                                                 <div id="toggleContainer" style=" position:relative">
                                                     <form name="myForm">
                                                         <input type="text" style="width: 100%;margin-bottom:0em " class="form-control" onkeyup="return check();" id="search" name="search" ng-model="search" placeholder="Search" autocomplete="off" >
                                                     </form>
-                                                    <div name="output" id="output" style="position:absolute; z-index:1;width: 100%;" ng-cloak >
+                                                    <div name="output" id="output" style="position:absolute; z-index:1;width: 200%;" ng-cloak >
                                                         <div class="list-group">
                                                             <a class="list-group-item" ng-if="search" ng-repeat="user in result = ( users | filter:search | limitTo:num)" href="customer.php?id={{ user.chargify_id.S }}">
                                                                 <span style="font-size:130%" class="text-info"><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> {{user.business_name.S}}</span><br>
@@ -86,7 +86,7 @@
                                                                 </span>
                                                             </a>
                                                             <a class="list-group-item" ng-if="search" ng-hide="result.length">Opps, No Results Found ...</a>
-                                                            <a class="list-group-item text-right" ng-if="search" href="#" onclick="getSearch();">View More Results <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>    
+                                                            <a class="list-group-item " ng-if="search" href="#" onclick="getSearch();">View More Results <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>    
                                                         </div>
                                                     </div> 
                                                     </div>
