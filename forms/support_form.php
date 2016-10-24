@@ -116,18 +116,47 @@ table thead
               </tr>
             </thead>
             <tbody>
-            <?php foreach($arr_unassigned as $aUN) { ?>
+            <?php foreach($arr_unassigned as $aUN) { 
+                $body2 = htmlentities($aUN['body']);
+                if($aUN['notes']) {
+                    $th_arr_fin2 = "";
+                    $th_arr2 = array();
+                    foreach($aUN['notes'] as $nl2) {
+                        array_push($th_arr2, "<i><b>".$nl2['n_created_by']['S']."</b></i> added note||+||<span style='float: right;'>".$nl2['n_created_at']['S']."</span>||+||<p>".$nl2['n_content']['S']."</p>~^^^~");
+                    }
+
+                    $thArrCnt2 = 0;
+                    while(!empty($th_arr2[$thArrCnt2])) {
+                        $th_arr_fin2 .= $th_arr2[$thArrCnt2];
+                        $thArrCnt2++;
+                    }
+                } else {
+                    $th_arr_fin2 = "";
+                }
+
+                $ats_title2 = "";
+                $ats2 = "";
+                if($aUN['attachments']) {
+                    $ats_title2 = "<br/><b>Attachments</b><br/><br/>";
+                }
+                foreach($aUN['attachments'] as $am_ats2) {
+                    $ats2 .= htmlentities($am_ats2);
+                }
+
+                ?>
+
               <tr>
+                <div data-cid="<?=$cID?>" data-id="<?=$mID?>" data-no="<?=$tNo?>" data-status="<?=$sts?>" data-subject="<?=$sbj?>" data-mes="<?=$bdy?>" data-atturl="<?=$ats_title.$ats?>" data-threadmsg="<?=$th_arr_fin?>"></div>
                 <td><input type="checkbox" id="chckbxid<?=$aUN['no']?>" class="chckbx"></td>
-                <td onclick="getTicketData('<?=$aUN["ticket_id"]?>')"><?=$aUN['from']?></td>
-                <td onclick="getTicketData('<?=$aUN["ticket_id"]?>')">
+                <td class="open-modal" data-cid='13867879' data-id='<?=$aUN["ticket_id"]?>' data-no='<?=$aUN['no']?>' data-status='<?=$aUN['status']?>' data-subject='<?=$aUN['subject']?>' data-mes='<?=$body2?>' data-atturl='<?=$ats_title2.$ats2?>' data-threadmsg='<?=$th_arr_fin2?>'><?=$aUN['from']?></td>
+                <td class="open-modal" data-cid='13867879' data-id='<?=$aUN["ticket_id"]?>' data-no='<?=$aUN['no']?>' data-status='<?=$aUN['status']?>' data-subject='<?=$aUN['subject']?>' data-mes='<?=$body2?>' data-atturl='<?=$ats_title2.$ats2?>' data-threadmsg='<?=$th_arr_fin2?>'>
                                             <div class="table_email_content">
                                                 <b><?=$aUN['subject']?></b><br/>
                                                 <?=str_replace("<br>",'',$aUN['body'])?>
                                             </div>
                                         </td>
-                                        <td onclick="getTicketData('<?=$aUN["ticket_id"]?>')"><?=$aUN['no']?></td>
-                                        <td onclick="getTicketData('<?=$aUN["ticket_id"]?>')"><?=$aUN['updated']?></td>
+                                        <td class="open-modal" data-cid='13867879' data-id='<?=$aUN["ticket_id"]?>' data-no='<?=$aUN['no']?>' data-status='<?=$aUN['status']?>' data-subject='<?=$aUN['subject']?>' data-mes='<?=$body2?>' data-atturl='<?=$ats_title2.$ats2?>' data-threadmsg='<?=$th_arr_fin2?>'><?=$aUN['no']?></td>
+                                        <td class="open-modal" data-cid='13867879' data-id='<?=$aUN["ticket_id"]?>' data-no='<?=$aUN['no']?>' data-status='<?=$aUN['status']?>' data-subject='<?=$aUN['subject']?>' data-mes='<?=$body2?>' data-atturl='<?=$ats_title2.$ats2?>' data-threadmsg='<?=$th_arr_fin2?>'><?=$aUN['updated']?></td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>

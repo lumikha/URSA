@@ -957,7 +957,6 @@ body
 
 <!--<div class="tab-pane fade" id="account">-->
 
-    <div class="container_12 boxsummary hidden" style="left: 150px;" id="tickets_display">  
     <div class="modal fade" id="viewTicket" tabindex="-1" role="dialog">
         <div id="modal_dialog" class="modal-dialog modal-md" >
             <div class="modal-content">
@@ -1232,6 +1231,7 @@ body
             </div>
         </div>
     </div>
+    <div class="container_12 boxsummary hidden" style="left: 150px;" id="tickets_display">  
 
 <style>
        .imgatt1
@@ -1938,48 +1938,6 @@ var current_folder_list = "";
   function getTicketData(id) {
     $('#viewTicket').modal('show'); 
   }
-
-  $('#expand').click(function(){
-
-
-        if($('#modal_dialog').hasClass('modal-md')){
-
-            $('#glyph_resize').removeClass('glyphicon-resize-full');
-            $('#glyph_resize').addClass('glyphicon-resize-small');
-            $('#modal_dialog').removeClass('modal-md');
-            $('#modal_cont').removeClass('modal-md');
-            $('#modal_dialog').addClass('modal-lg');
-            $('#modal_cont').addClass('modal-lg');
-           
-            $('.imgatt2').removeClass('modal-md'); 
-            $('.imgatt2').css({'background-color': 'transparent', 'width': '250px', 'height': '250px', 'margin': '1em', 'display': 'inline-block'}).addClass('modal-lg'); 
-            $('.att_title').removeClass('modal-md'); 
-            $('.att_title').css({ 'width': '250px', 'height': '250px'}).addClass('modal-lg'); 
-            $('a button').removeClass('modal-md'); 
-            $('a button').css({ 'width': '50px', 'height': '50px'}).addClass('modal-lg'); 
-           //$('.imgatt1').css({ 'width': '250px', 'height': '250px'}).addClass('modal-lg'); 
-
-
-        }else{
-            $('#glyph_resize').removeClass('glyphicon-resize-small');
-            $('#glyph_resize').addClass('glyphicon-resize-full');
-            $('#modal_dialog').removeClass('modal-lg');
-            $('#modal_cont').removeClass('modal-lg');
-            $('#modal_dialog').addClass('modal-md');
-            $('#modal_cont').addClass('modal-md');
-            
-            $('.imgatt2').removeClass('modal-lg'); 
-            $('.imgatt2').css({'background-color': 'transparent', 'width': '200px', 'height': '200px', 'margin': '1em', 'display': 'inline-block'}).addClass('modal-md'); 
-            $('.att_title').removeClass('modal-lg'); 
-            $('.att_title').css({ 'width': '200px', 'height': '200px'}).addClass('modal-md'); 
-            $('a button').removeClass('modal-lg'); 
-            $('a button').css({ 'width': '35px', 'height': '35px'}).addClass('modal-md'); 
-         }
-    });
-
-$('#close_modal').click(function() {
-    $('#viewTicket').modal('hide');
-});
 
 //=============Twilio SMS
 
