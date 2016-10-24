@@ -539,6 +539,10 @@ body
             -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
             transform: rotate(45deg);
         }
+        /*** overwrite th width using scroll ***/
+        .dataTables_scrollHeadInner table {
+          width: 110% !important;
+        }
 </style>
 
 <!-- SUPPORT MODAL
@@ -1279,7 +1283,7 @@ body
     -->
     <div class="full-width-div">        
         <div class="container_12" style="margin-top:0em;">
-            <div id="boxes" class="row text-center">
+            <div id="boxesSum" class="row text-center">
                
                 <div class="grid_2 push_1 alpha ticketbutton" style="padding: 1em;margin-right:1em;margin-bottom:1em;border:solid #A60800 2px;color:#A60800"><a href="#" onclick="return addTicket();"><strong>Ticket</strong></a></div>
                 <div class="grid_2 push_1 omega twiliobutton" style="padding: 1em;margin-right:1em;margin-bottom:1em;border:solid #340570 2px;color:#340570"><a href="#" onclick="return showTwilio();"><strong>Twilio</strong></a></div>
@@ -1344,7 +1348,7 @@ body
                                 <div class="grid_1 alpha round-div">
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 </div>
-                                <div class="grid_2 omega">
+                                <div class="grid_2 omega ticketlist">
                                     <a href="#" class="open-modal" data-cid="<?=$cID?>" data-id="<?=$mID?>" data-no="<?=$tNo?>" data-status="<?=$sts?>" data-subject="<?=$sbj?>" data-mes="<?=$bdy?>" data-atturl="<?=$ats_title.$ats?>" data-threadmsg="<?=$th_arr_fin?>">
                                     <strong><?php echo $bn; ?></strong></a> <br>
                                     <?php
@@ -1540,7 +1544,9 @@ body
                 "bInfo": true,
                 "bSort": false,
                 "scrollY": "300px",
-        });
+        }); 
+
+        $('.dataTables_scrollHeadInner').css('width', '900px');
     });
     $('#search').on( 'keyup', function () {
         var table = $('#datatable_accounts').DataTable();

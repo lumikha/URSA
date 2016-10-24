@@ -182,7 +182,7 @@
 /**tickets summary and round-div **/
   /**summary buttons**/
   
-  #boxes
+  #boxesSum
   {
     margin-left: -0.25em !important;
   }
@@ -894,9 +894,11 @@ font-size: 12px;
   body, .full-width-div 
   {
     min-width: 960px;
-    margin-left: 3em auto;
+    margin-left: -10%;
     margin-right: auto;
   }
+
+
 
   .container_12
    
@@ -906,7 +908,7 @@ font-size: 12px;
 
   .boxcustomer
   {
-    margin-top: 1em;
+    margin-top: 0em;
   }
 
 .boxsummary
@@ -919,7 +921,7 @@ font-size: 12px;
 
 #sumArea
 {
-  padding-left: 2.25em;
+  margin-left: -3.50em;
 }
 
 .round-div
@@ -928,6 +930,11 @@ font-size: 12px;
    max-height: 45px;
    margin-right: 4.5em;
    
+  }
+
+  .ticketsummary
+  {
+    margin-left: 1em !important;
   }
 
 
@@ -954,28 +961,21 @@ font-size: 12px;
 /*START support2.php*/
 
 
-  #boxes
-  {
-  
-    margin-top: -5.25em;
-
-  }
-
-  #boxesSup
-  {
-  
-    margin-top: -5.25em;
-
-  }
-
  
+  #boxesSum, 
+  #boxesSup
+  
   {
-     /*background-color: rgba(0, 0, 0, 0.2);*/
-     height: 500px;
-     width: 92% !important;
-     margin-left: 0.5em;
-     top: 1.25em;
+  
+    margin-top: -5.25em;
+    margin-left: -3.5em;
+
+
   }
+
+
+
+  
 
   .boxsupport
   {
@@ -985,10 +985,10 @@ font-size: 12px;
 
  .ticketsummary2
   {
-     /*background-color: rgba(0, 0, 0, 0.2);*/
+    
      height: 500px;
-     width: 91% !important;
-     margin-left: 1em !important;
+     width: 92% !important;
+     margin-left: -1.5em !important;
      top: -3em;
   }
 
@@ -1016,6 +1016,14 @@ font-size: 12px;
   word-wrap: break-word !important;
  
   
+  }
+
+  /**accounts form**/
+
+  .accform
+  
+  {
+    margin-left: -5em!important;
   }
 }
   
@@ -1096,7 +1104,8 @@ font-size: 12px;
   /*START support2.php*/
 
 
-  #boxes
+  #boxes,
+  #boxesSum
   {
   
     margin-top: -5.25em !important;
