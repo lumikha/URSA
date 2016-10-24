@@ -9,7 +9,7 @@
     min-width: 280px;
     max-width: 320px;
     margin-left: auto;
-    margin-right: auto;
+    margin-right: 0 auto;
     width: 320px;
   }
  
@@ -180,15 +180,39 @@
 
 
 /**tickets summary and round-div **/
+  /**summary buttons**/
+  
+  #boxes
+  {
+    margin-left: -0.25em !important;
+  }
+
+  .ticketbutton,
+  .twiliobutton
+  {
+    
+    width: 125px !important;
+  }
+
   .ticketsummary
   {
     text-align: center;
+    margin-left: 4em !important;
   }
 
   .round-div
   {
-    position: absolute;
+    position: normal;
+    margin-left: -0.5em;
+
     
+  }
+
+  .ticketlist
+  {
+    margin-top: -3.5em !important;
+    margin-left: 1.25em !important;
+    font-size: 10px;
   }
 
   /**modal dialog toggle button**/
@@ -438,15 +462,36 @@
   }
 
   /**tickets summary and round-div **/
+  /**summary buttons**/
+
+  #boxes
+  {
+    margin-left: -0.75em !important;
+  }
+
+  .ticketbutton,
+  .twiliobutton
+  {
+    width: 200px !important;
+  }
+
   .ticketsummary
   {
     text-align: center;
+    margin-left: 4.75em !important;
   }
 
   .round-div
   {
-    position: absolute;
+    position: normal;
     
+    
+  }
+
+  .ticketlist
+  {
+    margin-top: -4em !important;
+    margin-left: 2em !important;
   }
 
   /**modal dialog toggle button**/
@@ -472,13 +517,6 @@
 {
   min-width: 420px;
 }
-
-/**.middle_container
-{
-  max-width: 420px !important;
-  overflow-x:auto;
-  overflow-y: scroll; **/
-
 
 .mail_body
 {
@@ -719,9 +757,15 @@
 
   .round-div
   {
-    position: absolute;
+    position: normal;
+    margin-left: -1.5em !important;
    
   }
+  .ticketlist
+  {
+    margin-top: -5em !important;
+  }
+
   /**modal dialog toggle button**/
   #glyph_resize
   {
@@ -1064,7 +1108,7 @@ font-size: 12px;
   {
   
     margin-top: -5.25em !important;
-    margin-left: 0em !important;
+    margin-left: -3em !important;
 
   }
 
