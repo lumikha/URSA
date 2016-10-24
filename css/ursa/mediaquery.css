@@ -1,4 +1,4 @@
-/*XS DEVICES*/
+
 
 @media only all and (min-width: 280px) and (max-width: 479px) 
 
@@ -255,10 +255,11 @@
 #boxesSup
 {
   margin-top: 30em;
+  margin-left: -1em;
 }
 
 
-/* END support.php*/
+/** END support.php**/
 
 #previewAtt
 {
@@ -268,6 +269,7 @@
  background-color: rgba(0, 0, 0, 0.6);
 
 }
+ 
  #previewAtt img, #attfn
   {
   
@@ -282,15 +284,10 @@
  
   }
 
-  /*START OF accounts.php*/
-
- 
-
-
  }
 
 
-/* Mobile Landscape Width to Tablet Portrait Width */
+/** Mobile Landscape Width to Tablet Portrait Width **/
 @media only screen and (min-width: 480px) and (max-width: 767px) 
 
 {
@@ -411,6 +408,7 @@
     width: 420px;
    
   }
+   
    .search
   {
      margin-left: -1.5em;
@@ -420,7 +418,6 @@
   {
     margin-top:35em;
     margin-left:1em;
-
 
   }
 
@@ -459,7 +456,7 @@
     cursor: pointer;
   }
 
-/*START support.php*/
+/**START support.php**/
 
 .boxsummary2
 {
@@ -476,12 +473,12 @@
   min-width: 420px;
 }
 
-/*.middle_container
+/**.middle_container
 {
   max-width: 420px !important;
   overflow-x:auto;
-  overflow-y: scroll; */
-}
+  overflow-y: scroll; **/
+
 
 .mail_body
 {
@@ -516,15 +513,15 @@
 #boxesSup
 {
   margin-top: 30em;
+  margin-left: 0em;
 }
 
-/* END support.php*/
+/**END support.php**/
 
 #previewAtt
 {
  left: 2em;
  background-color: rgba(0, 0, 0, 0.6);
-
 
 }
  #previewAtt img, #attfn
@@ -532,8 +529,7 @@
   
   max-width: 480px;
   max-height: 300px;
-  display: block; 
-  
+  display: block;  
   margin-top: 40px;
   margin-left: 120px;
   margin-right: auto;
@@ -543,15 +539,12 @@
   
   }
 
-
+}
  
 
- 
 
 
-
-
-/*Small devices*/
+/**Small devices**/
 @media only screen and (min-width: 768px) and (max-width: 959px) 
 {
 
@@ -687,8 +680,6 @@
   {
     margin-top:40em;
     margin-left:auto;
-
-
   }
 
   .tab-pane
@@ -697,6 +688,7 @@
     padding-right: 2em;
     width: 740px;
   }
+  
   .tab-content
   {
     margin-left: 0.5em;
@@ -708,11 +700,19 @@
    max-height: 60px;
    
   }
+
+  /**summary buttons**/
+  .ticketbutton,
+  .twiliobutton
+  {
+    width: 350px !important;
+  }
   
   /**tickets summary and round-div **/
   .ticketsummary
   {
-    text-align: center;
+    margin-left: 12em !important;
+    text-align: center !important;
 
     
   }
@@ -730,7 +730,7 @@
   }
 
 
-    /*START support.php*/
+    /**START support.php**/
 
 .boxsummary2
 {
@@ -747,12 +747,12 @@
   min-width: 720px;
 }
 
-/*.middle_container
+/**.middle_container
 {
   min-width: 720px !important;
   overflow-x:auto;
   overflow-y: scroll; 
-}*/
+}**/
 
 .middle_container_2, .prevConvo
 {
@@ -768,22 +768,59 @@
  display: inline-block; 
 }
 
-.mail_body .mfrom {
-            width: 60%;
-            padding-left: 8px;
-            font-size: 15px !important;
-            font-weight: bold;
-        }
+.mail_body .mfrom 
+{
+ width: 60%;
+ padding-left: 8px;
+ font-size: 15px !important;
+ font-weight: bold;
+}
 
-/* END support.php*/
+#boxesSup
+{
+  margin-top: 30em;
+  margin-left: 1.5em;
+}
+
+
+/**for boxessup nav buttons**/
+
+.unassignedbutton
+{
+width: 110px !important;
+height: 50px !important;
+font-size: 12px;
+word-wrap: inherit;
+}
+
+
+.minebutton,
+.assignedbutton,
+.closedbutton,
+.spambutton
+
+{
+width: 110px !important;
+height: 50px !important;
+font-size: 12px;
+
+}
+
+
+
+
+
+
+
+/** END support.php**/
 
  #previewAtt
 {
  left: 2em;
- 
  background-color: rgba(0, 0, 0, 0.6);
 
 }
+ 
  #previewAtt img, #attfn
   {
   
@@ -798,12 +835,12 @@
  
   
   }
-
-  
-  /*START OF accounts.php*/
+}
 
  
-}
+
+ 
+
 
 /*MEDIUM devices up to Large Devices*/
 @media only screen and (min-width: 960px) and (max-width: 1599px) 
@@ -1046,9 +1083,10 @@
   
   }
 
-  .accountsArea
+  .accform
   {
-    margin-left: 3em;
+    margin-left: 15em!important;
+    width: 55% !important;
   }
 
 
@@ -1080,6 +1118,8 @@
  
   
   }
+}
+
 
  
 
