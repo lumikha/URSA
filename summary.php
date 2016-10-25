@@ -1737,6 +1737,7 @@ body
           $('#updateTicket').addClass('modal-fullscreen');
         }else{
             $('#viewTicket').removeClass('modal-fullscreen');
+            $('#updateTicket').removeClass('modal-fullscreen');
             $('#glyph_resize').removeClass('glyphicon-resize-small');
             $('#glyph_resize').addClass('glyphicon-resize-full');
             $('#modal_dialog').removeClass('modal-lg');
