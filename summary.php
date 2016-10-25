@@ -541,7 +541,7 @@ body
         }
         /*** overwrite th width using scroll ***/
         .dataTables_scrollHeadInner table {
-          width: 110% !important;
+          width: 100% !important;
         }
 </style>
 
@@ -997,19 +997,19 @@ body
                     <div class="row">
                         <div class="col-md-12">
                             <label>Subject:</label>
-                            <input type="text" class="form-control"  readonly>
+                            <input type="text" class="form-control" id="tSubj" readonly>
                         </div>
                     </div>
 
                      <div class="row">
                         <div class="col-md-8">
                             <label>From:</label>
-                            <input type="text" class="form-control mfrom"  readonly>
+                            <input type="text" class="form-control" id="fromName"  readonly>
                         </div>
 
                         <div class="col-md-4">
                             <label>Date:</label>
-                            <input type="text" class="form-control mfrom"  readonly>
+                            <input type="text" class="form-control" id=""   readonly>
                         </div>
                     </div>
                     <style>
@@ -1307,6 +1307,7 @@ body
                 $tNo = $a_m['no'];
                 $sts = $a_m['status'];
                 $sbj = $a_m['subject'];
+                $frm = $a_m['from'];
                 $bdy = htmlentities($a_m['body']);
 
                 if($a_m['notes']) {
@@ -1341,6 +1342,7 @@ body
                         $fn = $em_check[$em_cnt]['fname'];
                         $ln = $em_check[$em_cnt]['lname'];
                         $bp = $em_check[$em_cnt]['bphone'];
+                        
         ?>
                         <div class="container_12">
                            
@@ -1349,7 +1351,7 @@ body
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 </div>
                                 <div class="grid_2 omega ticketlist">
-                                    <a href="#" class="open-modal" data-cid="<?=$cID?>" data-id="<?=$mID?>" data-no="<?=$tNo?>" data-status="<?=$sts?>" data-subject="<?=$sbj?>" data-mes="<?=$bdy?>" data-atturl="<?=$ats_title.$ats?>" data-threadmsg="<?=$th_arr_fin?>">
+                                    <a href="#" class="open-modal" data-cid="<?=$cID?>" data-id="<?=$mID?>" data-name="<?=$frm?>" data-no="<?=$tNo?>" data-status="<?=$sts?>" data-subject="<?=$sbj?>" data-mes="<?=$bdy?>" data-atturl="<?=$ats_title.$ats?>" data-threadmsg="<?=$th_arr_fin?>">
                                     <strong><?php echo $bn; ?></strong></a> <br>
                                     <?php
                                         echo $fn." ".$ln."<br>".
@@ -1581,6 +1583,7 @@ body
             tMsgAtt = _self.data('atturl'),
             cID = _self.data('cid'),
             threads = _self.data('threadmsg');
+            fromName = _self.data('name');
         $("#tID").val(tID);
         $("#tNo").val(tNo);
         $("#tSubj").val(tSubj);
@@ -1589,6 +1592,7 @@ body
         $("#cID").val(cID);
         $("#commit_status").val(tSts);
         $("#curr_status").val(tSts);
+        $("#fromName").val(fromName);
 
         if(threads) {
             fields = threads.split("~^^^~");
