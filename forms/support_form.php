@@ -45,6 +45,12 @@ table thead
 {
   margin-top: -1em !important;
   margin-top: -1em !important;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.dataTables_scrollBody
+{
+    height: 300px !important;
 }
 </style>
 
