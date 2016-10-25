@@ -908,6 +908,31 @@ body
             background-color: transparent;
             font-weight: bold;
         }
+
+        /* .modal-fullscreen size: we use Bootstrap media query breakpoints */
+
+        .modal-fullscreen .modal-dialog {
+          margin: 0;
+          margin-right: auto;
+          margin-left: auto;
+          width: 100%;
+        }
+        @media (min-width: 768px) {
+          .modal-fullscreen .modal-dialog {
+            width: 750px;
+          }
+        }
+        @media (min-width: 992px) {
+          .modal-fullscreen .modal-dialog {
+            width: 970px;
+          }
+        }
+        @media (min-width: 1200px) {
+          .modal-fullscreen .modal-dialog {
+             width: 1170px;
+          }
+        }
+
     </style>
     <!--<div class="tab-content">-->
     <!--<div class="tab-pane fade" id="accounts">-->
@@ -981,14 +1006,14 @@ body
 
 
 <style type="text/css">
-    .text-right
+    .resize
     {
         margin-top: -4em;
     }
 </style>
 
 
-                        <div class="col-md-3 text-right">
+                        <div class="col-md-3 text-right resize">
                             <a id="expand" href="#"><span id="glyph_resize" class="btn btn-info btn-sm glyphicon glyphicon-resize-full " aria-hidden="true"></span></a>
                             <a id="close_modal" href="#"><span id="glyph_close" class="btn btn-danger btn-sm glyphicon glyphicon-remove " aria-hidden="true"></span></a>
                         </div>
@@ -1690,7 +1715,7 @@ body
         if($('#modal_dialog').hasClass('modal-md')){
 
             $('#glyph_resize').removeClass('glyphicon-resize-full');
-            $('#glyph_resize').addClass('glyphicon-resize-small');
+            $('#glyph_resize').addClass('glyphicon-fullscreen');
             $('#modal_dialog').removeClass('modal-md');
             $('#modal_cont').removeClass('modal-md');
             $('#modal_dialog').addClass('modal-lg');
@@ -1705,7 +1730,13 @@ body
            //$('.imgatt1').css({ 'width': '250px', 'height': '250px'}).addClass('modal-lg'); 
 
 
+        }else if($('#glyph_resize').hasClass('glyphicon-fullscreen')){
+          $('#viewTicket').addClass('modal-fullscreen');
+          $('#glyph_resize').removeClass('glyphicon-fullscreen');
+          $('#glyph_resize').addClass('glyphicon-resize-small');
+          $('#updateTicket').addClass('modal-fullscreen');
         }else{
+            $('#viewTicket').removeClass('modal-fullscreen');
             $('#glyph_resize').removeClass('glyphicon-resize-small');
             $('#glyph_resize').addClass('glyphicon-resize-full');
             $('#modal_dialog').removeClass('modal-lg');
