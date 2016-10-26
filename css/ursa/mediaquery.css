@@ -1143,18 +1143,18 @@ font-size: 12px;
 /**START of summary.php**/
 
 
+ #boxesSum
 
-.boxsummary
-{
-  position: relative;
-   margin-left:-2.5em !important;
-    right: auto;
+  {
+  
+    margin-top: -5.25em !important;
+    margin-left: 3.5em !important;
 
-}
+  }
 
 #sumArea
 {
-  margin-left: 9.5em !important;
+  margin-left: 14.5em !important;
   right: auto;
   padding-left: 0em;
 
@@ -1162,9 +1162,15 @@ font-size: 12px;
 
 .round-div
   {
-   max-width: 60px;
-   max-height: 60px;
+   max-width: 45px;
+   max-height: 45px;
+   margin-top: 1.5em !important;
    
+  }
+
+  .ticketlist
+  {
+    margin-left: 2em !important;
   }
 
 
@@ -1194,14 +1200,7 @@ font-size: 12px;
 
 
   
-  #boxesSum
-
-  {
-  
-    margin-top: -5.25em !important;
-    margin-left: -2em !important;
-
-  }
+ 
 
 
   /*START support2.php*/
@@ -1211,17 +1210,17 @@ font-size: 12px;
   {
   
     margin-top: -5.25em !important;
-    margin-left: 0em !important;
+    margin-left: -3.5em !important;
 
   }
 
   .ticketsummary2
   {
-     /*background-color: rgba(0, 0, 0, 0.2);*/
+
      height: 500px;
      width: 55% !important;
-     margin-left: 1em !important;
-     top: -2em;
+     margin-left: -2.5em !important;
+     margin-top: -0.25em;
   }
 
   .boxsupport
