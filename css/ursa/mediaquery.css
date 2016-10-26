@@ -216,12 +216,24 @@
   }
 
   /**modal dialog toggle button**/
+  
+
   #glyph_resize
   {
     margin-top:-10em;
     cursor: pointer;
   }
 
+  .glyphicon-resize-small
+  {
+    margin-top: -1em !important;
+
+  }
+
+  .glyphicon-remove
+  {
+    margin-top: -10em !important;
+  }
 
   /*START support.php*/
 
@@ -513,6 +525,17 @@
     cursor: pointer;
   }
 
+  .glyphicon-resize-small
+  {
+    margin-top: -1em !important;
+
+  }
+
+  .glyphicon-remove
+  {
+    margin-top: -10em !important;
+  }
+
 /**START support.php**/
 
 .boxsummary2
@@ -787,6 +810,17 @@
   {
     margin-top:-10em;
     cursor: pointer;
+  }
+
+  .glyphicon-resize-small
+  {
+    margin-top: -1em !important;
+
+  }
+
+  .glyphicon-remove
+  {
+    margin-top: -10em !important;
   }
 
 
