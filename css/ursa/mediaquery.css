@@ -269,11 +269,11 @@
 
 .mail_body .mfrom 
 {
-            width: 60%;
-            padding-left: 8px;
-            font-size: 10px !important;
-            font-weight: bold;
-        }
+ width: 60%;
+ padding-left: 8px;
+ font-size: 10px !important;
+ font-weight: bold;
+ }
 
 
 #boxesSup
@@ -328,16 +328,16 @@
 
   body, .full-width-div
   {
-    min-width: 420px;
-    width: 420px;
-    margin-left: auto;
-    margin-right: auto;
+    min-width: 480px;
+    width: 480px;
+    margin-left: auto !important;
+    margin-right: 0 auto !important;
   }
 
   .container_12,
   .container_16 
   {
-    width: 420px;
+    width: 480px !important;
     max-width: 500px;
   }
 
@@ -375,7 +375,7 @@
   .container_16 .grid_16 
   {
     margin: 0;
-    width: 420px;
+    width: 480px;
   }
   .container_12 .push_1,
   .container_16 .push_1,
@@ -439,7 +439,7 @@
   .container_16 .pull_15 
   {
     left: 0;
-    width: 420px;
+    width: 480px;
    
   }
    
@@ -471,7 +471,7 @@
 
   #boxesSum
   {
-    margin-left: -0.75em !important;
+    margin-left: 1.25em !important;
   }
 
   .ticketbutton,
@@ -483,7 +483,7 @@
   .ticketsummary
   {
     text-align: center;
-    margin-left: 4.75em !important;
+    margin-left: 7.25em !important;
   }
 
 
@@ -493,14 +493,15 @@
    max-width: 40px;
    max-height: 40px;
    position: normal;
-   margin-left: 0.25em !important;
+   margin-left: 0.25em;
+
   }
 
 
   .ticketlist
   {
     margin-top: -3em !important;
-    margin-left: 2em !important;
+    margin-left: 0em !important;
   }
 
 
@@ -609,8 +610,8 @@
   body, .full-width-div
   {
     min-width: 720px;
-    margin-right: 0;
-    margin-left: 0em;
+    margin-right: 0 auto !important;
+    margin-left: 0 auto !important;
     
   }
 
@@ -771,7 +772,7 @@
   /**tickets summary and round-div **/
   .ticketsummary
   {
-    margin-left: 12em !important;
+    margin-left: 8em !important;
     text-align: center !important;
 
    
@@ -932,6 +933,17 @@ font-size: 12px;
     width: 960px;
   }
 
+
+
+/**header.php**/
+
+/*search output*/
+#output
+{
+  width: 175% !important;
+}
+
+/** END of header.php**/
   .boxcustomer
   {
     margin-top: 0em;
@@ -1078,11 +1090,25 @@ font-size: 12px;
     width: 1600px;
   }
 
+/**header.php**/
+
+/*search output*/
+#output
+{
+  width: 175% !important;
+}
+
+/** END of header.php**/
+
 .boxcustomer
   {
     margin-top: 0em;
     margin-left: 0em;
   }
+
+/**START of summary.php**/
+
+
 
 .boxsummary
 {

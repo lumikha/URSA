@@ -77,7 +77,7 @@
                                                     <form name="myForm">
                                                         <input type="text" style="width: 100%;margin-bottom:0em " class="form-control" onkeyup="return check();" id="search" name="search" ng-model="search" placeholder="Search" autocomplete="off" >
                                                     </form>
-                                                    <div name="output" id="output" style="position:absolute; z-index:1;width: 200%;" ng-cloak >
+                                                    <div name="output" id="output" style="position:absolute; z-index:1;width: 100%;" ng-cloak >
                                                         <div class="list-group">
                                                             <a class="list-group-item" ng-if="search" ng-repeat="user in result = ( users | filter:search | limitTo:num)" href="customer.php?id={{ user.chargify_id.S }}">
                                                                 <span style="font-size:130%" class="text-info"><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> {{user.business_name.S}}</span><br>
