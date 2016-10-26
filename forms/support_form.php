@@ -108,7 +108,7 @@ table thead
         }
     ?>
 
-    	 <div id="list_unassigned" class="folder_list_hide">
+    	 <div id="list_unassigned" class="">
           <?php divChckBxs(); ?>             
           <table id="datatable_unassigned" class="table">
             <thead>

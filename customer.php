@@ -12,8 +12,8 @@
     $sid = $sid;
     $token = $token;
     $client = new Client($sid, $token);
-
-    $phone_num = "+639262386281";
+    $strip_phone = str_replace("-", "", $phone);
+    $phone_num = "+"."$strip_phone";
     $from = "+15005550006";
     //+12565988804
 
@@ -31,28 +31,30 @@
 
 
     if(@$_POST['call']){
+        try{
             $call = $client->calls->create(
                 "$phone_num", "$from",
                 array("url" => "http://demo.twilio.com/docs/voice.xml")
             );
-            if($call->sid){
                 ?>
                     <script type="text/javascript">
-                        alert("Connected.");
+                        alert("Connected.<?=$phone_num?>");
                     </script>
                 <?php
-            }else{
+            }catch(Exception $e){
                 ?>
                     <script type="text/javascript">
-                        alert("Failed.");
+                        alert("Failed to connect. <?=$phone_num?>");
                     </script>
                 <?php
             }
+            
     }
 
     //==========TWILIO END===============
 ?>
     <style>
+
         .form-errors {
             color: #e60000;
             font-size: 30px;

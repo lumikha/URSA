@@ -124,28 +124,36 @@
                                         $("#tickets_display").addClass('hidden');
                                         $("#support_display").addClass('hidden');
                                         $("#accounts_display").removeClass('hidden');
+                                        $("#accounts_tab").addClass('active');
+                                        $("#support_tab").removeClass('active');
+                                        $.cookie('last_tab', '#account');
                                         }
                                         function tickets(){
                                         $("#accounts_display").addClass('hidden');
                                         $("#support_display").addClass('hidden');
                                         $("#accounts_tab").removeClass('active');
+                                        $("#support_tab").removeClass('active');
                                         $("#tickets_display").removeClass('hidden');
+                                        $.cookie('last_tab', '#account');
                                         }
                                         function support(){
+                                        $("#support_tab").addClass('active');
+                                        $("#accounts_tab").removeClass('active');
                                         $("#accounts_display").addClass('hidden');
                                         $("#tickets_display").addClass('hidden');
                                         $("#support_display").removeClass('hidden');
+                                        $.cookie('last_tab', '#account');
                                         }
                                         
                                     </script>
-                                    <li><a class="nl disabledTab hidden">Hidden</a></li>
+                                    <li><a class="nl disabledTab hidden" data-toggle="tab" href="#account">Hidden</a></li>
                                     <!--<li><a class="nl" href="#account" data-toggle="tab" onclick="return remAccounts();" class="hide_tickets">Tickets</a></li>-->
-                                    <li id="accounts_tab"><a  href="#" class="nl" data-toggle="tab" onclick="return accounts();">Accounts</a></li>
+                                    <li id="accounts_tab"><a href="#" class="nl" onclick="return accounts();">Accounts</a></li>
                                     <li><a id="btn_provisioning" class="nl disabledTab" data-toggle="tab" >Provisioning</a></li>
                                         <?php if($current_page=="support2.php") { ?>
-                                            <li class="active"><a id="btn_support" class="nl" href="#" >Support</a></li>
+                                            <li class="active"><a id="btn_support" class="nl" >Support</a></li>
                                         <?php } else { ?>
-                                            <li><a id="btn_support" class="nl" href="#" data-toggle="tab" onclick="return support();">Support</a></li>
+                                            <li id="support_tab"><a class="nl" href="#" onclick="return support();">Support</a></li>
                                         <?php } ?>
                                     <li><a id="btn_customer" class="nl disabledTab" data-toggle="tab" >Customer</a></li>
                                     <li><a id="btn_quality" class="nl disabledTab" data-toggle="tab" >Quality</a></li>
@@ -156,7 +164,7 @@
                                     <li><a class="hidden">Hidden</a></li>
                                     <li><a id="btn_account" class="nl" href="#account" data-toggle="tab">Account</a></li>
                                     <li><a id="btn_provisioning" class="nl" href="#provisioning" data-toggle="tab" >Provisioning</a></li>
-                                    <li><a id="btn_support" class="nl" href="support">Support</a></li>
+                                    <li ><a id="btn_support" class="nl" href="support">Support</a></li>
                                     <li><a id="btn_customer" class="nl" href="#customer" data-toggle="tab" >Customer</a></li>
                                     <li><a id="btn_quality" class="nl" href="#quality" data-toggle="tab" >Quality</a></li>
                                     <li><a id="btn_dashboard" class="nl" href="#dashboard" data-toggle="tab" >Dashboard</a></li>

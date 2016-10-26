@@ -899,7 +899,7 @@ body
         }
         .pagination li a {
             background-color: transparent;
-            font-size: 20px;
+            font-size: 15px;
             margin-top: -8px;
             color: #cccccc;
             border: none;
@@ -1405,6 +1405,7 @@ body
 
 <script>
     $(document).ready(function() {
+      $("#support_tab").removeClass('active');
         if($.cookie('last_tab') == '#accountsFromSup') {
             $("#tickets_display").addClass('hidden');
             $("#accounts_display").removeClass('hidden');
@@ -1443,7 +1444,7 @@ body
         //=====support======
         $('#datatable_unassigned').DataTable({
       "bPaginate": true,
-      "pagingType": "full",
+      "pagingType": "full_numbers",
       "language": {
         "paginate": {
           "first": "&lt;&lt;",
@@ -1556,7 +1557,7 @@ body
         $('#datatable_accounts').DataTable({
             "bDestroy": true,
            "bPaginate": true,
-                "pagingType": "full",
+                "pagingType": "full_numbers",
                 "language": {
                     "paginate": {
                         "first": "&lt;&lt;",
@@ -1848,6 +1849,7 @@ var current_folder_list = "";
     $(table+'_filter input').val(null);
             $(table+'_filter input').trigger("keyup");
 
+            /*
             $('.paginate_button').css("display", "none");
             if($(table+'_first').hasClass("disabled")) {
                 $(table+'_first').css("display", "none");
@@ -1864,7 +1866,7 @@ var current_folder_list = "";
                 $(table+'_next').css("display", "inline-block");
                 $(table+'_last').css("display", "inline-block");
             }
-
+            */
             var rows  = tickets;
 
             if(rows == 0) {
@@ -1929,6 +1931,7 @@ var current_folder_list = "";
                 activeFolderNow = "#datatable_spam";
             }
 
+            /*
             $('.paginate_button').css("display", "none");
             if($(activeFolderNow+'_first').hasClass("disabled")) {
                 $(activeFolderNow+'_first').css("display", "none");
@@ -1945,6 +1948,7 @@ var current_folder_list = "";
                 $(activeFolderNow+'_next').css("display", "inline-block");
                 $(activeFolderNow+'_last').css("display", "inline-block");
             }
+            */
 
             if($(activeFolderNow).dataTable().fnSettings().aoData.length == 0) {
                 $(activeFolderNow+' .sorting').off();
