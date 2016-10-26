@@ -1485,7 +1485,8 @@ body
       "columnDefs": [ {
         "targets"  : [0,2],
         "orderable": false,
-      }]
+      }],
+      "scrollY": "200px"
     });
     $('#datatable_assigned').DataTable({
       "bPaginate": true,
@@ -1507,7 +1508,8 @@ body
       "columnDefs": [ {
         "targets"  : [0,2],
         "orderable": false,
-      }]
+      }],
+      "scrollY": "200px"
     });
     $('#datatable_closed').DataTable({
       "bPaginate": true,
@@ -1528,7 +1530,8 @@ body
       "columnDefs": [ {
         "targets"  : [0,2],
         "orderable": false,
-      }]
+      }],
+      "scrollY": "200px"
     });
     $('#datatable_spam').DataTable({
       "bPaginate": true,
@@ -1550,7 +1553,8 @@ body
       "columnDefs": [ {
         "targets"  : [0,2],
         "orderable": false,
-      }]
+      }],
+      "scrollY": "200px"
     });
 
 
