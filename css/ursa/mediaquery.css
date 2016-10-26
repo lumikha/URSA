@@ -955,7 +955,7 @@ font-size: 12px;
   body, .full-width-div 
   {
     min-width: 960px;
-    margin-left: -10%;
+    margin-left: -10% !important;
     margin-right: auto;
   }
 
