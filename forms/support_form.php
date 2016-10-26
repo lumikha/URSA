@@ -147,20 +147,21 @@ table thead
                 foreach($aUN['attachments'] as $am_ats2) {
                     $ats2 .= htmlentities($am_ats2);
                 }
-
+                    $datas = "data-cid='13867879' data-id='".$aUN['ticket_id']."' data-no='".$aUN['no']."' data-name=\"".$aUN['from']."\" data-status='".$aUN['status']."' data-subject='".$aUN['subject']."' data-mes='$body2' data-atturl='$ats_title2.$ats2' data-threadmsg=\"$th_arr_fin2\"";
+                
                 ?>
 
               <tr>
                 <td><input type="checkbox" id="chckbxid<?=$aUN['no']?>" class="chckbx"></td>
-                <td class="open-modal" data-cid='13867879' data-id='<?=$aUN["ticket_id"]?>' data-no='<?=$aUN['no']?>' data-name="<?=$aUN['from']?>" data-status='<?=$aUN['status']?>' data-subject='<?=$aUN['subject']?>' data-mes='<?=$body2?>' data-atturl='<?=$ats_title2.$ats2?>' data-threadmsg='<?=$th_arr_fin2?>' data-name="<?=$aUN['from']?>"><?=$aUN['from']?></td>
-                <td class="open-modal" data-cid='13867879' data-id='<?=$aUN["ticket_id"]?>' data-no='<?=$aUN['no']?>' data-name="<?=$aUN['from']?>" data-status='<?=$aUN['status']?>' data-subject='<?=$aUN['subject']?>' data-mes='<?=$body2?>' data-atturl='<?=$ats_title2.$ats2?>' data-threadmsg='<?=$th_arr_fin2?>'>
+                <td class="open-modal" <?php echo $datas; ?>><?=$aUN['from']?></td>
+                <td class="open-modal" <?php echo $datas; ?>>
                                             <div class="table_email_content">
                                                 <b><?=$aUN['subject']?></b><br/>
                                                 <?=str_replace("<br>",'',$aUN['body'])?>
                                             </div>
                                         </td>
-                                        <td class="open-modal" data-cid='13867879' data-id='<?=$aUN["ticket_id"]?>' data-name="<?=$aUN['from']?>" data-no='<?=$aUN['no']?>' data-status='<?=$aUN['status']?>' data-subject='<?=$aUN['subject']?>' data-mes='<?=$body2?>' data-atturl='<?=$ats_title2.$ats2?>' data-threadmsg='<?=$th_arr_fin2?>'><?=$aUN['no']?></td>
-                                        <td class="open-modal" data-cid='13867879' data-id='<?=$aUN["ticket_id"]?>' data-no='<?=$aUN['no']?>' data-name="<?=$aUN['from']?>" data-status='<?=$aUN['status']?>' data-subject='<?=$aUN['subject']?>' data-mes='<?=$body2?>' data-atturl='<?=$ats_title2.$ats2?>' data-threadmsg='<?=$th_arr_fin2?>'><?=$aUN['updated']?></td>
+                                        <td class="open-modal" <?php echo $datas; ?>><?=$aUN['no']?></td>
+                                        <td class="open-modal" <?php echo $datas; ?>><?=$aUN['updated']?></td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>
@@ -182,15 +183,15 @@ table thead
                                     <?php foreach($arr_mine as $aM) { ?>
                                     <tr>
                                         <td><input type="checkbox" id="chckbxid<?=$aM['no']?>" class="chckbx"></td>
-                                        <td onclick="getTicketData('<?=$aM["ticket_id"]?>')"><?=$aM['from']?></td>
-                                        <td onclick="getTicketData('<?=$aM["ticket_id"]?>')">
+                                        <td class="open-modal" <?php echo $datas; ?>><?=$aM['from']?></td>
+                                        <td class="open-modal" <?php echo $datas; ?>>
                                             <div class="table_email_content">
                                                 <b><?=$aM['subject']?></b><br/>
                                                 <?=str_replace("<br>",'',$aM['body'])?>
                                             </div>
                                         </td>
-                                        <td onclick="getTicketData('<?=$aM["ticket_id"]?>')"><?=$aM['no']?></td>
-                                        <td onclick="getTicketData('<?=$aM["ticket_id"]?>')"><?=$aM['updated']?></td>
+                                        <td class="open-modal" <?php echo $datas; ?>><?=$aM['no']?></td>
+                                        <td class="open-modal" <?php echo $datas; ?>><?=$aM['updated']?></td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>
@@ -213,16 +214,16 @@ table thead
                                     <?php foreach($arr_assigned as $aAS) { ?>
                                     <tr>
                                         <td><input type="checkbox" id="chckbxid<?=$aAS['no']?>" class="chckbx"></td>
-                                        <td onclick="getTicketData('<?=$aAS["ticket_id"]?>')"><?=$aAS['from']?></td>
-                                        <td onclick="getTicketData('<?=$aAS["ticket_id"]?>')">
+                                        <td class="open-modal" <?php echo $datas; ?>><?=$aAS['from']?></td>
+                                        <td class="open-modal" <?php echo $datas; ?>>
                                             <div class="table_email_content">
                                                 <b><?=$aAS['subject']?></b><br/>
                                                 <?=str_replace("<br>",'',$aAS['body'])?>
                                             </div>
                                         </td>
-                                        <td onclick="getTicketData('<?=$aAS["ticket_id"]?>')"><?=$aAS['assigned']?></td>
-                                        <td onclick="getTicketData('<?=$aAS["ticket_id"]?>')"><?=$aAS['no']?></td>
-                                        <td onclick="getTicketData('<?=$aAS["ticket_id"]?>')"><?=$aAS['updated']?></td>
+                                        <td class="open-modal" <?php echo $datas; ?><?=$aAS['assigned']?></td>
+                                        <td class="open-modal" <?php echo $datas; ?>><?=$aAS['no']?></td>
+                                        <td class="open-modal" <?php echo $datas; ?>><?=$aAS['updated']?></td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>
@@ -244,15 +245,15 @@ table thead
                                     <?php foreach($arr_closed as $aC) { ?>
                                     <tr>
                                         <td><input type="checkbox" id="chckbxid<?=$aC['no']?>" class="chckbx"></td>
-                                        <td onclick="getTicketData('<?=$aC["ticket_id"]?>')"><?=$aC['from']?></td>
-                                        <td onclick="getTicketData('<?=$aC["ticket_id"]?>')">
+                                        <td class="open-modal" <?php echo $datas; ?>><?=$aC['from']?></td>
+                                        <td class="open-modal" <?php echo $datas; ?>>
                                             <div class="table_email_content">
                                                 <b><?=$aC['subject']?></b><br/>
                                                 <?=str_replace("<br>",'',$aC['body'])?>
                                             </div>
                                         </td>
-                                        <td onclick="getTicketData('<?=$aC["ticket_id"]?>')"><?=$aC['no']?></td>
-                                        <td onclick="getTicketData('<?=$aC["ticket_id"]?>')"><?=$aC['updated']?></td>
+                                        <td class="open-modal" <?php echo $datas; ?>><?=$aC['no']?></td>
+                                        <td class="open-modal" <?php echo $datas; ?>><?=$aC['updated']?></td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>
@@ -274,15 +275,15 @@ table thead
                                     <?php foreach($arr_spam as $aS) { ?>
                                     <tr>
                                         <td><input type="checkbox" id="chckbxid<?=$aS['no']?>" class="chckbx"></td>
-                                        <td onclick="getTicketData('<?=$aS["ticket_id"]?>')"><?=$aS['from']?></td>
-                                        <td onclick="getTicketData('<?=$aS["ticket_id"]?>')">
+                                        <td class="open-modal" <?php echo $datas; ?>><?=$aS['from']?></td>
+                                        <td class="open-modal" <?php echo $datas; ?>>
                                             <div class="table_email_content">
                                                 <b><?=$aS['subject']?></b><br/>
                                                 <?=str_replace("<br>",'',$aS['body'])?>
                                             </div>
                                         </td>
-                                        <td onclick="getTicketData('<?=$aS["ticket_id"]?>')"><?=$aS['no']?></td>
-                                        <td onclick="getTicketData('<?=$aS["ticket_id"]?>')"><?=$aS['updated']?></td>
+                                        <td class="open-modal" <?php echo $datas; ?>><?=$aS['no']?></td>
+                                        <td class="open-modal" <?php echo $datas; ?>><?=$aS['updated']?></td>
                                     </tr>
                                     <?php } ?>
                                 </tbody>
@@ -299,4 +300,3 @@ table thead
 
 
 </div>
-    
