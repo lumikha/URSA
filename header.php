@@ -127,6 +127,7 @@
                                         $("#accounts_tab").addClass('active');
                                         $("#support_tab").removeClass('active');
                                         $.cookie('last_tab', '#account');
+                                        $("#output").css("display", "none");
                                         }
                                         function tickets(){
                                         $("#accounts_display").addClass('hidden');
@@ -135,6 +136,7 @@
                                         $("#support_tab").removeClass('active');
                                         $("#tickets_display").removeClass('hidden');
                                         $.cookie('last_tab', '#account');
+                                        $("#output").css("display", "block");
                                         }
                                         function support(){
                                         $("#support_tab").addClass('active');
@@ -143,6 +145,7 @@
                                         $("#tickets_display").addClass('hidden');
                                         $("#support_display").removeClass('hidden');
                                         $.cookie('last_tab', '#account');
+                                        $("#output").css("display", "block");
                                         }
                                         
                                     </script>
