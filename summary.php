@@ -1603,6 +1603,7 @@ body
     }
 
     $(document).on("click", ".open-modal", function (e) {
+      $.cookie('last_tab', '#account');
         e.preventDefault();
         var _self = $(this);
             tID = _self.data('id'),
