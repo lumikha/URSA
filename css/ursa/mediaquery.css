@@ -976,7 +976,7 @@ font-size: 12px;
 #output
 {
   width: 175% !important;
-  right: 0em !important;
+  margin-left: -8em;
 
 }
 
@@ -1133,7 +1133,7 @@ font-size: 12px;
 #output
 {
   width: 175% !important;
-  right: 0em;
+  margin-left: -8em;
 }
 
 /** END of header.php**/
