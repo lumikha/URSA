@@ -147,8 +147,11 @@ table thead
                 foreach($aUN['attachments'] as $am_ats2) {
                     $ats2 .= htmlentities($am_ats2);
                 }
-                    $datas = "data-cid='13867879' data-id='".$aUN['ticket_id']."' data-no='".$aUN['no']."' data-name=\"".$aUN['from']."\" data-status='".$aUN['status']."' data-subject='".$aUN['subject']."' data-mes='$body2' data-atturl='$ats_title2.$ats2' data-threadmsg=\"$th_arr_fin2\"";
-                
+                $em_cnt2=0;
+                while(!empty($em_check[$em_cnt2])) {
+                    if($aUN['email'] == $em_check[$em_cnt2]['email']) {
+                        $cID2 = $em_check[$em_cnt2]['id'];
+                        $datas = "data-cid='$cID2' data-id='".$aUN['ticket_id']."' data-no='".$aUN['no']."' data-name=\"".$aUN['from']."\" data-status='".$aUN['status']."' data-subject='".$aUN['subject']."' data-mes='$body2' data-atturl='$ats_title2.$ats2' data-threadmsg=\"$th_arr_fin2\"";
                 ?>
 
               <tr>
@@ -163,7 +166,11 @@ table thead
                                         <td class="open-modal" <?php echo $datas; ?>><?=$aUN['no']?></td>
                                         <td class="open-modal" <?php echo $datas; ?>><?=$aUN['updated']?></td>
                                     </tr>
-                                    <?php } ?>
+                                    <?php 
+                                     }
+                    $em_cnt2++;
+                }
+                                } ?>
                                 </tbody>
                             </table>
                         </div>
