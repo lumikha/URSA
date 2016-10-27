@@ -82,7 +82,7 @@
     <style type="text/css">
         body
         {
-            margin-left: 10%;
+            margin-left: 10% !important;
         }
     </style>
 
