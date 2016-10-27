@@ -1,4 +1,7 @@
-
+body
+{
+   margin-left: 10% !important;
+}
 
 @media only all and (min-width: 280px) and (max-width: 479px) 
 
