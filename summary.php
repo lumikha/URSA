@@ -1014,7 +1014,7 @@ body
 
 
                         <div class="col-md-3 text-right resize">
-                            <a id="expand" href="#"><span id="glyph_resize" class="btn btn-info btn-sm glyphicon glyphicon-resize-full " aria-hidden="true"></span></a>
+                            <a id="expand" href="#"><span id="glyph_resize" class="btn btn-info btn-sm glyphicon glyphicon-fullscreen " aria-hidden="true"></span></a>
                             <a id="close_modal" href="#"><span id="glyph_close" class="btn btn-danger btn-sm glyphicon glyphicon-remove " aria-hidden="true"></span></a>
                         </div>
                        
@@ -1717,7 +1717,7 @@ body
     }
     $('#expand').click(function(){
 
-
+      /*
         if($('#modal_dialog').hasClass('modal-md')){
 
             $('#glyph_resize').removeClass('glyphicon-resize-full');
@@ -1758,6 +1758,18 @@ body
             $('a button').removeClass('modal-lg'); 
             $('a button').css({ 'width': '35px', 'height': '35px'}).addClass('modal-md'); 
          }
+         */
+         if($('#glyph_resize').hasClass('glyphicon-fullscreen')){
+          $('#viewTicket').addClass('modal-fullscreen');
+          $('#glyph_resize').removeClass('glyphicon-fullscreen');
+          $('#glyph_resize').addClass('glyphicon-resize-small');
+          $('#updateTicket').addClass('modal-fullscreen');
+        }else{
+          $('#viewTicket').removeClass('modal-fullscreen');
+           $('#updateTicket').removeClass('modal-fullscreen');
+          $('#glyph_resize').removeClass('glyphicon-resize-small');
+            $('#glyph_resize').addClass('glyphicon-fullscreen');
+        }
     });
 
 $('#close_modal').click(function() {
