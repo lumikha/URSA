@@ -133,7 +133,7 @@
 
   .boxsummary
   {
-    margin-top:35em;
+    margin-top: 30em;
     margin-left:1em;
     right: auto;
   }
@@ -462,7 +462,7 @@
 
   .boxsummary
   {
-    margin-top:35em;
+    margin-top:30em;
     margin-left:1em;
 
   }
@@ -633,8 +633,9 @@
   body, .full-width-div
   {
     min-width: 720px;
-    margin-right: 0 auto !important;
     margin-left: 0 auto !important;
+    margin-right: 0 auto !important;
+   
     
   }
 
@@ -752,7 +753,7 @@
 
   .boxsummary
   {
-    margin-top:35em;
+    margin-top:30em;
     margin-left:auto;
     right: 0;
     padding-left: 1em;
