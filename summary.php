@@ -1167,15 +1167,15 @@ body
                             <div class="col-md-3">
                                 <label>Previous Conversation</label>
                                 <section class="form-control" id="prev_conv" name="prev_conv" style="height: 300px; background-color: rgba(0, 0, 0, 0.1);">
-                                        <button type="button" class="btn btn-default btn-sm">
-                                           <span class="glyphicon glyphicon-envelope"></span> A few more basics
+                                        <button type="button" class="btn btn-default btn-md" style="width: 100%;">
+                                           <span class="glyphicon glyphicon-envelope"></span> &nbsp Few More Basics
                                        </button>
 
-                                       <br>
 
 
-                                        <button type="button" class="btn btn-default btn-sm">
-                                           <span class="glyphicon glyphicon-envelope"></span> Learning the basics
+
+                                        <button type="button" class="btn btn-default btn-md" style="width: 100%;">
+                                           <span class="glyphicon glyphicon-envelope"></span> &nbsp Learning the basics
                                        </button>
 
 
