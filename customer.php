@@ -181,6 +181,44 @@
             //Customer's Admin Info
             include "forms/cust_admin_form.php";
         ?>
+
+
+
+<!--alert box below tab content-->
+
+
+<style type="text/css">
+    .btn
+    {
+    border-radius: 4px;
+    moz-border-radius: 4px;
+    webkit-border-radius: 4px;
+    }
+
+</style>
+
+                <div class="alert alert-warning">
+                    <span class="closebtn"  onclick="this.parentElement.style.display='none';">&times;</span> 
+                       
+                        This is an alert box. Sample only. <strong>Oh snap! You got an error!</strong> 
+                       
+                        <div class="row"> 
+                            <div class="col-md-3">
+                            <button type="button" class="btn btn-default btn-sm" style="width: 100%; background-color: #C63C33; color: white;">
+                                Take this action
+                             </button>
+                             </div>
+
+                             <div class="col-md-3">
+                             <button type="button" class="btn btn-default btn-sm" style="width: 100%;">
+                                or this
+                             </button>
+                             </div>
+
+                        </div>
+                </div>
+
+<!--end of alert box-->
     </div>
         
 <?php

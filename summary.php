@@ -1156,27 +1156,60 @@ body
                        </div>
 
 
+
+
                         <div class="row">
-                            <div class="col-md-9">
+                            <div class="col-md-8">
                                 <label>Message</label>
                                 <textarea class="form-control" id="commit_msg" name="message" style="height: 300px;"></textarea>
                             </div>
                         
 
-                        
-                            <div class="col-md-3">
-                                <label>Previous Conversation</label>
+      <style type="text/css">
+        #hide,
+        #show
+        {
+          margin-top: -1.25em;
+        }
+
+      </style>
+
+                            <div class="col-md-4">
+                                <label>Previous Conversation 
+                                    &nbsp &nbsp<button type="button" class="btn btn-default btn-sm" id="hide">
+
+                                        <span class="glyphicon glyphicon-chevron-up" title="hide content"></span> 
+
+                                    </button>  &nbsp
+
+
+                                     <button type="button" class="btn btn-default btn-sm" id="show">
+
+                                        <span class="glyphicon glyphicon-chevron-down" title="show content"></span>
+
+                                    </button>
+
+
+                                </label>
                                 <section class="form-control" id="prev_conv" name="prev_conv" style="height: 300px; background-color: rgba(0, 0, 0, 0.1);">
-                                        <button type="button" class="btn btn-default btn-md" style="width: 100%;">
+                                       
+                                       <div class="prev_convo">
+
+                                        <button type="button" class="btn btn-default btn-sm prevconvbutton" style="width: 100%;" >
                                            <span class="glyphicon glyphicon-envelope"></span> &nbsp Few More Basics
                                        </button>
 
 
 
 
-                                        <button type="button" class="btn btn-default btn-md" style="width: 100%;">
+                                        <button type="button" class="btn btn-default btn-sm prevconvbutton" style="width: 100%;" >
                                            <span class="glyphicon glyphicon-envelope"></span> &nbsp Learning the basics
                                        </button>
+
+
+                                       </div>
+
+
 
 
                                 </section>
@@ -2041,5 +2074,25 @@ var current_folder_list = "";
           else if (otionValue == "3")
               document.getElementById('textMessage').innerHTML = test3;
             }; 
+
+
+
+/**show and hide buttons for previous conversation section **/
+
+
+
+$(document).ready(function(){
+    $("#show").click(function(){
+        $(".prev_convo").show(1000);
+    });
+
+     $("#hide").click(function(){
+        $(".prev_convo").hide(1000);
+    });
+});
+
+
+
+
 
 </script>
