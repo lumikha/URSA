@@ -1114,7 +1114,7 @@ body
     </div>
 
     <div class="modal fade" id="updateTicket" tabindex="-1" role="dialog">
-        <div id="modal_cont" class="modal-dialog modal-md">
+        <div id="modal_cont" class="modal-dialog modal-lg">             <!--changed from md to lg-->
             <div class="modal-content">
                                     
                 <div class="modal-body">
@@ -1157,10 +1157,32 @@ body
 
 
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-9">
                                 <label>Message</label>
                                 <textarea class="form-control" id="commit_msg" name="message" style="height: 300px;"></textarea>
                             </div>
+                        
+
+                        
+                            <div class="col-md-3">
+                                <label>Previous Conversation</label>
+                                <section class="form-control" id="prev_conv" name="prev_conv" style="height: 300px; background-color: rgba(0, 0, 0, 0.1);">
+                                        <button type="button" class="btn btn-default btn-sm">
+                                           <span class="glyphicon glyphicon-envelope"></span> A few more basics
+                                       </button>
+
+                                       <br>
+
+
+                                        <button type="button" class="btn btn-default btn-sm">
+                                           <span class="glyphicon glyphicon-envelope"></span> Learning the basics
+                                       </button>
+
+
+                                </section>
+                            </div>
+
+
                         </div>
                         <div class="row">
                             <center>
