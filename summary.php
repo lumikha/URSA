@@ -1175,7 +1175,7 @@ body
       </style>
 
                         <div class="col-md-3">
-                            <label>Previous Conversation 
+                            <label>Previous Conversations 
                               
                                <span class="glyphicon glyphicon-menu-up" title="hide content" id="hide" title="Hide Content"></span>
                                   &nbsp
@@ -1188,24 +1188,21 @@ body
                               <div class="prev_convo">
 
                                 <button type="button" class="btn btn-default btn-sm prevconvbutton" style="width: 100%; text-align: left !important;" >
-                                   <span class="glyphicon glyphicon-envelope"></span> &nbsp Few More Basics
+                                   <span class="glyphicon glyphicon-envelope"></span> &nbsp Sample Conversation #1
                                 </button>
-
-
-
 
                                 <button type="button" class="btn btn-default btn-sm prevconvbutton" style="width: 100%; text-align: left !important;" >
-                                  <span class="glyphicon glyphicon-envelope"></span> &nbsp Learning the basics
+                                  <span class="glyphicon glyphicon-envelope"></span> &nbsp Sample Conversation #2
                                 </button>
 
 
-                                       </div>
+                              </div>
 
 
 
 
-                                </section>
-                            </div>
+                            </section>
+                       </div>
 
 
                         </div>
