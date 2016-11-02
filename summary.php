@@ -1159,7 +1159,7 @@ body
 
 
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-9">
                                 <label>Message</label>
                                 <textarea class="form-control" id="commit_msg" name="message" style="height: 300px;"></textarea>
                             </div>
@@ -1174,21 +1174,15 @@ body
 
       </style>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label>Previous Conversation 
-                                    &nbsp &nbsp<button type="button" class="btn btn-default btn-sm" id="hide">
+                                  
+                                        &nbsp
+                                       <span title="hide content" id="hide" title="Hide Content"><i class="fa fa-angle-up" style="font-size: 18px;"></i></span>
+                                        &nbsp
+                                       <span title="show content" id="show" title="Show Content"><i class="fa fa-angle-down" style="font-size: 18px;"></i></span>
 
-                                        <span class="glyphicon glyphicon-chevron-up" title="hide content"></span> 
-
-                                    </button>  &nbsp
-
-
-                                     <button type="button" class="btn btn-default btn-sm" id="show">
-
-                                        <span class="glyphicon glyphicon-chevron-down" title="show content"></span>
-
-                                    </button>
-
+                                  
 
                                 </label>
                                 <section class="form-control" id="prev_conv" name="prev_conv" style="height: 300px; background-color: rgba(0, 0, 0, 0.1);">

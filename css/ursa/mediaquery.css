@@ -173,15 +173,6 @@ body
   }
 
 
-.round-div
-  {
-   max-width: 40px;
-   max-height: 40px;
-   
-   margin-left: -2em;
-  }
-
-
 /**tickets summary and round-div **/
   /**summary buttons**/
   
@@ -205,6 +196,8 @@ body
 
   .round-div
   {
+    max-width: 40px;
+    max-height: 40px;
     position: normal;
     margin-left: -0.5em;
 
@@ -1188,12 +1181,11 @@ font-size: 12px;
 }
 
 
-
+/**customer.php**/
 .tab-content 
   {
     width: 700px;
-    margin-left: -40em;
-  
+     
 
 
   }

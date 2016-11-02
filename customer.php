@@ -148,15 +148,15 @@
       <div class="grid_12 push_2 omega " style="margin-top:0em;">
     <div id="boxes" class="text-center" style="display:none;">
        
-        <div class="cust_id grid_2" style="padding: 1em;margin-right:3em;margin-left:0em;margin-bottom:1em;border:solid black 2px;"><strong><?php echo $billing_sum; ?></strong></div>
+        <div class="cust_id grid_2" style="padding: 1em;margin-right:3em;margin-left:0em;margin-bottom:1em;border: solid #052F6D 2px; color: #052F6D !important"><strong><?php echo $billing_sum; ?></strong></div>
         
-        <div class="grid_2" style="padding: 1em;margin-right:2em;margin-bottom:1em;border:solid black 2px;"><strong><a href="#" onclick="return callTwilio();"><?php echo "Twilio"; ?></a></strong></div>
+        <div class="grid_2" style="padding: 1em;margin-right:2em;margin-bottom:1em;border: solid #052F6D 2px;"><strong><a href="#" onclick="return callTwilio();" style="color: #052F6D !important;"><?php echo "Twilio"; ?></a></strong></div>
        
-        <div class="grid_2" style="padding: 1em;margin-right:3em;margin-bottom:1em;border:solid black 2px;height:49px;overflow:hidden;"><div id="email_box" style="width: 100%;height: 300%;overflow:auto;"><strong><?php echo $email; ?></strong></div></div>
+        <div class="grid_2" style="padding: 1em;margin-right:3em;margin-bottom:1em;border: solid #052F6D 2px; height:49px;overflow:hidden;"><div id="email_box" style="width: 100%;height: 300%;overflow:auto; color: #052F6D !important;"><strong><?php echo $email; ?></strong></div></div>
      
-       <div class="grid_2" style="padding: 1em;margin-right:3em;margin-bottom:1em;border:solid #A60800 2px;color:#A60800"><strong>Ticket</strong></div>
+       <div class="grid_2" style="padding: 1em;margin-right:3em;margin-bottom:1em;border: solid #052F6D 2px; color: #052F6D !important"><strong>Ticket</strong></div>
         
-        <div class="grid_2" style="padding: 1em;margin-right:1em;margin-bottom:1em;border:solid #340570 2px;color:#340570"><strong>Disposition</strong></div>
+        <div class="grid_2" style="padding: 1em;margin-right:1em;margin-bottom:1em;border: solid #052F6D 2px; color: #052F6D !important"><strong>Disposition</strong></div>
         
     </div>
     <div class="container_12" style="padding: 1em;">
@@ -197,19 +197,19 @@
 
 </style>
 
-                <div class="alert alert-warning">
+                <div class="alert alert-danger fade in">
                     <span class="closebtn"  onclick="this.parentElement.style.display='none';">&times;</span> 
                        
                         This is an alert box. Sample only. <strong>Oh snap! You got an error!</strong> 
                        
                         <div class="row"> 
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-sm-5 col-xs-6">
                             <button type="button" class="btn btn-default btn-sm" style="width: 100%; background-color: #C63C33; color: white;">
                                 Take this action
                              </button>
                              </div>
 
-                             <div class="col-md-3">
+                             <div class="col-md-2 col-sm-4 col-xs-5">
                              <button type="button" class="btn btn-default btn-sm" style="width: 100%;">
                                 or this
                              </button>
@@ -220,6 +220,7 @@
 
 <!--end of alert box-->
     </div>
+
         
 <?php
     require "footer.php";
