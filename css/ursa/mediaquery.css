@@ -221,10 +221,9 @@ body
   }
 
   .glyphicon-resize-small
-  {
-    margin-top: -1em !important;
-
-  }
+    {
+      margin-top: -10em !important;
+    }
 
   .glyphicon-remove
   {
@@ -521,10 +520,10 @@ body
     cursor: pointer;
   }
 
-  .glyphicon-resize-small
+  
   {
     margin-top: -1em !important;
-
+.glyphicon-resize-small
   }
 
   .glyphicon-remove
@@ -811,7 +810,7 @@ body
 
   .glyphicon-resize-small
   {
-    margin-top: -1em !important;
+    margin-top: -10em !important;
 
   }
 
