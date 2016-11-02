@@ -997,7 +997,7 @@ body
                         </div>
                         <div class="col-md-3 col-md-offset-3">
                             <label>Status:</label><br>
-                            <span type="text" id="tSTAT" class="tSTAT" name="status" value="" style="text-align: center; font-weight: bold; color: green;" readonly> &nbsp &nbspACTIVE <br></span>
+                            <span type="text" id="tSTAT" class="tSTAT" name="" value="" style="text-align: center; font-weight: bold; color: green;" readonly> &nbsp &nbspACTIVE <br></span>
                         </div>
                         <div class="col-md-5">
                             <label style="display: none;">Ticket ID</label>
@@ -1126,20 +1126,20 @@ body
                         <div class="row">
                             <div class=" col-md-12  email_opt_top">
                                  
+                             <a id="note_tab" href="#" class="btn btn-primary btn-md active" onclick="return add_note();">
+                                <span class="glyphicon glyphicon-comment"></span> Add Note
+                            </a>
           
-                             <a id="reply" href="#" class="btn btn-primary btn-md">
+                             <a id="reply_tab" href="#" class="btn btn-primary btn-md" onclick="return send_reply();">
                                 <span class="glyphicon glyphicon-pencil"></span> Reply
                             </a>
 
-                             <a id="note" href="#" class="btn btn-primary btn-md">
-                                <span class="glyphicon glyphicon-comment"></span> Add Note
-                            </a>
 
                              <a id="assign" href="#" class="btn btn-primary btn-md">
                                 <span class="glyphicon glyphicon-user"></span> Assign
                             </a>
 
-                             <a id="status" href="#" class="btn btn-primary btn-md">
+                             <a id="status_tab" href="#" class="btn btn-primary btn-md">
                                 <span class="glyphicon glyphicon-flag"></span> Status
                             </a>
 
@@ -1208,7 +1208,8 @@ body
                         </div>
                         <div class="row">
                             <center>
-                                <input type="Submit" class="btn btn-danger" name="new_thread" value="Create Thread">
+                                <input id="new_thread" type="Submit" class="btn btn-danger" name="new_thread" value="Add Note">
+                                <input id="send_reply" type="Submit" class="btn btn-danger hidden" name="send_reply" value="Send Reply">
                             </center>
                         </div>
                     </form>
@@ -2040,6 +2041,20 @@ var current_folder_list = "";
     $('#viewTicket').modal('show'); 
   }
 
+  function send_reply(){
+    $("#new_thread").addClass("hidden");
+    $("#send_reply").removeClass("hidden");
+    $("#note_tab").removeClass("active");
+    $("#reply_tab").addClass("active");
+  }
+
+  function add_note(){
+    $("#send_reply").addClass("hidden");
+    $("#new_thread").removeClass("hidden");
+    $("#reply_tab").removeClass("active");
+    $("#note_tab").addClass("active");
+  }
+
 //=============Twilio SMS
 
             test0 = "";
@@ -2080,8 +2095,39 @@ $(document).ready(function(){
     });
 });
 
+</script>
 
-
-
-
+<script type="text/javascript" src="js/tinymce/tinymce.min.js"></script>
+<script>
+  tinymce.init({
+    menubar: false,
+    selector: '#commit_msg',
+    theme: 'modern',
+    plugins: [
+      'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+      'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+      'save table contextmenu directionality emoticons template paste textcolor jbimages'
+    ],
+    content_css: 'css/tinymce/content.css',
+    toolbar: 'insertfile undo redo | bold italic | bullist numlist outdent indent | link jbimages saveReply',
+    relative_urls: false,
+    setup: function(editor) {
+    editor.addButton('saveReply', {
+      type: 'menubutton',
+      text: 'Saved Replies',
+      icon: 'newdocument',
+      menu: [{
+        text: 'Thanks for Staying with MopPop',
+        onclick: function() {
+          editor.insertContent('{{name}},<br><br>Thanks for staying with us.<b> We are committed to making your Map Pop experience a sustained success</b>. We are committed to delivering greater online visibility to your business.<br><br>If there is anything we can do to improve your site or your listings, <b>please let us know</b>.<br><br> If you have questions, please don’t hesitate to email us at help@mappop.com or give us a call at 1.954.905.6164 between 9:00AM – 5:00PM EST.<br>');
+      }
+      }, {
+        text: 'We Have Your Information Update',
+        onclick: function() {
+          editor.insertContent('{{name}},<br><br>Hello from Map Pop! This email confirms that you have updated your information with Map Pop.<br><br><b>Here are the items that you have updated:</b><br>-<br>-<br>-<br><br>If you have more information to update or if you didn’t make this action, please don’t hesitate to email us at help@mappop.com or give us a call at 1.954.905.6164 between 9:00AM – 5:00PM EST.<br>');
+        }
+      }]
+    });
+  }
+  });
 </script>
