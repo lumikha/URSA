@@ -1189,14 +1189,14 @@ body
                                        
                                        <div class="prev_convo">
 
-                                        <button type="button" class="btn btn-default btn-sm prevconvbutton" style="width: 100%;" >
+                                        <button type="button" class="btn btn-default btn-sm prevconvbutton" style="width: 100%; text-align: left !important;" >
                                            <span class="glyphicon glyphicon-envelope"></span> &nbsp Few More Basics
                                        </button>
 
 
 
 
-                                        <button type="button" class="btn btn-default btn-sm prevconvbutton" style="width: 100%;" >
+                                        <button type="button" class="btn btn-default btn-sm prevconvbutton" style="width: 100%; text-align: left !important;" >
                                            <span class="glyphicon glyphicon-envelope"></span> &nbsp Learning the basics
                                        </button>
 
