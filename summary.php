@@ -540,7 +540,7 @@ body
             transform: rotate(45deg);
         }
         /*** overwrite th width using scroll ***/
-        .dataTables_scrollHeadInner table {
+        .dataTables_scrollHead table {
           width: 100% !important;
         }
 </style>
@@ -1174,31 +1174,29 @@ body
 
       </style>
 
-                            <div class="col-md-3">
-                                <label>Previous Conversation 
-                                  
-                                        &nbsp
-                                       <span title="hide content" id="hide" title="Hide Content"><i class="fa fa-angle-up" style="font-size: 18px;"></i></span>
-                                        &nbsp
-                                       <span title="show content" id="show" title="Show Content"><i class="fa fa-angle-down" style="font-size: 18px;"></i></span>
-
+                        <div class="col-md-3">
+                            <label>Previous Conversation 
+                              
+                               <span class="glyphicon glyphicon-menu-up" title="hide content" id="hide" title="Hide Content"></span>
+                                  &nbsp
+                               <span class="glyphicon glyphicon-menu-down" title="show content" id="show" title="Show Content"></span>
                                   
 
-                                </label>
-                                <section class="form-control" id="prev_conv" name="prev_conv" style="height: 300px; background-color: rgba(0, 0, 0, 0.1);">
+                            </label>
+                            <section class="form-control" id="prev_conv" name="prev_conv" style="height: 300px; background-color: rgba(0, 0, 0, 0.1);">
                                        
-                                       <div class="prev_convo">
+                              <div class="prev_convo">
 
-                                        <button type="button" class="btn btn-default btn-sm prevconvbutton" style="width: 100%; text-align: left !important;" >
-                                           <span class="glyphicon glyphicon-envelope"></span> &nbsp Few More Basics
-                                       </button>
-
-
+                                <button type="button" class="btn btn-default btn-sm prevconvbutton" style="width: 100%; text-align: left !important;" >
+                                   <span class="glyphicon glyphicon-envelope"></span> &nbsp Few More Basics
+                                </button>
 
 
-                                        <button type="button" class="btn btn-default btn-sm prevconvbutton" style="width: 100%; text-align: left !important;" >
-                                           <span class="glyphicon glyphicon-envelope"></span> &nbsp Learning the basics
-                                       </button>
+
+
+                                <button type="button" class="btn btn-default btn-sm prevconvbutton" style="width: 100%; text-align: left !important;" >
+                                  <span class="glyphicon glyphicon-envelope"></span> &nbsp Learning the basics
+                                </button>
 
 
                                        </div>
@@ -1627,7 +1625,7 @@ body
                 "scrollY": "300px",
         }); 
 
-        $('.dataTables_scrollHeadInner').css('width', '900px');
+        $('.dataTables_scrollHeadInner').css('width', '100%');
     });
     $('#search').on( 'keyup', function () {
         var table = $('#datatable_accounts').DataTable();
