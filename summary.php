@@ -1121,6 +1121,7 @@ body
                     <form method="POST">
                         <input type="type" id="cID_new_thread" name="cTID" hidden>
                         <input type="type" id="curr_status" name="curr_status" hidden>
+                        <input type="type" id="status" name="status" hidden>
                       
 
                         <div class="row">
@@ -1668,6 +1669,7 @@ body
         $("#cID").val(cID);
         $("#commit_status").val(tSts);
         $("#curr_status").val(tSts);
+        $("#status").val(tSts);
         $("#fromName").val(fromName);
 
         if(threads) {
@@ -2103,6 +2105,7 @@ $(document).ready(function(){
     menubar: false,
     selector: '#commit_msg',
     theme: 'modern',
+    height: 230,
     plugins: [
       'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
       'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
