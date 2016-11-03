@@ -192,10 +192,17 @@ foreach ($ticket_check['Items'] as $obj2) {
 
 $em_check = array();
 foreach ($result_db_customers['Items'] as $obj) {
+	if(isset($obj['chargify_id']['S'])) {
+		$paymentPotarlID = $obj['chargify_id']['S'];
+	} 
+	if(isset($obj['stripe_id']['S'])) {
+		$paymentPotarlID = $obj['stripe_id']['S'];
+	}
+
 	if($obj['customer_email']['S']){
 		array_push($em_check, array(
 			"email" => $obj['customer_email']['S'],
-			"id" => $obj['chargify_id']['S'],
+			"id" => $paymentPotarlID,
 			"bname" => $obj['business_name']['S'],
 			"fname" => $obj['customer_first_name']['S'],
 			"lname" => $obj['customer_last_name']['S'],
