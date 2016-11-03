@@ -1,6 +1,6 @@
 <?php
     require 'header.php';
-    require_once 'liveServer.php';
+    require_once 'settings.php';
     require 'gmail_get_messages.php';
     //========Twilio Connection========
 

@@ -1,7 +1,7 @@
 <?php
-    require_once 'dynamoDB/dbConnect.php';
+    require_once 'settings.php';
+    require_once 'lib/dynamoDB/dbConnect.php';
     require_once realpath(dirname(__FILE__) . '/lib/google/apiclient/src/Google/autoload.php');
-    require_once 'liveServer.php';
 
     $tbname = 'ursa-tickets';
     $tbid = 'ticket_id';

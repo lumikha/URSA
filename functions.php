@@ -1,10 +1,7 @@
 <?php 
-	require 'dynamoDB/dbConnect.php';
-	require 'Chargify-PHP-Client/lib/Chargify.php';
-	//$result_db_users = getAll user list 
-	//$result_db_customers = getAll customer list
-	//$client_users = new connection to user database
-	//$client_customers = new connection to customer database
+	require_once 'settings.php';
+	require 'lib/dynamoDB/dbConnect.php';
+	require 'lib/chargify/Chargify.php';
 
 	session_start();
 
