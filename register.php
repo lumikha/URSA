@@ -544,9 +544,12 @@ $err_msg = "";
 
 ?>
 
+
+
+
 <html>
 <head>
-	<title>Enroll Customer</title>
+	<title>Payment Page</title>
   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
   <link rel="stylesheet" type="text/css" href="js/dataTables/dataTables.bootstrap.min.css"/>
   <link rel="stylesheet" type="text/css" href="js/field_trappings/error_msg.css"/>
@@ -581,22 +584,76 @@ $err_msg = "";
       text-align: center;
     }
   </style>
+
+
 </head>
 <body>
+
+
+<!--aesthetics design for register.php-->
+<style type="text/css">
+
+html, body 
+{ 
+  /*background-image: url("img/little_dipper.jpg");*/
+  background: #052F6D;
+
+}
+
+label,
+.checkboxes
+
+{
+  color:  #ffb30f;
+}
+
+.pagetitle
+{
+  text-align: center;
+  margin-left: 0em;
+  font-size: 30px;
+  color: #ffb30f;
+
+}
+
+.formtitle
+{
+  color: #FFF;
+  margin-left: -1.25em;
+}
+
+.regbutton
+{
+  background: -webkit-linear-gradient(#ffb30f, #ffae00);
+  background: -moz-linear-gradient(#ffb30f, #ffae00);
+  background: -o-linear-gradient(#ffb30f, #ffae00);
+  color: #FFFFFF;
+  margin-left: 1em;
+  
+}
+
+#business_information input,#business_information
+select
+{
+  background-color: #EEEEEE ;
+}
+
+</style>
 
 <?php if($done == 0 || $done != 1) { ?>
 
 
 <div class="full-width-div">
         <div class="container_12" style="margin-top:60px;">                          
-            <div class="grid_2 alpha logo text-center">
+            <div class="grid_10 push_2 alpha logo text-center">
                 <a id="home" class="disp_tickets" href="#"> 
-                    <img src="img/ursa_logo_red.gif" height="130" align="middle" >
+                    <img src="img/ursa3.png" height="160" align="middle" >
                 </a>
-            </div>      
-            <div class="grid_4 omega enrollcust">
-              <br><h1>Enroll Customer</h1><br><br><br>
+            </div> 
               
+            <div class="grid_10 push_2 omega pagetitle">
+           
+             Payment Page 
             </div>             
             
 </div>
@@ -610,7 +667,7 @@ $err_msg = "";
       
       <form class="form-horizontal" action="" method="POST" enctype="multipart/form-data" onsubmit="return checkFields_enroll1();">
         <fieldset>
-        <h3>Business Information</h3><br> 
+        <div class="formtitle"><h3>Business Information</h3><br> </div>
           
           <div class="form-group">
             <div class="grid_10 alpha ">
@@ -755,17 +812,17 @@ $err_msg = "";
             <div class="grid_10 alpha">
               <label>Payment Accepted</label>&nbsp;&nbsp;<span class="hido" id="hido8"><p id="error8" class="error"></p></span>
               <div class="form-group">
-                <div class="grid_6 alpha">
-                  <div>
-                    <input type="checkbox" id="paymet_1"  name="payment-method[]" value="Cash" style="margin-left: 30px;" onchange="payment();">&nbsp;Cash
-                    <input type="checkbox" id="paymet_2"  name="payment-method[]" value="Check" style="margin-left: 30px;" onchange="payment();">&nbsp;Check
-                    <input type="checkbox" id="paymet_3"  name="payment-method[]" value="Visa" style="margin-left: 30px;" onchange="payment();">&nbsp;Visa
-                    <input type="checkbox" id="paymet_4"  name="payment-method[]" value="Paypal" style="margin-left: 30px;" onchange="payment();">&nbsp;Paypal
+                <div class="grid_10 alpha checkboxes">
+                  <div class=" grid_10">
+                    <div class="grid_2 alpha"><input type="checkbox" id="paymet_1"  name="payment-method[]" value="Cash" style="margin-left: 30px;" onchange="payment();">&nbsp;Cash </div>
+                    <div class="grid_2"><input type="checkbox" id="paymet_2"  name="payment-method[]" value="Check" style="margin-left: 30px;" onchange="payment();">&nbsp;Check </div>
+                    <div class="grid_2"><input type="checkbox" id="paymet_3"  name="payment-method[]" value="Visa" style="margin-left: 30px;" onchange="payment();">&nbsp;Visa </div>
+                    <div class="grid_2 omega"><input type="checkbox" id="paymet_4"  name="payment-method[]" value="Paypal" style="margin-left: 30px;" onchange="payment();">&nbsp;Paypal </div>
                   </div>
-                  <div>
-                    <input type="checkbox" id="paymet_5"  name="payment-method[]" value="Amex" style="margin-left: 30px;" onchange="payment();">&nbsp;AMEX
-                    <input type="checkbox" id="paymet_6"  name="payment-method[]" value="Mastercard" style="margin-left: 30px;" onchange="payment();">&nbsp;Mastercard
-                    <input type="checkbox" id="paymet_7"  name="payment-method[]" value="Discover" style="margin-left: 30px;" onchange="payment();">&nbsp;Discover
+                  <div class="grid_10">
+                    <div class="grid_2 alpha"><input type="checkbox" id="paymet_5"  name="payment-method[]" value="Amex" style="margin-left: 30px;" onchange="payment();">&nbsp;AMEX </div>
+                    <div class="grid_2"><input type="checkbox" id="paymet_6"  name="payment-method[]" value="Mastercard" style="margin-left: 30px;" onchange="payment();">&nbsp;Mastercard </div>
+                    <div class="grid_2 omega"><input type="checkbox" id="paymet_7"  name="payment-method[]" value="Discover" style="margin-left: 30px;" onchange="payment();">&nbsp;Discover </div>
                   </div>
                 </div>
               </div>
@@ -780,7 +837,7 @@ $err_msg = "";
           </div>
 
           <div class="col-lg-9 col-lg-offset-5">
-            <input type="submit" class="btn btn-primary" name="submit_business_form" value="Submit">
+            <input type="submit" class="btn btn-primary regbutton" name="submit_business_form" value="Submit">
           </div>
          
 
@@ -797,14 +854,14 @@ $err_msg = "";
 
 <div class="full-width-div">
         <div class="container_12" style="margin-top:60px;">                          
-            <div class="grid_2 alpha logo text-center">
+            <div class="grid_10 push_2 alpha logo text-center">
                 <a id="home" class="disp_tickets" href="#"> 
-                    <img src="img/ursa_logo_red.gif" height="130" align="middle" >
+                    <img src="img/ursa3.png" height="160" align="middle" >
                 </a>
-            </div>      
-            <div class="grid_4 omega enrollcust">
-              <br><h1>Enroll Customer</h1><br><br><br>
-             
+            </div> 
+               
+            <div class="grid_10 push_2 omega pagetitle">
+              Payment Page
             </div>             
             
 </div>
@@ -822,7 +879,7 @@ $err_msg = "";
           <input type="hidden" id="option_1_hidden_value" 
           value="<?php if(empty($err_msg)){echo $p2_state;}else{echo $_POST['c-state'];} ?>">
           <fieldset>
-            <h3>Billing Information</h3><br> 
+            <div class="formtitle"><h3>Billing Information</h3></div><br> 
 
             <div class="form-group">
               <div class="grid_10 alpha">
@@ -1035,7 +1092,7 @@ $err_msg = "";
               </div>
 
               <div class="col-lg-9 col-lg-offset-4">
-                <input type="submit" class="btn btn-primary" name="submit_billing_form" value="Submit">
+                <input type="submit" class="btn btn-primary regbutton" name="submit_billing_form" value="Submit">
               </div>
             </div>
 
