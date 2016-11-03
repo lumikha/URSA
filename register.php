@@ -291,7 +291,7 @@ $err_msg = "";
 
       $newCustomer = \Stripe\Customer::create(array(
         'source'   => $token,
-        "email" => "jessie@lumikha.co",
+        "email" => $_POST["c-eadd"],
         /*
         "metadata" => array(
           "Business Name" => "BusinessTest",
