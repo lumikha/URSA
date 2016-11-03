@@ -1,4 +1,5 @@
 <?php
+
   require_once 'settings.php'; 
   require_once 'lib/dynamoDB/dbConnect.php';
   use Aws\DynamoDb\Exception\DynamoDbException;
@@ -549,6 +550,21 @@ $err_msg = "";
   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
   <link rel="stylesheet" type="text/css" href="js/dataTables/dataTables.bootstrap.min.css"/>
   <link rel="stylesheet" type="text/css" href="js/field_trappings/error_msg.css"/>
+
+    <link rel="Shortcut icon" href="img/ursa_tab_logo.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="stylesheet" type="text/css" href="css/jquery.tagsinput.css" />
+        
+    <!--960 grid stylesheet links-->
+    <link href="css/960.css" rel="stylesheet"/>
+    <link href="css/reset.css" rel="stylesheet"/>
+    <link href="css/text.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="style.css"/>
+       
+    <!--media queries-->
+    <link rel="stylesheet" type="text/css" href="css/ursa/mediaquery.css">
   <style>
     .error {
       font-size: 12px;
@@ -569,37 +585,57 @@ $err_msg = "";
 <body>
 
 <?php if($done == 0 || $done != 1) { ?>
-<div id="business_information" class="row">
-  <div class="col-md-offset-3 col-md-6" style="">
+
+
+<div class="full-width-div">
+        <div class="container_12" style="margin-top:60px;">                          
+            <div class="grid_2 alpha logo text-center">
+                <a id="home" class="disp_tickets" href="#"> 
+                    <img src="img/ursa_logo_red.gif" height="130" align="middle" >
+                </a>
+            </div>      
+            <div class="grid_4 omega enrollcust">
+              <br><h1>Enroll Customer</h1><br><br><br>
+              
+            </div>             
+            
+</div>
+</div>
+
+
+<div class="container_12" style="padding: 1em;">
+<div id="business_information" class="grid_10">
+  <div class="grid_10" style="">
     <div class="panel-body" id="demo">
-      <h2>Enroll Customer</h2>
+      
       <form class="form-horizontal" action="" method="POST" enctype="multipart/form-data" onsubmit="return checkFields_enroll1();">
         <fieldset>
-          <h4>Business Information</h4><br> 
+        <h3>Business Information</h3><br> 
+          
           <div class="form-group">
-            <div class="col-lg-12">
-              <label>Business Name</label>&nbsp;&nbsp;<span class="hido" id="hido1"><p id="error1" class="error"></p></span>
+            <div class="grid_10 alpha ">
+              <label>Business Name </label>&nbsp;&nbsp;<span class="hido" id="hido1"><p id="error1" class="error"></p></span>
               <input type="text" class="form-control" id="biz-name" name="biz-name" onkeypress="return KeyPressBName(event)" onclick="clickField1()">
             </div>
           </div>
 
           <div class="form-group">
-            <div class="col-lg-6">
+            <div class="grid_5 alpha">
               <label>Business Address 1</label>&nbsp;&nbsp;<span class="hido" id="hido2"><p id="error2" class="error"></p></span>
               <input type="text" class="form-control" id="biz-street" name="biz-street" onkeypress="return KeyPressBStreet(event)" onclick="clickField2()">
             </div>
-            <div class="col-lg-6">
+            <div class="grid_5 omega">
               <label>Suite/Apartment No.</label>
               <input type="text" class="form-control" name="suite-number">
             </div>
           </div>
 
           <div class="form-group">
-            <div class="col-lg-6">
+            <div class="grid_5 alpha">
               <label>City</label>&nbsp;&nbsp;<span class="hido" id="hido3"><p id="error3" class="error"></p></span>
               <input type="text" class="form-control" id="biz-city" name="biz-city" onkeypress="return KeyPressBCity(event)" onclick="clickField3()">
             </div>
-            <div class="col-lg-3">
+            <div class="grid_2">
               <label>State</label>&nbsp;&nbsp;<span class="hido" id="hido4-state"><p id="error4-state" class="error"></p></span>
               <select class="form-control" id="biz-state" name="biz-state" onchange="ChangeState()">
                 <option value='' disabled selected>Select</option>
@@ -656,32 +692,32 @@ $err_msg = "";
                 <option value="WY">WY</option>
               </select>
             </div>
-            <div class="col-lg-3">
+            <div class="grid_3 omega">
               <label>Zip</label>&nbsp;&nbsp;<span class="hido" id="hido4"><p id="error4" class="error"></p></span>
               <input type="text" class="form-control" id="biz-zip" name="biz-zip" onkeypress="return KeyPressBZip(event)" onclick="clickField4()">
             </div>
           </div>
 
           <div class="form-group">
-            <div class="col-lg-6">
+            <div class="grid_5 alpha">
               <label>Business Phone</label>&nbsp;&nbsp;<span class="hido" id="hido5"><p id="error5" class="error"></p></span>
               <input type="text" class="form-control" id="biz-pnumber" name="biz-pnumber" maxlength="10" onkeypress="return KeyPressBPNumber(event)" onclick="clickField5()">
             </div>
-            <div class="col-lg-6">
+            <div class="grid_5 omega">
               <label>Email Address</label>&nbsp;&nbsp;<span class="hido" id="hido6"><p id="error6" class="error"></p></span>
               <input type="text" class="form-control" id="biz-eadd" name="biz-eadd" onkeypress="return KeyPressBEAdd(event)" onclick="clickField6()">
             </div>
           </div>
 
           <div class="form-group">
-            <div class="col-lg-12">
+            <div class="grid_10 alpha">
               <label> Website</label>
               <input type="text" class="form-control" id="biz-web" name="biz-web">
             </div>
           </div>
 
           <div class="form-group">
-            <div class="col-lg-6">
+            <div class="grid_5 alpha">
               <label>Hours of Operation</label>&nbsp;&nbsp;<span class="hido" id="hido7"><p id="error7" class="error"></p></span>
               <div class="os">
                 <label> 24 / 7?</label>
@@ -691,14 +727,14 @@ $err_msg = "";
               </div>
               
             </div>
-            <div class="col-lg-6">
+            <div class="grid_5 omega">
               <label>Alternate/Mobile Number</label>&nbsp;&nbsp;<span class="hido" id="hidomnum"><p id="errormnum" class="error"></p></span>
               <input type="text" class="form-control" id="biz-mnumber" name="biz-mnumber" maxlength="10">
             </div>
           </div>
 
           <div class="form-group">
-            <div class="col-lg-6">
+            <div class="grid_5 alpha">
               <label>Do You Want Your Address Posted?</label><br>
               <label class="radio-inline"><input type="radio" name="biz-post-address" value="yes" checked="checked">Yes</label>
               <label class="radio-inline"><input type="radio" name="biz-post-address" value="no">No</label>
@@ -706,20 +742,20 @@ $err_msg = "";
           </div>
 
           <div class="form-group">
-            <div class="col-lg-12">
+            <div class="grid_10 alpha">
               <label>Do your Office Address the same with your Billing Address?</label>
             </div>
-            <div class="col-lg-6">
+            <div class="grid_5 alpha">
               <label class="radio-inline"><input type="radio" name="same-bill-info" value="yes" checked="checked">Yes</label>
               <label class="radio-inline"><input type="radio" name="same-bill-info" value="no">No</label>
             </div>
           </div>
 
           <div class="form-group">
-            <div class="col-lg-12">
+            <div class="grid_10 alpha">
               <label>Payment Accepted</label>&nbsp;&nbsp;<span class="hido" id="hido8"><p id="error8" class="error"></p></span>
               <div class="form-group">
-                <div class="col-lg-8">
+                <div class="grid_6 alpha">
                   <div>
                     <input type="checkbox" id="paymet_1"  name="payment-method[]" value="Cash" style="margin-left: 30px;" onchange="payment();">&nbsp;Cash
                     <input type="checkbox" id="paymet_2"  name="payment-method[]" value="Check" style="margin-left: 30px;" onchange="payment();">&nbsp;Check
@@ -758,8 +794,24 @@ $err_msg = "";
   <script type="text/javascript" src="js/field_trappings/enroll_form_a.js"></script>
 </div>
 <?php } else { ?>
-<div id="billing_information" class="row">
-    <div class="col-md-offset-3 col-md-6" style="">
+
+<div class="full-width-div">
+        <div class="container_12" style="margin-top:60px;">                          
+            <div class="grid_2 alpha logo text-center">
+                <a id="home" class="disp_tickets" href="#"> 
+                    <img src="img/ursa_logo_red.gif" height="130" align="middle" >
+                </a>
+            </div>      
+            <div class="grid_4 omega enrollcust">
+              <br><h1>Enroll Customer</h1><br><br><br>
+             
+            </div>             
+            
+</div>
+</div>
+<div class="container_12" style="padding: 1em;">
+<div id="billing_information" class="grid_10">
+    <div class="grid_10" style="">
         <div class="panel-body" id="demo">
           
          <form class="form-horizontal" method="POST" action="" enctype="multipart/form-data" onsubmit="return checkFields_enroll2();">
@@ -770,17 +822,17 @@ $err_msg = "";
           <input type="hidden" id="option_1_hidden_value" 
           value="<?php if(empty($err_msg)){echo $p2_state;}else{echo $_POST['c-state'];} ?>">
           <fieldset>
-            <h2>Billing Information</h2><br> 
+            <h3>Billing Information</h3><br> 
 
             <div class="form-group">
-              <div class="col-lg-12">
+              <div class="grid_10 alpha">
                 <label>Business Name</label>
                 <input type="text" class="form-control" id="bussiness-name" name="bussiness-name" value="<?php if(empty($err_msg)){echo $p2_bname;}else{echo $_POST['bussiness-name'];} ?>" readonly>
               </div>
             </div>
 
             <div class="form-group">
-              <div class="col-lg-6">
+              <div class="grid_5 alpha">
                 <label>Salutation</label>&nbsp;&nbsp;<span class="hido" id="hido-sal"><p id="error-sal" class="error"></p></span>
                 <select name="salut" id="salut" class="form-control" onchange="ChangeSal()">
                 <?php 
@@ -800,7 +852,7 @@ $err_msg = "";
                     ?>
                 </select>
               </div>
-              <div class="col-lg-6">
+              <div class="grid_5 omega">
                 <label>Title</label>
                 <select name="title" id="title" class="form-control">
                 <?php 
@@ -822,44 +874,44 @@ $err_msg = "";
               </div>
             </div>
             <div class="form-group">
-              <div class="col-lg-6">
+              <div class="grid_5 alpha">
                 <label>First Name</label>&nbsp;&nbsp;<span class="hido" id="hido1"><p id="error1" class="error"></p></span>
                 <input type="text" class="form-control" id="bfname" name="bfname" onkeypress="return KeyPressFName(event)" onclick="clickField1()" value="<?php if(!empty($err_msg)){echo $_POST['bfname'];} ?>">
               </div>
-              <div class="col-lg-6">
+              <div class="grid_5 omega">
                 <label>Last Name</label>&nbsp;&nbsp;<span class="hido" id="hido2"><p id="error2" class="error"></p></span>
                 <input type="text" class="form-control" id="blname" name="blname" onkeypress="return KeyPressLName(event)" onclick="clickField2()" value="<?php if(!empty($err_msg)){echo $_POST['blname'];} ?>">
               </div>
             </div>
 
             <div class="form-group">
-              <div class="col-lg-6">
+              <div class="grid_5 alpha">
                 <label>Email</label>&nbsp;&nbsp;<span class="hido" id="hido3"><p id="error3" class="error"></p></span>
                 <input type="text" class="form-control" id="c-eadd" name="c-eadd" value="<?php if(empty($err_msg)){echo $p2_email;}else{echo $_POST['c-eadd'];} ?>" readonly>
               </div>
-              <div class="col-lg-6">
+              <div class="grid_5 omega">
                 <label>Contact Number</label>&nbsp;&nbsp;<span class="hido" id="hido4"><p id="error4" class="error"></p></span>
                 <input type="text" class="form-control" id="c-phone" name="c-phone" maxlength="10" onkeypress="return KeyPressPhone(event)" onclick="clickField4()" value="<?php if(!empty($err_msg)){echo $_POST['c-phone'];} ?>">
               </div>
             </div>
 
             <div class="form-group">
-              <div class="col-lg-6">
+              <div class="grid_5 alpha">
                 <label>Billing Address 1</label>&nbsp;&nbsp;<span class="hido" id="hido5"><p id="error5" class="error"></p></span>
                 <input type="text" class="form-control" id="c-street" name="c-street" onkeypress="return KeyPressStreet(event)" onclick="clickField5()" value="<?php if(empty($err_msg)){echo $p2_street;}else{echo $_POST['c-street'];} ?>">
               </div>
-              <div class="col-lg-6">
+              <div class="grid_5 omega">
                 <label>Suite/Apartment Number</label>
                 <input type="text" class="form-control" name="c-street2" value="<?php if(!empty($err_msg)){echo $_POST['c-street2'];} ?>">
               </div>
             </div>
 
             <div class="form-group">
-              <div class="col-lg-6">
+              <div class="grid_5 alpha">
                 <label>City</label>&nbsp;&nbsp;<span class="hido" id="hido6"><p id="error6" class="error"></p></span>
                 <input type="text" class="form-control" id="c-city" name="c-city" onkeypress="return KeyPressCity(event)" onclick="clickField6()" value="<?php if(empty($err_msg)){echo $p2_city;}else{echo $_POST['c-city'];} ?>">
               </div>
-              <div class="col-lg-3">
+              <div class="grid_2">
                <label>State</label>&nbsp;&nbsp;<span class="hido" id="hido7-state"><p id="error7-state" class="error"></p></span>
                 <select class="form-control" name="c-state" id="c-state" onchange="ChangeState()">
                   <?php if(empty($err_msg) && !empty($p2_state)) {
@@ -923,22 +975,22 @@ $err_msg = "";
                   <option value="WY">WY</option>
                 </select>
               </div>
-              <div class="col-lg-3">
+              <div class="grid_3 omega">
                 <label>Zip</label>&nbsp;&nbsp;<span class="hido" id="hido7"><p id="error7" class="error"></p></span>
                 <input type="text" class="form-control" id="c-zip" name="c-zip" maxlength="6" onkeypress="return KeyPressZip(event)" onclick="clickField7()" value="<?php if(empty($err_msg)){echo $p2_zip;}else{echo $_POST['c-zip'];} ?>">
               </div>
             </div>
 
             <div class="form-group">
-              <div class="col-lg-6">
+              <div class="grid_5 alpha">
                 <label>Card Number</label>&nbsp;&nbsp;<span class="hido" id="hido8"><p id="error8" class="error"></p></span>
                 <input type="text" class="form-control" id="card-number" name="card-number" onkeypress="return KeyPressCCNumber(event)" onclick="clickField8()" value="<?php if(!empty($err_msg)){echo $_POST['card-number'];} ?>">
               </div>
-              <div class="col-lg-2">
+              <div class="grid_3">
                <label> CVC </label>
                 <input type="text" class="form-control" id="card-cvc" name="card-cvc" maxlength="3" onkeypress="return KeyPressCVC(event)" onclick="clickField9()" value="<?php if(!empty($err_msg)){echo $_POST['card-cvc'];} ?>">
               </div>
-              <div class="col-lg-4">
+              <div class="grid_2 omega">
                 <label>Exp. Date (mm/yy)</label>
                 <div style="display: inline;">
                   <input type="text" class="form-control" style="float: left; width: 45%;"  maxlength="2" id="card-expiry-month" name="card-expiry-month" onkeypress="return KeyPressCCExpiryMM(event)" onclick="clickField10()" value="<?php if(!empty($err_msg)){echo $_POST['card-expiry-month'];} ?>">
@@ -948,7 +1000,7 @@ $err_msg = "";
             </div>
 
             <div class="form-group">
-              <div class="col-lg-6">
+              <div class="grid_5 alpha">
                 <label>Sales Agent</label>&nbsp;&nbsp;<span class="hido" id="hido12"><p id="error12" class="error"></p></span>
                 <select class="form-control" id="sales-agent" name="sales-agent" onchange="ChangeAgent()">
                 <?php 
