@@ -158,7 +158,7 @@
 					//var_dump($_SERVER);
 					$post_data = @$_POST['data'];
 					if (!empty($post_data)) {
-					    $dir = 'savedReplies/';
+					    $dir = 'lib/savedReplies/';
 					    $file = $_REQUEST['reply_name'];
 					    $filename = $dir.$file.'.txt';
 					    $handle = fopen($filename, "w");
