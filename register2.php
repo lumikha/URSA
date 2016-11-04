@@ -549,7 +549,7 @@ $err_msg = "";
 
 <html>
 <head>
-	<title>Payment Page</title>
+  <title>Payment Page</title>
   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
   <link rel="stylesheet" type="text/css" href="js/dataTables/dataTables.bootstrap.min.css"/>
   <link rel="stylesheet" type="text/css" href="js/field_trappings/error_msg.css"/>
@@ -596,7 +596,7 @@ $err_msg = "";
 html, body 
 { 
   /*background-image: url("img/little_dipper.jpg");*/
-  background: #EEEEEE;
+  background: #052F6D;
 
 }
 
@@ -605,7 +605,7 @@ label,
 .os
 
 {
-  color:  #052F6D;
+  color:  #ffb30f;
 }
 
 .pagetitle
@@ -613,13 +613,13 @@ label,
   text-align: center;
   margin-left: 0em;
   font-size: 30px;
-  color: #052F6D;
+  color: #ffb30f;
 
 }
 
 .formtitle
 {
-  color: #ffb30f;
+  color: #FFF;
   margin-left: -1.25em;
 }
 
@@ -628,7 +628,7 @@ label,
   background: -webkit-linear-gradient(#ffb30f, #ffae00);
   background: -moz-linear-gradient(#ffb30f, #ffae00);
   background: -o-linear-gradient(#ffb30f, #ffae00);
-  color: #FFF;
+  color: #FFFFFF;
   margin-left: 1em;
   
 }
@@ -637,6 +637,12 @@ label,
 select
 {
   background-color: #EEEEEE ;
+}
+
+#business_information input:focus,
+#business_information select:focus
+{
+  background-color: rgb(250, 255, 189);
 }
 
 </style>
@@ -648,7 +654,7 @@ select
         <div class="container_12" style="margin-top:60px;">                          
             <div class="grid_10 push_2 alpha logo text-center">
                 <a id="home" class="disp_tickets" href="#"> 
-                    <img src="img/ursablue.png" height="160" align="middle" >
+                    <img src="img/ursa3.png" height="160" align="middle" >
                 </a>
             </div> 
               
@@ -857,7 +863,7 @@ select
         <div class="container_12" style="margin-top:60px;">                          
             <div class="grid_10 push_2 alpha logo text-center">
                 <a id="home" class="disp_tickets" href="#"> 
-                    <img src="img/ursablue.png" height="160" align="middle" >
+                    <img src="img/ursa3.png" height="160" align="middle" >
                 </a>
             </div> 
                

@@ -549,7 +549,7 @@ $err_msg = "";
 
 <html>
 <head>
-	<title>Payment Page</title>
+  <title>Payment Page</title>
   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
   <link rel="stylesheet" type="text/css" href="js/dataTables/dataTables.bootstrap.min.css"/>
   <link rel="stylesheet" type="text/css" href="js/field_trappings/error_msg.css"/>
@@ -596,7 +596,7 @@ $err_msg = "";
 html, body 
 { 
   /*background-image: url("img/little_dipper.jpg");*/
-  background: #052F6D;
+  background: #EEEEEE;
 
 }
 
@@ -605,60 +605,63 @@ label,
 .os
 
 {
-  color:  #ffb30f;
+  color:  #052F6D;
 }
+
+
 
 .pagetitle
 {
   text-align: center;
   margin-left: 0em;
   font-size: 30px;
-  color: #ffb30f;
+  color: #052F6D;
 
 }
 
 .formtitle
 {
-  color: #FFF;
+  color: #052F6D;
   margin-left: -1.25em;
 }
 
 .regbutton
 {
-  background: -webkit-linear-gradient(#ffb30f, #ffae00);
-  background: -moz-linear-gradient(#ffb30f, #ffae00);
-  background: -o-linear-gradient(#ffb30f, #ffae00);
-  color: #FFFFFF;
-  margin-left: 1em;
+  background-color: #052F6D !important;
+  color: #FFF;
   
 }
 
 #business_information input,#business_information
 select
+
 {
-  background-color: #EEEEEE ;
+  background-color: #f9f9f9;
+}
+
+#business_information input:focus,
+#business_information select:focus
+{
+  background-color: #FFF;
 }
 
 </style>
 
 <?php if($done == 0 || $done != 1) { ?>
 
-
-<div class="full-width-div">
-        <div class="container_12" style="margin-top:60px;">                          
+        <div class="container_12 logotitle" style="margin-top:60px;">                          
             <div class="grid_10 push_2 alpha logo text-center">
                 <a id="home" class="disp_tickets" href="#"> 
-                    <img src="img/ursa3.png" height="160" align="middle" >
+                    <img src="img/ursablue.png" height="160" align="middle" >
                 </a>
             </div> 
               
-            <div class="grid_10 push_2 omega pagetitle">
-           
-             Payment Page 
-            </div>             
+              <div class="grid_4 push_5 omega pagetitle">
+                 Payment Page 
+              </div>             
             
-</div>
-</div>
+        </div>
+
 
 
 <div class="container_12" style="padding: 1em;">
@@ -837,7 +840,7 @@ select
             </span>
           </div>
 
-          <div class="col-lg-9 col-lg-offset-5">
+          <div class="grid_2 push_4">
             <input type="submit" class="btn btn-primary regbutton" name="submit_business_form" value="Submit">
           </div>
          
@@ -857,7 +860,7 @@ select
         <div class="container_12" style="margin-top:60px;">                          
             <div class="grid_10 push_2 alpha logo text-center">
                 <a id="home" class="disp_tickets" href="#"> 
-                    <img src="img/ursa3.png" height="160" align="middle" >
+                    <img src="img/ursablue.png" height="160" align="middle" >
                 </a>
             </div> 
                
@@ -1092,7 +1095,7 @@ select
                 </span>
               </div>
 
-              <div class="col-lg-9 col-lg-offset-4">
+              <div class="grid_2 push_4">
                 <input type="submit" class="btn btn-primary regbutton" name="submit_billing_form" value="Submit">
               </div>
             </div>

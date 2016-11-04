@@ -325,6 +325,12 @@ body
     margin-left: 0em !important;
   }
 
+  /**register.php**/
+  .regbutton
+  {
+    margin-left: 5em;
+  }
+
  }
 
 
@@ -337,8 +343,8 @@ body
   {
     min-width: 480px;
     width: 480px;
-    margin-left: auto !important;
-    margin-right: 0 auto !important;
+    margin-left: 0 auto !important;
+    margin-right:  auto !important;
   }
 
   .container_12,
@@ -616,6 +622,14 @@ body
     margin-top: 30em !important;
   }
 
+
+  /**register.php**/
+  .regbutton
+  {
+    margin-left: 12em;
+  }
+
+
 }
  
 
@@ -629,7 +643,7 @@ body
   {
     min-width: 720px;
     margin-left: 0 auto !important;
-    margin-right: 0 auto !important;
+    margin-right: auto !important;
    
     
   }
@@ -936,6 +950,14 @@ font-size: 12px;
     margin-top: 30em !important;
   }
 
+
+  /**register.php**/
+  .regbutton
+  {
+    margin-left: 20em;
+  }
+
+
 }
 
  
@@ -1100,6 +1122,12 @@ font-size: 12px;
   {
     margin-left: -3em!important;
   }
+
+  /**register.php**/
+  .logotitle
+  {
+    margin-left: 3em;
+  }
 }
   
 
@@ -1261,6 +1289,25 @@ font-size: 12px;
   word-wrap: break-word;
  
   
+  }
+
+  /**register.php**/
+  #business_information
+  {
+    margin-left: 18%;
+    margin-right: auto;
+
+  }
+
+  .pagetitle
+  {
+    margin-top: 5.5em;
+    margin-left: -26.5em !important;
+  }
+
+  .logotitle
+  {
+    margin-left: 15em;
   }
 }
 
