@@ -541,7 +541,8 @@ tinymce.init({
       //text: 'Saved Replies',
       icon: 'save',
       onclick: function() {
-        alert(tinymce.get('commit_msg').getContent());
+      	$("#add_reply").removeClass("hidden");
+        //alert(tinymce.get('commit_msg').getContent());
           //editor.insertContent('{{name}},<br><br>Thanks for staying with us.<b> We are committed to making your Map Pop experience a sustained success</b>. We are committed to delivering greater online visibility to your business.<br><br>If there is anything we can do to improve your site or your listings, <b>please let us know</b>.<br><br> If you have questions, please don’t hesitate to email us at help@mappop.com or give us a call at 1.954.905.6164 between 9:00AM – 5:00PM EST.<br>');
       }
     });
@@ -565,3 +566,19 @@ tinymce.init({
   });
 
 
+function saveReply(){
+	var response=document.getElementById("response");
+	var rname=document.getElementById("reply_name").value;
+	var data = 'data='+tinymce.get('commit_msg').getContent();
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function(){
+	  if (xmlhttp.readyState==4 && xmlhttp.status==200){
+	    response.innerHTML='<a href="files/'+xmlhttp.responseText+'.txt">'+xmlhttp.responseText+'.txt</a>';
+	  }
+	}
+	xmlhttp.open("POST","summary.php?reply_name="+rname,true);
+        //Must add this request header to XMLHttpRequest request for POST
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xmlhttp.send(data);
+	$("#add_reply").addClass("hidden");
+}

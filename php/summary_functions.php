@@ -201,8 +201,9 @@ foreach ($result_db_customers['Items'] as $obj) {
 
 	if(isset($obj['customer_email']['S'])){
 		array_push($em_check, array(
-			"email" => $obj['customer_email']['S'],
-			"id" => $paymentPotarlID,
+			"id" => $obj['customer_id']['S'],
+            "email" => $obj['customer_email']['S'],
+            "payportalid" => $paymentPotarlID,
 			"bname" => $obj['business_name']['S'],
 			"fname" => $obj['customer_first_name']['S'],
 			"lname" => $obj['customer_last_name']['S'],

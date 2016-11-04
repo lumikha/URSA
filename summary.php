@@ -112,9 +112,20 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-9">
+						<div class="col-md-9" style="position:relative">
 							<label>Message</label>
-							<textarea class="form-control" id="commit_msg" name="message" style="height: 300px;"></textarea>
+							
+							<!--<form class="form-inline " >
+							  <div class="form-group has-success has-feedback" >
+							    <div class="input-group pull-right" style="position:absolute;top:-30px;width:300px;height:30px">
+							    	<input type="text" class="form-control" placeholder="Name" >
+							      <span class="input-group-addon">Add</span>
+							    </div>
+							  </div>
+							</form>
+							<input style="position:absolute;top:-30px;width:300px;height:30px" class="form-control pull-right" type="text" placeholder="Name">-->
+              <textarea class="form-control input-sm" id="commit_msg" name="message" style="height: 300px;"></textarea>
+              
 						</div>
 						<div class="col-md-3">
 							<label>Previous Conversations 
@@ -134,10 +145,35 @@
 							</section>
 						</div>
 					</div>
+						<form class="form-inline">
+							  <div id="reply_group" class="form-group has-success has-feedback pullright" style="position:absolute;width:300px;z-index:1">
+							    <div id="add_reply" class="input-group hidden" >
+							    	<input type="text" id="reply_name" name="reply_name" class="form-control" placeholder="Name" required style="height:30px;">
+							      <span class="input-group-addon btn btn-success" onclick="saveReply();return false;">Add</span>
+							    </div>
+							  </div>
+							</form>
+					<?php
+					//error_reporting(E_ALL);
+					//var_dump($_SERVER);
+					$post_data = @$_POST['data'];
+					if (!empty($post_data)) {
+					    $dir = 'savedReplies/';
+					    $file = $_REQUEST['reply_name'];
+					    $filename = $dir.$file.'.txt';
+					    $handle = fopen($filename, "w");
+					    fwrite($handle, $post_data);
+					    fclose($handle);
+					}
+
+					?>
 					<div class="row">
 						<center>
 							<input id="new_thread" type="Submit" class="btn btn-danger" name="new_thread" value="Add Note">
 							<input id="send_reply" type="Submit" class="btn btn-danger hidden" name="send_reply" value="Send Reply">
+							
+							
+				      <div id="response" hidden></div>
 						</center>
 					</div>
 				</form>
@@ -208,6 +244,7 @@
 					$fn = $em_check[$em_cnt]['fname'];
 					$ln = $em_check[$em_cnt]['lname'];
 					$bp = $em_check[$em_cnt]['bphone'];
+					$payportalID = $em_check[$em_cnt]['payportalid'];
 		?>
 					<div class="container_12">
 						<div class="grid_5 ticketsummary">
@@ -218,7 +255,7 @@
 								<?php
 									echo $fn." ".$ln."<br>".
 										$bp."<br>".
-										$cID;
+										$payportalID;
 								?>
 							</div>
 						</div>
