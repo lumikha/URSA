@@ -649,14 +649,17 @@ select
 
 <?php if($done == 0 || $done != 1) { ?>
 
-        <div class="container_12 logotitle" style="margin-top:60px;">                          
-            <div class="grid_10 push_2 alpha logo text-center">
+        <div class="container_12 logotitle" style="margin-top:60px; ">                          
+            <div class="grid_4 push_3 logo text-center">
                 <a id="home" class="disp_tickets" href="#"> 
                     <img src="img/ursablue.png" height="160" align="middle" >
                 </a>
             </div> 
+        </div>
+
+            <div class="container_12 logotitle">
               
-              <div class="grid_4 push_5 omega pagetitle">
+              <div class="grid_4 push_3 pagetitle">
                  Payment Page 
               </div>             
             
@@ -856,20 +859,22 @@ select
 </div>
 <?php } else { ?>
 
-<div class="full-width-div">
-        <div class="container_12" style="margin-top:60px;">                          
-            <div class="grid_10 push_2 alpha logo text-center">
+        <div class="container_12 logotitle" style="margin-top:60px; ">                          
+            <div class="grid_4 push_3 logo text-center">
                 <a id="home" class="disp_tickets" href="#"> 
                     <img src="img/ursablue.png" height="160" align="middle" >
                 </a>
             </div> 
-               
-            <div class="grid_10 push_2 omega pagetitle">
-              Payment Page
-            </div>             
+        </div>
+
+            <div class="container_12 logotitle">
+              
+              <div class="grid_4 push_3 pagetitle">
+                 Payment Page 
+              </div>             
             
-</div>
-</div>
+        </div>
+
 <div class="container_12" style="padding: 1em;">
 <div id="billing_information" class="grid_10">
     <div class="grid_10" style="">

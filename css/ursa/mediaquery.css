@@ -343,7 +343,7 @@ body
   {
     min-width: 480px;
     width: 480px;
-    margin-left: 0 auto !important;
+    margin-left: auto !important;
     margin-right:  auto !important;
   }
 
@@ -1124,10 +1124,12 @@ font-size: 12px;
   }
 
   /**register.php**/
-  .logotitle
+
+  .pagetitle
   {
-    margin-left: 3em;
+    margin-left: 0.5em !important;
   }
+
 }
   
 
@@ -1219,7 +1221,7 @@ font-size: 12px;
 
   .ticket-pane
   {
-    position: absolute;
+    
     margin-left: 57em;
     margin-top: 4em;
   }
@@ -1301,14 +1303,17 @@ font-size: 12px;
 
   .pagetitle
   {
-    margin-top: 5.5em;
-    margin-left: -26.5em !important;
+    margin-left: 0.5em !important;
   }
 
   .logotitle
   {
-    margin-left: 15em;
+    margin-left: 20%;
   }
+
+
+
+  
 }
 
 
