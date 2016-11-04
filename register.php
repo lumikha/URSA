@@ -601,7 +601,8 @@ html, body
 }
 
 label,
-.checkboxes
+.checkboxes,
+.os
 
 {
   color:  #ffb30f;
