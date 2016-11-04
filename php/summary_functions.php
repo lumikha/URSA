@@ -199,7 +199,7 @@ foreach ($result_db_customers['Items'] as $obj) {
 		$paymentPotarlID = $obj['stripe_id']['S'];
 	}
 
-	if($obj['customer_email']['S']){
+	if(isset($obj['customer_email']['S'])){
 		array_push($em_check, array(
 			"email" => $obj['customer_email']['S'],
 			"id" => $paymentPotarlID,

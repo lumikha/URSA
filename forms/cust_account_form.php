@@ -226,11 +226,15 @@
         </div>
         <br/>
         <div class="grid_9">
-            <div class="grid_5 alpha">
+            <div class="grid_3 alpha">
                 <label class="<?php echo $check; ?>">Sales Center<label class="error rem-bor" for="acc_sales_center" generated="true"></label></label>
                 <input type="text" name="acc_sales_center" class="form-control" placeholder="Sales Center" value="<?php echo $sales_center; ?>" readonly>
             </div>
-            <div class="grid_4 omega">
+             <div class="grid_3 alpha">
+                <label class="<?php echo $check; ?>">Sale Date<label class="error rem-bor" for="acc_sale_date" generated="true"></label></label>
+                <input type="text" name="acc_sale_agent" class="form-control" placeholder="Sale Date" value="<?php echo $sales_date; ?>" readonly>
+            </div>
+            <div class="grid_3 omega">
                 <label class="<?php echo $check; ?>">Sales Agent<label class="error rem-bor" for="acc_sales_agent" generated="true"></label></label>
                 <input type="text" name="acc_sales_agent" class="form-control" placeholder="Sales Agent" value="<?php echo $sales_agent; ?>" readonly>
             </div>
