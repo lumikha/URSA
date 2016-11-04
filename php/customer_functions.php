@@ -518,11 +518,11 @@ date_default_timezone_set("Asia/Manila");
                     echo "Unable to update item:\n";
                     echo $e->getMessage() . "\n";
                 }
-                print_r($result_apr_acc);
 
             } catch (ChargifyValidationException $cve) {
                 echo $cve->getMessage();
             }
+            echo "sdsa";
         }
     }
 /*COMMENTED UPT PROV FOR A WHILE

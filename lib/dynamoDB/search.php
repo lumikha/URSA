@@ -23,7 +23,7 @@ $marshaler = new Marshaler();
 
 $params2 = [
     'TableName' => 'ursa-customers',
-    'ProjectionExpression' => 'customer_first_name,customer_last_name,chargify_id,
+    'ProjectionExpression' => 'customer_id,customer_first_name,customer_last_name,chargify_id,
         business_email,business_name,keywords
         '
 ];
