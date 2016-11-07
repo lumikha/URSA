@@ -63,12 +63,12 @@
         <div class="container_12 boxcustomer">
             <div class="grid_12 push_2 omega " style="margin-top:0em;">
                 <div id="boxes" class="text-center" style="display:none;">
-                    <div class="cust_id grid_2" style="padding: 1em;margin-right:3em;margin-left:0em;margin-bottom:1em;border: solid #052F6D 2px; color: #052F6D !important">
+                    <div class="cust_id grid_2" style="padding: 1em;margin-right:3em;margin-left:0em;margin-bottom:1em;border: solid #052F6D 2px; color: green !important">
                         <strong><?php echo $billing_sum; ?></strong>
                     </div>
                     <div class="grid_2" style="padding: 1em;margin-right:2em;margin-bottom:1em;border: solid #052F6D 2px;">
                         <strong>
-                            <a href="#" onclick="return callTwilio();" style="color: #052F6D !important;"><?php echo "Twilio"; ?></a>
+                            <a href="#" onclick="return callTwilio();" style="color: #337ab7 !important;"><?php echo "Twilio"; ?></a>
                         </strong>
                     </div>
                     <div class="grid_2" style="padding: 1em;margin-right:3em;margin-bottom:1em;border: solid #052F6D 2px; height:49px;overflow:hidden;">
@@ -76,7 +76,7 @@
                             <strong><?php echo $email; ?></strong>
                         </div>
                     </div>
-                    <div class="grid_2" style="padding: 1em;margin-right:3em;margin-bottom:1em;border: solid #052F6D 2px; color: #052F6D !important">
+                    <div class="grid_2" style="padding: 1em;margin-right:3em;margin-bottom:1em;border: solid #052F6D 2px; color: #C63C33 !important">
                         <strong>Ticket</strong>
                     </div>
                     <div class="grid_2" style="padding: 1em;margin-right:1em;margin-bottom:1em;border: solid #052F6D 2px; color: #052F6D !important">

@@ -2,41 +2,47 @@
   
 a #unassigned:hover
 {
-  background-color: #A261B1 !important;
-  color: white !important;
+  /*background-color: #A261B1 !important;*/
+  color: #052F6D !important;
+  text-decoration: underline;
 }
 
 
 a #mine:hover
 {
-  background-color: #EAE17F !important;
-  color: white !important;
+  /*background-color: #EAE17F !important;*/
+  color: #052F6D !important;
+  text-decoration: underline;
 }
 
 
 a #assigned:hover
 {
-  background-color: #26B68E !important;
-  color: white !important;
+  /*background-color: #26B68E !important;*/
+  color: #052F6D !important;
+  text-decoration: underline;
 }
 
 
 a #closed:hover
 {
-  background-color: #323232 !important;
-  color: white !important;
+  /*background-color: #323232 !important;*/
+  color: #052F6D !important;
+  text-decoration: underline;
 }
 
 
 a #spam:hover
 {
-  background-color: #C63C33 !important;
-  color: white !important;
+  /*background-color: #C63C33 !important;*/
+  color: #052F6D !important;
+  text-decoration: underline;
 }
 
 table thead
 {
-  background-color: rgba(52,141,192, 0.8);
+  background-color: #052F6D;
+  color: #FFF;
   
 }
 
@@ -60,28 +66,28 @@ table thead
       <div id="boxesSup" class="row text-center">
        
         <a href="#unassigned" title="Unassigned Tickets" onclick="openFolder(1, <?=$unassigned?>, '#datatable_unassigned')" title="unassigned">
-          <div class="grid_2 unassignedbutton" style="padding: 1em;margin-right:2.75em; margin-bottom:1em;border:solid #A261B1 2px;color:#A261B1;"  id="unassigned">
-            <i class="glyphicon glyphicon-envelope"></i> &nbsp<strong>Unassigned</strong>
+          <div class="grid_2 unassignedbutton" style="padding: 1em;margin-right:2.75em; margin-bottom:1em;border:solid #052F6D 2px;color:#A261B1;"  id="unassigned">
+            <i class="glyphicon glyphicon-envelope"></i> &nbsp<strong>Unassigned </strong>
           </div>
         </a>
         <a href="#mine" title="Yours and yours alone" onclick="openFolder(2, <?=$mine?>, '#datatable_mine')" >
-          <div class="grid_2 minebutton" style="padding: 1em;margin-right:2.75em; margin-bottom:1em;border:solid #EAE17F 2px;color:#EAE17F" id="mine">
-            <i class="glyphicon glyphicon-inbox"></i>&nbsp<strong>Mine</strong>
+          <div class="grid_2 minebutton" style="padding: 1em;margin-right:2.75em; margin-bottom:1em;border:solid #052F6D 2px;color:#EAE17F" id="mine">
+            <i class="glyphicon glyphicon-inbox"></i>&nbsp<strong>Mine </strong>
           </div>
         </a>
         <a href="#assigned" title="Assigned Tickets"  onclick="openFolder(3, <?=$assigned?>, '#datatable_assigned')" >
-          <div class="grid_2 assignedbutton" style="padding: 1em;margin-right:2.75em; margin-bottom:1em;border:solid #26B68E 2px;color:#26B68E" id="assigned">
-            <i class="glyphicon glyphicon-user"></i>&nbsp<strong>Assigned</strong>
+          <div class="grid_2 assignedbutton" style="padding: 1em;margin-right:2.75em; margin-bottom:1em;border:solid #052F6D 2px;color:#26B68E" id="assigned">
+            <i class="glyphicon glyphicon-user"></i>&nbsp<strong>Assigned </strong>
           </div>
         </a>
         <a href="#closed" title="Closed. Settled.">
-          <div onclick="openFolder(4, <?=$closed?>, '#datatable_closed')" class="grid_2 closedbutton" style="padding: 1em;margin-right:2.75em; margin-bottom:1em;border:solid #323232 2px;color:#323232" id="closed">
-            <i class="glyphicon glyphicon-trash"></i>&nbsp<strong>Closed</strong>
+          <div onclick="openFolder(4, <?=$closed?>, '#datatable_closed')" class="grid_2 closedbutton" style="padding: 1em;margin-right:2.75em; margin-bottom:1em;border:solid #052F6D 2px;color:#323232" id="closed">
+            <i class="glyphicon glyphicon-trash"></i>&nbsp<strong>Closed </strong>
           </div>
         </a>
         <a href="#spam" title="Spam. Junk." >
-          <div onclick="openFolder(5, <?=$spam?>, '#datatable_spam')" class="grid_2 spambutton" style="padding: 1em;margin-right:2.78em; margin-bottom:1em;border:solid #C63C33 2px;color:#C63C33" id="spam">
-           <i class="glyphicon glyphicon-ban-circle"></i>&nbsp <strong>Spam</strong>
+          <div onclick="openFolder(5, <?=$spam?>, '#datatable_spam')" class="grid_2 spambutton" style="padding: 1em;margin-right:2.78em; margin-bottom:1em;border:solid #052F6D 2px;color:#C63C33" id="spam">
+           <i class="glyphicon glyphicon-ban-circle"></i>&nbsp <strong>Spam </strong>
           </div>
         </a>
       </div>

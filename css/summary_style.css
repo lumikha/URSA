@@ -357,7 +357,8 @@ input[readonly], span[readonly] {
     cursor: pointer;
 }
 .table tbody tr:hover {
-    background-color: #e6f1ff;
+    background-color: #80BFFF;
+    color: #FFF;
 }
 #accountsArea::-webkit-scrollbar { 
     display: none; 
