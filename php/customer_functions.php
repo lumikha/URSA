@@ -21,6 +21,9 @@ date_default_timezone_set("Asia/Manila");
                 if(isset($result_db_customers['Items'][$i]['chargify_id']['S']) || isset($result_db_customers['Items'][$i]['stripe_id']['S'])) {
                     if(isset($result_db_customers['Items'][$i]['chargify_id']['S'])) {
                         $payportalID = $result_db_customers['Items'][$i]['chargify_id']['S'];
+                        $product_id = $result_db_customers['Items'][$i]['product_id']['S'];
+                        $product_handle = $result_db_customers['Items'][$i]['product_handle']['S'];
+                        $product_name = $result_db_customers['Items'][$i]['product_name']['S'];
                         $usingPayPortal ="chargify";
                     }
                     if(isset($result_db_customers['Items'][$i]['stripe_id']['S'])) {
@@ -67,15 +70,12 @@ date_default_timezone_set("Asia/Manila");
                         $mobile = null;
                     }
 
-                    $chargifyID = $result_db_customers['Items'][$i]['chargify_id']['S'];
                     $salutation = $result_db_customers['Items'][$i]['customer_salutation']['S'];
                     $title = $result_db_customers['Items'][$i]['customer_title']['S'];
                     $sales_date = $result_db_customers['Items'][$i]['sale_date']['S'];
                     $sales_agent = $result_db_customers['Items'][$i]['sale_agent']['S'];
                     $sales_center = $result_db_customers['Items'][$i]['sale_center']['S'];
-                    $product_id = $result_db_customers['Items'][$i]['product_id']['S'];
-                    $product_handle = $result_db_customers['Items'][$i]['product_handle']['S'];
-                    $product_name = $result_db_customers['Items'][$i]['product_name']['S'];
+                    
                     $product_component_id = $result_db_customers['Items'][$i]['product_component_id']['S'];
                     $product_component_name = $result_db_customers['Items'][$i]['product_component_name']['S'];
                     $product_component_quantity = $result_db_customers['Items'][$i]['product_component_quantity']['S'];
@@ -300,54 +300,54 @@ date_default_timezone_set("Asia/Manila");
             $i++;
         }
 
-        if(isset($result_db_customers['Items'][$i]['chargify_id']['S'])) {
+        if($prod_handle == 'prod_001') {
+            $prodID = 3881312;
+            $prodName = "Basic Plan";
+        } else if($prod_handle == 'plan_002') {
+            $prodID = 3881313;
+            $prodName = "Start-up Plan";
+        } else if($prod_handle == 'plan_005') {
+            $prodID = 3881318;
+            $prodName = "Upgrade to Start-up Plan";
+        } else if($prod_handle == 'plan_003') {
+            $prodID = 3881314;
+            $prodName = "Business Plan";
+        } else if($prod_handle == 'plan_006') {
+            $prodID = 3881319;
+            $prodName = "Upgrade to Business Plan";
+        } else if($prod_handle == 'plan_004') {
+            $prodID = 3881316;
+            $prodName = "Enterprise Plan";
+        } else {
+            $prodID = 3881320;
+            $prodName = "Upgrade to Enterprise Plan";
+        }
+
+        if($coupon_code == 'SAVE50') {  
+            $couponName = "Discount Coupon";
+        } else if($coupon_code == 'FREDOM') {
+            $couponName = "Domain Coupon";
+        } else if($coupon_code == 'REFER') {
+            $couponName = "Referral Coupon";
+        } else if($coupon_code == 'REMOVE') {
+            $couponName = "null";
+        } else {
+            $couponName = "null";
+        }
+
+        if($usingPayPortal == "chargify") {
             $test = true;
             $customer = new ChargifyCustomer(NULL, $test);
             $upd_subscription = new ChargifySubscription(NULL, $test);
             $component = new ChargifyQuantityBasedComponent(NULL, $test);
             $coupon = new ChargifyCoupon(NULL, $test);
 
-            $customer->id = $result_db_customers['Items'][$i]['chargify_id']['S'];
+            $customer->id = $payportalID;
             $customer->organization = $business_name;
             $customer->first_name = $fname;
             $customer->last_name = $lname;
             $customer->email = $email;
             $customer->phone = $phone;
-        
-            if($prod_handle == 'prod_001') {
-                $prodID = 3881312;
-                $prodName = "Basic Plan";
-            } else if($prod_handle == 'plan_002') {
-                $prodID = 3881313;
-                $prodName = "Start-up Plan";
-            } else if($prod_handle == 'plan_005') {
-                $prodID = 3881318;
-                $prodName = "Upgrade to Start-up Plan";
-            } else if($prod_handle == 'plan_003') {
-                $prodID = 3881314;
-                $prodName = "Business Plan";
-            } else if($prod_handle == 'plan_006') {
-                $prodID = 3881319;
-                $prodName = "Upgrade to Business Plan";
-            } else if($prod_handle == 'plan_004') {
-                $prodID = 3881316;
-                $prodName = "Enterprise Plan";
-            } else {
-                $prodID = 3881320;
-                $prodName = "Upgrade to Enterprise Plan";
-            }
-
-            if($coupon_code == 'SAVE50') {  
-                $couponName = "Discount Coupon";
-            } else if($coupon_code == 'FREDOM') {
-                $couponName = "Domain Coupon";
-            } else if($coupon_code == 'REFER') {
-                $couponName = "Referral Coupon";
-            } else if($coupon_code == 'REMOVE') {
-                $couponName = "null";
-            } else {
-                $couponName = "null";
-            }
 
             $upd_subscription->id = @$result_customer_id_search[0]->id; //chargify subscriptionID
             $sub_prod = new stdClass();
@@ -386,145 +386,170 @@ date_default_timezone_set("Asia/Manila");
                         }
                     } 
                 }
-
-                /*
-                try {
-                    $doc = $client_customers->getDoc($customer_db_id);
-                } catch (Exception $e) {
-                    echo "ERROR: ".$e->getMessage()." (".$e->getCode().")<br>\n";
-                }
-                */
-                $key_upt = $marshaler->marshalJson('
-                    {
-                        "customer_id": "'.$customer_db_id.'"
-                    }
-                ');
-
-
-                if(empty($alt_email)){
-                    $alternate_email = '":customer_alternate_email": "null",';
-                }else{
-                    $alternate_email = '":customer_alternate_email": "'.@$alt_email.'",';
-                }
-
-                if(empty($alt_phone)){
-                    $alternate_phone = '":customer_alternate_phone_no": "null",';
-                }else{
-                    $alternate_phone = '":customer_alternate_phone_no": "'.@$alt_phone.'",';
-                }
-                if(empty($mobile)){
-                    $mobile_phone = '":customer_mobile_no": "null",';
-                }else{
-                    $mobile_phone = '":customer_mobile_no": "'.@$mobile.'",';
-                }
-                $eav_upt_acc = $marshaler->marshalJson('
-                    {
-                        ":business_name": "'.@$business_name.'",
-                        ":business_category": "'.@$business_category.'",
-                        ":customer_salutation": "'.@$salutation.'",
-                        ":customer_title": "'.@$title.'",
-                        ":customer_first_name": "'.@$fname.'",
-                        ":customer_last_name": "'.@$lname.'",
-                        '.$alternate_phone.'
-                        ":customer_phone_no": "'.@$phone.'",
-                        '.$mobile_phone.'
-                        ":customer_email": "'.@$email.'",
-                        '.$alternate_email.'
-                        ":customer_billing_address": "'.@$bill_address.'",
-                        ":customer_suite_no": "'.@$bill_address_2.'",
-                        ":customer_billing_city": "'.@$bill_city.'",
-                        ":customer_billing_state": "'.@$bill_state.'",
-                        ":customer_billing_zip": "'.@$bill_zip.'",
-                        ":product_id": "'.@$prodID.'",
-                        ":product_handle": "'.@$prod_handle.'",
-                        ":product_name": "'.@$prodName.'",
-                        ":product_component_quantity": "'.@$comp_quantity.'",
-                        ":product_coupon_code": "'.@$coupon_code.'",
-                        ":product_coupon_name": "'.@$couponName.'"
-                    }
-                ');
-
-                $params_upt_acc = [
-                    'TableName' => 'ursa-customers',
-                    'Key' => $key_upt,
-                    'UpdateExpression' =>
-                        'set business_name=:business_name,
-                            business_category=:business_category,
-                            customer_salutation=:customer_salutation,
-                            customer_title=:customer_title,
-                            customer_first_name=:customer_first_name,
-                            customer_last_name=:customer_last_name,
-                            customer_phone_no=:customer_phone_no,
-                            customer_alternate_phone_no=:customer_alternate_phone_no,
-                            customer_mobile_no=:customer_mobile_no,
-                            customer_email=:customer_email,
-                            customer_alternate_email=:customer_alternate_email,
-                            customer_billing_address=:customer_billing_address,
-                            customer_suite_no=:customer_suite_no,
-                            customer_billing_city=:customer_billing_city,
-                            customer_billing_state=:customer_billing_state,
-                            customer_billing_zip=:customer_billing_zip,
-                            product_id=:product_id,
-                            product_handle=:product_handle,
-                            product_name=:product_name,
-                            product_component_quantity=:product_component_quantity,
-                            product_coupon_code=:product_coupon_code,
-                            product_coupon_name=:product_coupon_name
-                        ',
-                    'ExpressionAttributeValues'=> $eav_upt_acc,
-                    'ReturnValues' => 'UPDATED_NEW'
-                ];
-
-                $chg_cnt = 0;
-                $str_changes = "";            
-                while(!empty($changes[$chg_cnt])) {
-                    if($chg_cnt == 0) {
-                        $str_changes = $changes[$chg_cnt];
-                    } else {
-                        $str_changes .= ", ".$changes[$chg_cnt];
-                    }
-                    $chg_cnt++;
-                }
-                if($changes != null) {
-                    $log_item = $marshaler->marshalJson('
-                        {
-                            "log_id": "'.GUID().'",
-                            "user_id": "'.$_SESSION['user_now_id'].'",
-                            "customer_id": "'.$_GET['id'].'",
-                            "event": "Updated",
-                            "data": "'.$str_changes.'",
-                            "date": "'.date('Y/m/d H:i:s').'"
-                        }
-                    ');
-                    $params_add_log = [
-                        'TableName' => 'ursa-logs',
-                        'Item' => $log_item
-                    ];
-                }
-                
-
-                try {
-                    $result_apr_acc = $dynamodb->updateItem($params_upt_acc);
-                    $product_handle = $prod_handle;
-                    $product_name = $prodName;
-                    $product_coupon_code = $coupon_code;
-                    $product_coupon_name = $couponName;
-                    $product_component_quantity = $comp_quantity;
-                    if($changes != null) {
-                        $result_add_log = $dynamodb->putItem($params_add_log);
-                    }
-
-                } catch (DynamoDbException $e) {
-                    echo "Unable to update item:\n";
-                    echo $e->getMessage() . "\n";
-                }
-
             } catch (ChargifyValidationException $cve) {
                 echo $cve->getMessage();
             }
-            echo "sdsa";
+        }
+
+        if($usingPayPortal == "stripe") {
+
+        }
+
+        $key_upt = $marshaler->marshalJson('
+            {
+                "customer_id": "'.$customer_db_id.'"
+            }
+        ');
+
+
+        if(empty($alt_email)) {
+            $alternate_email = '":customer_alternate_email": "null",';
+        } else {
+            $alternate_email = '":customer_alternate_email": "'.@$alt_email.'",';
+        }
+
+        if(empty($alt_phone)) {
+            $alternate_phone = '":customer_alternate_phone_no": "null",';
+        } else {
+            $alternate_phone = '":customer_alternate_phone_no": "'.@$alt_phone.'",';
+        }
+
+        if(empty($mobile)) {
+            $mobile_phone = '":customer_mobile_no": "null",';
+        } else {
+            $mobile_phone = '":customer_mobile_no": "'.@$mobile.'",';
+        }
+
+        $eav_upt_acc = $marshaler->marshalJson('
+            {
+                ":business_name": "'.@$business_name.'",
+                ":business_category": "'.@$business_category.'",
+                ":customer_salutation": "'.@$salutation.'",
+                ":customer_title": "'.@$title.'",
+                ":customer_first_name": "'.@$fname.'",
+                ":customer_last_name": "'.@$lname.'",
+                '.$alternate_phone.'
+                ":customer_phone_no": "'.@$phone.'",
+                '.$mobile_phone.'
+                ":customer_email": "'.@$email.'",
+                '.$alternate_email.'
+                ":customer_billing_address": "'.@$bill_address.'",
+                ":customer_suite_no": "'.@$bill_address_2.'",
+                ":customer_billing_city": "'.@$bill_city.'",
+                ":customer_billing_state": "'.@$bill_state.'",
+                ":customer_billing_zip": "'.@$bill_zip.'",
+                ":product_id": "'.@$prodID.'",
+                ":product_handle": "'.@$prod_handle.'",
+                ":product_name": "'.@$prodName.'",
+                ":product_component_quantity": "'.@$comp_quantity.'",
+                ":product_coupon_code": "'.@$coupon_code.'",
+                ":product_coupon_name": "'.@$couponName.'"
+            }
+        ');
+
+        $params_upt_acc = [
+            'TableName' => 'ursa-customers',
+            'Key' => $key_upt,
+            'UpdateExpression' =>
+                'set business_name=:business_name,
+                    business_category=:business_category,
+                    customer_salutation=:customer_salutation,
+                    customer_title=:customer_title,
+                    customer_first_name=:customer_first_name,
+                    customer_last_name=:customer_last_name,
+                    customer_phone_no=:customer_phone_no,
+                    customer_alternate_phone_no=:customer_alternate_phone_no,
+                    customer_mobile_no=:customer_mobile_no,
+                    customer_email=:customer_email,
+                    customer_alternate_email=:customer_alternate_email,
+                    customer_billing_address=:customer_billing_address,
+                    customer_suite_no=:customer_suite_no,
+                    customer_billing_city=:customer_billing_city,
+                    customer_billing_state=:customer_billing_state,
+                    customer_billing_zip=:customer_billing_zip,
+                    product_id=:product_id,
+                    product_handle=:product_handle,
+                    product_name=:product_name,
+                    product_component_quantity=:product_component_quantity,
+                    product_coupon_code=:product_coupon_code,
+                    product_coupon_name=:product_coupon_name
+                ',
+            'ExpressionAttributeValues'=> $eav_upt_acc,
+            'ReturnValues' => 'UPDATED_NEW'
+        ];
+
+        $chg_cnt = 0;
+        $str_changes = "";            
+        while(!empty($changes[$chg_cnt])) {
+            if($chg_cnt == 0) {
+                $str_changes = $changes[$chg_cnt];
+            } else {
+                $str_changes .= ", ".$changes[$chg_cnt];
+            }
+            $chg_cnt++;
+        }
+
+        if($changes != null) {
+            $log_item = $marshaler->marshalJson('
+                {
+                    "log_id": "'.GUID().'",
+                    "user_id": "'.$_SESSION['user_now_id'].'",
+                    "customer_id": "'.$_GET['id'].'",
+                    "event": "Updated",
+                    "data": "'.$str_changes.'",
+                    "date": "'.date('Y/m/d H:i:s').'"
+                }
+            ');
+            $params_add_log = [
+                'TableName' => 'ursa-logs',
+                'Item' => $log_item
+            ];
+        }
+                
+
+        try {
+            $result_apr_acc = $dynamodb->updateItem($params_upt_acc);
+            $product_handle = $prod_handle;
+            $product_name = $prodName;
+            $product_coupon_code = $coupon_code;
+            $product_coupon_name = $couponName;
+            $product_component_quantity = $comp_quantity;
+            if($changes != null) {
+                $result_add_log = $dynamodb->putItem($params_add_log);
+            }
+
+            $params3 = [
+                'TableName' => 'ursa-logs',
+                'ProjectionExpression' => 'user_id,customer_id,event,#data,#date',
+                'ExpressionAttributeNames'=> [ '#data' => 'data','#date' => 'date' ]
+            ];
+
+            try {
+                while (true) {
+                    $result_db_logs = $dynamodb->scan($params3);
+    
+                    foreach ($result_db_logs['Items'] as $i) {
+                        $movie = $marshaler->unmarshalItem($i);
+                    }
+
+                    if (isset($result_db_logs['LastEvaluatedKey'])) {
+                        $params3['ExclusiveStartKey'] = $result_db_logs['LastEvaluatedKey'];
+                        $result_db_logs = $dynamodb->scan($params3);
+                    } else {
+                        break;
+                    }
+                }
+                $all_logs = $result_db_logs['Items'];
+            } catch (DynamoDbException $e) {
+                echo "Unable to scan LOGS:\n";
+                echo $e->getMessage() . "\n";
+            }
+        } catch (DynamoDbException $e) {
+            echo "Unable to update item:\n";
+            echo $e->getMessage() . "\n";
         }
     }
+
 /*COMMENTED UPT PROV FOR A WHILE
     if(isset($_POST['upd_prov'])) {
         $business_name = stripslashes($_POST['bname']);

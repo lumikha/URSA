@@ -61,7 +61,7 @@ $params2 = [
         customer_suite_no,customer_billing_city,customer_billing_state,customer_billing_zip,prov_gmail,prov_keywords,
         prov_special_request,prov_existing_social1,prov_existing_social2,prov_biglo_website,prov_analytical_address,
         prov_google_plus,prov_google_maps,prov_facebook,prov_foursquare,prov_twitter,prov_linkedin,customer_alternate_email,
-        customer_alternate_phone_no,customer_mobile_no
+        customer_alternate_phone_no,customer_mobile_no,stripe_id,plan_id,plan_name
         '
 ];
 
