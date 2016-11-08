@@ -151,6 +151,7 @@ function summaryPageOnload() {
 
 	/***** Initialize Support DataTables *****/
 	$('#datatable_accounts').DataTable({
+		"iDisplayLength": 50,
 		"bDestroy": true,
 		"bPaginate": true,
 		"pagingType": "full_numbers",

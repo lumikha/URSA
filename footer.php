@@ -274,6 +274,23 @@ $( '.box' ).each(function ( i, box ) {
 			$scope.num = 5;
 		});
 
+    $("#search").keyup(function(e) {
+        if (e.keyCode == 27) {
+            $('#output').css("visibility", "hidden");
+            $('#search_result_view').css("zIndex", "0");
+            $('#search').blur();
+        }
+    });
+
+    $("#search").click(function(e) {
+        check();
+    });
+
+    $('#search').blur(function() {
+        $('#output').css("visibility", "hidden");
+        $('#search_result_view').css("zIndex", "0");
+    });
+
 	function check(){
 		var search = document.forms["myForm"]["search"].value;
 		if(search) {
