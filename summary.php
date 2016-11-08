@@ -6,7 +6,7 @@
 <link rel="stylesheet" type="text/css" href="css/summary_style.css"/>
 
 <div class="container_12 hidden" id="accounts_display">
-	<div class="grid_12 push_1 alpha accform">
+	<div class="grid_11 push_1 alpha accform">
 	<?php include "forms/accounts_form.php"; ?>
 	</div>
 </div>
