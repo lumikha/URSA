@@ -181,6 +181,19 @@ button
 
 
 }
+/**hide scroll bar at customer.php**/
+
+ .tab-pane::-webkit-scrollbar 
+ { 
+ display: none !important; 
+ }
+
+ .ticket-pane::-webkit-scrollbar 
+ { 
+ display: none !important; 
+ }
+    
+    
 
 /*.ticket-pane
 {

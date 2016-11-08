@@ -291,33 +291,18 @@
             <!--hidden ticket button for medium to large screens-->
              
         </div>
-        
-        <!--
-        <div class="row">
-            <div class="col-md-12">
-                <div class="progress">
-                    <div class="progress-bar progress-bar-success" style="width: 35%">
-                        <span class="sr-only">35% Complete (success)</span>
-                    </div>
-                    <div class="progress-bar progress-bar-warning" style="width: 20%">
-                        <span class="sr-only">20% Complete (warning)</span>
-                    </div>
-                    <div class="progress-bar progress-bar-danger" style="width: 10%">
-                        <span class="sr-only">10% Complete (danger)</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        -->
+
+
         <br><br>
-        <div id="myProgressbar" class="progress">
-            <div id="bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+
+        <div id="myProgressbar" class="grid_9 alpha progress">
+            <div id="bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%; ">
                 <span class="count"></span>
             </div>
         </div>
 
         <div class="grid_9">
-            <div class="grid_9 alpha">
+            <div class="col-md-1 col-md-offset-5 col-sm-1 col-sm-offset-5 col-xs-1 col-xs-offset-4">
                 <button class="btn btn-danger" type="submit" name="upd_prov">Update</button>
             </div>
         </div>

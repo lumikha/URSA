@@ -83,8 +83,10 @@
                         <strong>Disposition</strong>
                     </div>
                 </div>
+
+        
                 
-                    <div class="grid_9 alpha"   style="margin-top:0.5em; margin-right:3em;">
+                    <div class="grid_9 alpha"   style="margin-top:0.5em; margin-right:3em; margin-left: 1em;">
                         <div class="tab-content">
                         <?php 
                             //Customer's AccountProv Info
@@ -152,8 +154,8 @@
     }
 */
 ?>
-                        <div class="ticket-pane">               
-                            <div class="grid_2 omega" style="font-size:83%;color:gray;margin-right:0px; margin-left:0em; margin-top:0.5em;height:450px; overflow:auto;">
+                                      
+                            <div class="grid_2 omega ticket-pane" style="font-size:83%;color:gray;margin-right:0px; margin-left:0em; margin-top:0.5em;height:450px; overflow:auto;">
                             <?php
                                 if(isset($_GET['id'])) {
                                     $touch_cnt = 0;
