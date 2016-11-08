@@ -28,6 +28,8 @@ date_default_timezone_set("Asia/Manila");
                     }
                     if(isset($result_db_customers['Items'][$i]['stripe_id']['S'])) {
                         $payportalID = $result_db_customers['Items'][$i]['stripe_id']['S'];
+                        $plan_id = $result_db_customers['Items'][$i]['plan_id']['S'];
+                        $plan_name = $result_db_customers['Items'][$i]['plan_name']['S'];
                         $usingPayPortal = "stripe";
                     } 
                     $customer_db_id = $result_db_customers['Items'][$i]['customer_id']['S'];
@@ -151,45 +153,72 @@ date_default_timezone_set("Asia/Manila");
                 $cust_search_state = "Cancelled At: ";
             }
 
-            if($result_customer_id_search[0]->state == "trialing") {
-            ?><style>
-                .cust_id {
-                    color: #b300b3;
-                }
-            </style><?php
-            } elseif($result_customer_id_search[0]->state == "active") {
-            ?><style>
-                .cust_id {
-                    color: #28B22C;
-                }
-            </style><?php
-            } elseif($result_customer_id_search[0]->state == "past_due") {
-            ?><style>
-                .cust_id {
-                    color: #e6e600;
-                }
-            </style><?php
-            } elseif($result_customer_id_search[0]->state == "unpaid") {
-            ?><style>
-                .cust_id {
-                    color: #ff0000;
-                }
-            </style><?php
-            } elseif($result_customer_id_search[0]->state == "canceled") {
-            ?><style>
-                .cust_id {
-                    color: #000000;
-                }
-            </style><?php
-            } else {
-            ?><style>
-                .cust_id {
-                    color: #cccccc;
-                }
-            </style><?php
-            }
+            $cust_status = $result_customer_id_search[0]->state;
+
         } else {
-        
+            require_once('lib/stripe/init.php');
+
+            \Stripe\Stripe::setApiKey('sk_test_T8cInYaDaLdip8ZpmtPzaq9B');
+
+            /** get stripe customer total invoice **/
+            $invoice = \Stripe\Invoice::all(array("customer" => $payportalID));
+
+            $uro1 = json_decode(json_encode($invoice), true);
+
+            $totalInv = 0;
+            foreach($uro1['data'] as $inv) {
+                if($inv['paid'] == true) {
+                    $totalInv += $inv['amount_due'];
+                }
+            }
+            $billing_sum = "$".number_format(($totalInv /100), 2, '.', ' ');
+
+            /** get customer subscription status **/
+            $customer = \Stripe\Customer::retrieve("cus_9WCSPWLu50oIa1");
+
+            $uro2 = json_decode(json_encode($customer), true);
+
+            foreach($uro2['subscriptions']['data'] as $inv) {
+                $cust_status = $inv['status'];
+            }
+        }
+
+        if($cust_status == "trialing") {
+        ?><style>
+            .cust_id {
+                color: #A261B1;
+            }
+        </style><?php
+        } elseif($cust_status == "active") {
+        ?><style>
+            .cust_id {
+                color: #26B68E;
+            }
+        </style><?php
+        } elseif($cust_status == "past_due") {
+        ?><style>
+            .cust_id {
+                color: #E05A19;
+            }
+        </style><?php
+        } elseif($cust_status == "unpaid") {
+        ?><style>
+            .cust_id {
+                color: #C63C33;
+            }
+        </style><?php
+        } elseif($cust_status == "canceled") {
+        ?><style>
+            .cust_id {
+                color: #323232;
+            }
+        </style><?php
+        } else {
+        ?><style>
+            .cust_id {
+                color: #EAE17F;
+            }
+        </style><?php
         }
     } 
 
@@ -392,6 +421,7 @@ date_default_timezone_set("Asia/Manila");
         }
 
         if($usingPayPortal == "stripe") {
+            
 
         }
 

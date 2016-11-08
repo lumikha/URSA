@@ -245,9 +245,15 @@
                 <select class="form-control" name="acc_product">
                     <?php
                     if(isset($_GET['id'])) {
-                        echo "<optgroup label='Current'>
-                            <option value='".$product_handle."'>".$product_name."</option>
-                        </optgroup>";
+                        if($usingPayPortal == "chargify") {
+                            echo "<optgroup label='Current'>
+                                <option value='".$product_handle."'>".$product_name."</option>
+                            </optgroup>";
+                        } else {
+                            echo "<optgroup label='Current'>
+                                <option value='".$plan_id."'>".$plan_name."</option>
+                            </optgroup>";
+                        }
                     ?>
                     <optgroup label="Available Plans">
                         <option value="prod_001">Basic Plan</option>

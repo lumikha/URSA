@@ -156,6 +156,9 @@
 /***** SECOND FORM *****/
 $err_msg = "";
   if(isset($_POST['submit_billing_form'])) {
+
+    $sale_date = date("m/d/Y");
+
     if($stripe == true) {
       require_once 'lib/stripe/init.php';
     } else {
@@ -246,6 +249,21 @@ $err_msg = "";
 
       try{
         $saved_subscription = $new_subscription->create();
+        
+        $new_metadata = new ChargifyMetadata(NULL, $test);
+        $new_metadata->name = "Sale Date";
+        $new_metadata->value = $sale_date;
+        $new_metadata->create($saved_subscription->id);
+
+        $new_metadata = new ChargifyMetadata(NULL, $test);
+        $new_metadata->name = "Sales Agent";
+        $new_metadata->value = $_POST["sales-agent"];
+        $new_metadata->create($saved_subscription->id);
+
+        $new_metadata = new ChargifyMetadata(NULL, $test);
+        $new_metadata->name = "Sales Center";
+        $new_metadata->value = $_POST["sales-center"];
+        $new_metadata->create($saved_subscription->id);
 
         if(empty($saved_subscription->credit_card->customer_vault_token)) {
           $pp_id = '":payment_processor_id": "N.A. - Bogus",';
@@ -294,25 +312,13 @@ $err_msg = "";
         $newCustomer = \Stripe\Customer::create(array(
           'source'   => $token,
           "email" => $_POST["c-eadd"],
-          /*
           "metadata" => array(
-            "Business Name" => "BusinessTest",
-            "Business Email" => "sample@test.com",
-            "Business Phone No." => 1234567890,
-            "Business Mobile No." => 124567890,
-            "Business Address Street" => "AddressTest",
-            "Business Address City" => "CityTest",
-            "Business Address State" => "UX",
-            "Business Address Country" => "US",
-            "Business Address Zip" => "6200",
-            "Hours of Operation" => "24/7",
-            "24/7 Operation?" => "Yes",
-            "Post Address?" => "No",
-            "Payment Accepted" => "Cash",
-            "Sale Center" => "TST",
-            "Sale Date" => "10/10/2016",
-            "Sale Agent" => "Saddam Hussein"
-          ),*/
+            "Business Name" => stripslashes($_POST["bussiness-name"]),
+            "Sale Center" => $_POST['sales-center'],
+            "Sale Date" => $sale_date,
+            "Sale Agent" => $_POST['sales-agent']
+
+          ),
           "plan" => "ursa_basic_plan",
           "account_balance" => 100, //in cents
           "description" => stripslashes($_POST["bussiness-name"])
@@ -356,7 +362,7 @@ $err_msg = "";
 
         $prod_comp_coup = '":plan_id": "'.$planID.'",
           ":plan_name": "'.$planName.'",
-          ":product_component_id": "prod_9ReoN1lDyTnk7A",
+          ":product_component_id": "prod_9WCNxQgw3GjcHe",
           ":product_component_name": "Custom Company Domain",
           ":product_component_quantity": "0",
           ":product_coupon_code": "null",
@@ -893,7 +899,7 @@ select
           <input type="hidden" name="created_doc_id" 
           value="<?php if(empty($err_msg)){echo $created_doc_id;}else{echo $_POST['created_doc_id'];} ?>">
           <input type="hidden" name="product-handle" value="prod_001">
-          <input type="hidden" name="sales-center" value="URSA_CENTER">
+          <input type="hidden" name="sales-center" value="URSA_SALES_CENTER">
           <input type="hidden" id="option_1_hidden_value" 
           value="<?php if(empty($err_msg)){echo $p2_state;}else{echo $_POST['c-state'];} ?>">
           <fieldset>
