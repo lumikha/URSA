@@ -18,6 +18,22 @@ date_default_timezone_set("Asia/Manila");
         while(isset($result_db_customers['Items'][$i])) {
               
             if($result_db_customers['Items'][$i]['customer_id']['S'] == $_GET['id']) {
+
+                $customer_db_id = $result_db_customers['Items'][$i]['customer_id']['S'];
+                $business_name = $result_db_customers['Items'][$i]['business_name']['S'];
+                $business_address = $result_db_customers['Items'][$i]['business_address']['S'];
+                $business_address_2 = $result_db_customers['Items'][$i]['business_suite_no']['S'];
+                $business_city = $result_db_customers['Items'][$i]['business_city']['S'];
+                $business_state = $result_db_customers['Items'][$i]['business_state']['S'];
+                $business_zip = $result_db_customers['Items'][$i]['business_zip']['S'];
+                $business_country = $result_db_customers['Items'][$i]['business_country']['S'];
+                $business_phone = $result_db_customers['Items'][$i]['business_phone_no']['S'];
+                $business_email = $result_db_customers['Items'][$i]['business_email']['S'];
+                $business_alt_phone = $result_db_customers['Items'][$i]['business_alternate_phone_no']['S'];
+                $business_post_address = $result_db_customers['Items'][$i]['business_post_address']['S'];
+                $business_hours = $result_db_customers['Items'][$i]['business_hours']['S'];
+                $payment_method = $result_db_customers['Items'][$i]['payment_method']['S'];
+
                 if(isset($result_db_customers['Items'][$i]['chargify_id']['S']) || isset($result_db_customers['Items'][$i]['stripe_id']['S'])) {
                     if(isset($result_db_customers['Items'][$i]['chargify_id']['S'])) {
                         $payportalID = $result_db_customers['Items'][$i]['chargify_id']['S'];
@@ -25,29 +41,16 @@ date_default_timezone_set("Asia/Manila");
                         $product_handle = $result_db_customers['Items'][$i]['product_handle']['S'];
                         $product_name = $result_db_customers['Items'][$i]['product_name']['S'];
                         $usingPayPortal ="chargify";
-                    }
-                    if(isset($result_db_customers['Items'][$i]['stripe_id']['S'])) {
+                    }else if(isset($result_db_customers['Items'][$i]['stripe_id']['S'])) {
                         $payportalID = $result_db_customers['Items'][$i]['stripe_id']['S'];
                         $plan_id = $result_db_customers['Items'][$i]['plan_id']['S'];
                         $plan_name = $result_db_customers['Items'][$i]['plan_name']['S'];
                         $usingPayPortal = "stripe";
-                    } 
-                    $customer_db_id = $result_db_customers['Items'][$i]['customer_id']['S'];
-                    $business_name = $result_db_customers['Items'][$i]['business_name']['S'];
+                    } else {
+                        $payportalID = null;
+                    }
                     $business_category = $result_db_customers['Items'][$i]['business_category']['S'];
-                    $business_email = $result_db_customers['Items'][$i]['business_email']['S'];
                     $business_website = $result_db_customers['Items'][$i]['business_website']['S'];
-                    $business_address = $result_db_customers['Items'][$i]['business_address']['S'];
-                    $business_address_2 = $result_db_customers['Items'][$i]['business_suite_no']['S'];
-                    $business_city = $result_db_customers['Items'][$i]['business_city']['S'];
-                    $business_state = $result_db_customers['Items'][$i]['business_state']['S'];
-                    $business_zip = $result_db_customers['Items'][$i]['business_zip']['S'];
-                    $business_country = $result_db_customers['Items'][$i]['business_country']['S'];
-                    $business_hours = $result_db_customers['Items'][$i]['business_hours']['S'];
-                    $business_post_address = $result_db_customers['Items'][$i]['business_post_address']['S'];
-                    $payment_method = $result_db_customers['Items'][$i]['payment_method']['S'];
-                    $business_phone = $result_db_customers['Items'][$i]['business_phone_no']['S'];
-                    $business_alt_phone = $result_db_customers['Items'][$i]['business_alternate_phone_no']['S'];
                     $email = $result_db_customers['Items'][$i]['customer_email']['S'];
 
                     if(isset($result_db_customers['Items'][$i]['customer_alternate_email']['S']) && $result_db_customers['Items'][$i]['customer_alternate_email']['S'] != "null") {
@@ -114,9 +117,7 @@ date_default_timezone_set("Asia/Manila");
                         $cancelled = "no";
                         $cancel_reason = "";
                     }
-                } else {
-
-                }
+                } 
             }
             $i++;
         }
@@ -155,7 +156,7 @@ date_default_timezone_set("Asia/Manila");
 
             $cust_status = $result_customer_id_search[0]->state;
 
-        } else {
+        } else if($usingPayPortal == "stripe") {
             require_once('lib/stripe/init.php');
 
             \Stripe\Stripe::setApiKey('sk_test_T8cInYaDaLdip8ZpmtPzaq9B');
@@ -181,6 +182,27 @@ date_default_timezone_set("Asia/Manila");
             foreach($uro2['subscriptions']['data'] as $inv) {
                 $cust_status = $inv['status'];
             }
+        } else {
+            $business_category = "null";
+            $billing_sum = "None";
+            $email = $business_email;
+            $cust_status = "canceled";
+            $salutation = null;
+            $fname = null;
+            $lname = null;
+            $title = null;
+            $phone = $business_phone;
+            $alt_phone = null;
+            $mobile = null;
+            $alt_email = null;
+            $bill_address = null;
+            $bill_address_2 = null;
+            $bill_city = null;
+            $bill_state = null;
+            $bill_zip = null;
+            $sales_center = null;
+            $sales_date = null;
+            $sales_agent = null;
         }
 
         if($cust_status == "trialing") {

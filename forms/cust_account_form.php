@@ -245,15 +245,15 @@
                 <select class="form-control" name="acc_product">
                     <?php
                     if(isset($_GET['id'])) {
+                        echo "<optgroup label='Current'>";
                         if($usingPayPortal == "chargify") {
-                            echo "<optgroup label='Current'>
-                                <option value='".$product_handle."'>".$product_name."</option>
-                            </optgroup>";
+                            echo "<option value='".$product_handle."'>".$product_name."</option>";
+                        } else if($usingPayPortal == "stripe") {
+                            echo "<option value='".$plan_id."'>".$plan_name."</option>";
                         } else {
-                            echo "<optgroup label='Current'>
-                                <option value='".$plan_id."'>".$plan_name."</option>
-                            </optgroup>";
+                            echo "<option value=''>None</option>";
                         }
+                        echo "</optgroup>";
                     ?>
                     <optgroup label="Available Plans">
                         <option value="prod_001">Basic Plan</option>
@@ -277,10 +277,14 @@
                     <?php
                     if(isset($_GET['id'])) {
                         echo "<optgroup label='Current'>";
-                        if($product_component_quantity=="null") { 
+                        if($usingPayPortal == null) {
                             echo "<option value=''>None</option>";
                         } else {
-                            echo "<option value='".$product_component_quantity."'>".$product_component_quantity."</option>";
+                            if($product_component_quantity=="null") { 
+                                echo "<option value=''>None</option>";
+                            } else {
+                                echo "<option value='".$product_component_quantity."'>".$product_component_quantity."</option>";
+                            }
                         }
                         echo "</optgroup>";
                     ?>
@@ -306,13 +310,17 @@
                     <?php
                     if(isset($_GET['id'])) {
                         echo "<optgroup label='Current'>";
-                        if($product_coupon_code == "null") { 
-                            echo "<option value='null'>None</option>";
+                        if($usingPayPortal == null) {
+                            echo "<option value=''>None</option>";
                         } else {
-                            echo "<option value='".$product_coupon_code."'>".$product_coupon_name."</option>
-                                  <option value='REMOVE'>REMOVE</option>"; 
+                            if($product_coupon_code == "null") { 
+                                echo "<option value='null'>None</option>";
+                            } else {
+                                echo "<option value='".$product_coupon_code."'>".$product_coupon_name."</option>
+                                      <option value='REMOVE'>REMOVE</option>"; 
+                            }
                         }
-                         echo "</optgroup>";
+                        echo "</optgroup>";
                     ?>    
                     </optgroup>
                     <optgroup label="Available Coupons">
@@ -331,7 +339,11 @@
         <?php if(isset($_GET['id'])) { ?>
         <div class="row">
             <div class="col-md-1 col-md-offset-5 col-sm-1 col-sm-offset-5 col-xs-1 col-xs-offset-4">
+            <?php if($usingPayPortal) { ?>
                 <button class="btn btn-danger" type="submit" name="upd_acc">Update</button>
+            <?php } else { ?>
+                
+            <?php } ?>
             </div>
         </div>
         <?php } ?>
