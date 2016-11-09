@@ -8,11 +8,11 @@
     if(isset($_SESSION['user_now_id'])) {
     	if($_SESSION['type']=="customer") {
 	    	if(basename($_SERVER['PHP_SELF'])=="login.php"){
-	        header("Location: account.php");
+	        	header("Location: account");
 			}
 		}else{
 			if(basename($_SERVER['PHP_SELF'])=="login.php"){
-	        header("Location: customer.php");
+	        	header("Location: summary");
 			}
 		}
     } else {
