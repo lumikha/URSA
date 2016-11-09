@@ -75,7 +75,7 @@
                                 </form>
                                 <div name="output" id="output" style="position:absolute; z-index:1;width: 200%;" ng-cloak >
                                     <div class="list-group">
-                                        <a class="list-group-item" ng-if="search" ng-repeat="user in result = ( users | filter:search | limitTo:num)" href="customer.php?id={{ user.customer_id.S }}">
+                                        <a class="list-group-item" onclick="oneSearchResult();" ng-if="search" ng-repeat="user in result = ( users | filter:search | limitTo:num)" href="customer?id={{ user.customer_id.S }}">
                                             <span style="font-size:130%" class="text-info">
                                                 <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> {{user.business_name.S}}</span><br>
                                                 <span style="font-size:75%"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{user.customer_first_name.S}} {{user.customer_last_name.S}}, 

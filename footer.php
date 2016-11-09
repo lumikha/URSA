@@ -11,6 +11,7 @@
 <script type="text/javascript" src="js/angular.min.js"></script>
 <script type="text/javascript" src="js/jquery.cookie.js"></script>
 <script type="text/javascript" src="js/jquery.tagsinput.js"></script>
+<script type="text/javascript" src="scripts/search_field_scripts.js"></script>
 
 <?php if(basename($_SERVER['PHP_SELF']) == "customer.php") { ?>
 <script type="text/javascript">
@@ -39,64 +40,56 @@
 <?php } ?>
 
 <script type="text/javascript">
+function onAddTag(tag) {
+	alert("Added a tag: " + tag);
+}
 
-		function onAddTag(tag) {
-			alert("Added a tag: " + tag);
-		}
-		function onRemoveTag(tag) {
-			alert("Removed a tag: " + tag);
-		}
+function onRemoveTag(tag) {
+	alert("Removed a tag: " + tag);
+}
 
-		function onChangeTag(input,tag) {
-			alert("Changed a tag: " + tag);
-		}
+function onChangeTag(input,tag) {
+	alert("Changed a tag: " + tag);
+}
 
-    function checkIfCancel() {
-        if(document.getElementById("cancel_no").checked == true) {
-            cancelNo();
-        }
+function checkIfCancel() {
+    if(document.getElementById("cancel_no").checked == true) {
+        cancelNo();
     }
+}
 
-    function cancelYes() {
-        $('#cancel_reason').prop('disabled', false);
-    }
+function cancelYes() {
+    $('#cancel_reason').prop('disabled', false);
+}
 
-    function cancelNo() {
-        $('#cancel_reason').prop('disabled', true);
-    }
+function cancelNo() {
+    $('#cancel_reason').prop('disabled', true);
+}
 
-		$(function() {
-
-			$('#k-words').tagsInput({width:'auto'});
-
-		});
-
+$(function() {
+	$('#k-words').tagsInput({width:'auto'});
+});
 </script>
-<!--js for shrinking text and div-->
 
+<!--js for shrinking text and div-->
 <script>
 $( '.box' ).each(function ( i, box ) {
-
-   var width = $( box ).width(),
-       html = '<span style="white-space:nowrap">',
-       line = $( box ).wrapInner( html ).children()[ 0 ],
-       n = 100;
+    var width = $( box ).width(),
+        html = '<span style="white-space:nowrap">',
+        line = $( box ).wrapInner( html ).children()[ 0 ],
+        n = 100;
    
-   $( box ).css( 'font-size', n );
+    $( box ).css( 'font-size', n );
 
-   while ( $( line ).width() > width ) {
-       $( box ).css( 'font-size', --n );
-   }
+    while ( $( line ).width() > width ) {
+        $( box ).css( 'font-size', --n );
+    }
 
-   $( box ).text( $( line ).text() );
-
+    $( box ).text( $( line ).text() );
 });
-
 </script>
 
 <!--draggable scrollbar-->
-
-
 <script type="text/javascript">
     $(function() { 
         $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
@@ -266,46 +259,7 @@ $( '.box' ).each(function ( i, box ) {
         check();
     });
 
-	var myapp = angular.module("myapp",[]);
-		myapp.controller("newController", function($scope,$http){
-			$http.get("lib/dynamoDB/search.php").success(function(response){
-				$scope.users = response;
-			});
-			$scope.num = 5;
-		});
-
-    $("#search").keyup(function(e) {
-        if (e.keyCode == 27) {
-            $('#output').css("visibility", "hidden");
-            $('#search_result_view').css("zIndex", "0");
-            $('#search').blur();
-        }
-    });
-
-    $("#search").click(function(e) {
-        check();
-    });
-
-    $('#search').blur(function() {
-        $('#output').css("visibility", "hidden");
-        $('#search_result_view').css("zIndex", "0");
-    });
-
-	function check(){
-		var search = document.forms["myForm"]["search"].value;
-		if(search) {
-			document.getElementById('output').style.visibility = "visible";
-			document.getElementById("search_result_view").style.zIndex = "10";
-		} else {
-			document.getElementById('output').style.visibility = "hidden";
-			document.getElementById("search_result_view").style.zIndex = "0";
-		}
-	}
-		
-	function getSearch(){
-		var search = document.forms["myForm"]["search"].value;
-		window.location.href = "results.php?search="+search;
-	}
+	
 </script>
 
 <?php

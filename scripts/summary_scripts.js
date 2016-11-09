@@ -172,7 +172,28 @@ function summaryPageOnload() {
 	}); 
 
 	$('.dataTables_scrollHeadInner').css('width', '900px');
+
+	//get passed parameters found in the url
+	var passedParam = getUrlParameter('search');
+	if(passedParam) {
+		$('#accounts_tab').addClass("active");
+		$('#supports_tab').removeClass("active")
+		$("#tickets_display").addClass('hidden');
+		$("#support_display").addClass('hidden');
+		$("#accounts_display").removeClass('hidden');
+		$('#search').val(passedParam);
+	}
 }
+
+//if event onclick occur, check if #accounts_tab is selected
+//hide search recommendations if #accounts_tab is active
+$(window).click(function() {
+	if($('#accounts_tab').hasClass("active")) {
+		$('#output').css("display", "none");
+	} else {
+		$('#output').css("display", "block");
+	}
+});
 
 $('#search').on( 'keyup', function () {
 	var table = $('#datatable_accounts').DataTable();
@@ -583,3 +604,19 @@ function saveReply(){
 	xmlhttp.send(data);
 	$("#add_reply").addClass("hidden");
 }
+
+//function to get parameters in url
+var getUrlParameter = function getUrlParameter(sParam) {
+	var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+		sURLVariables = sPageURL.split('&'),
+		sParameterName,
+		i;
+
+	for (i = 0; i < sURLVariables.length; i++) {
+		sParameterName = sURLVariables[i].split('=');
+
+		if (sParameterName[0] === sParam) {
+			return sParameterName[1] === undefined ? true : sParameterName[1];
+		}
+	}
+};
