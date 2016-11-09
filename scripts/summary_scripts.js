@@ -174,8 +174,8 @@ function summaryPageOnload() {
 	$('.dataTables_scrollHeadInner').css('width', '900px');
 
 	//get passed parameters found in the url
-	var passedParam = getUrlParameter('search');
-	if(passedParam) {
+	var passedParam = getUrlParameter('f');
+	if(passedParam != undefined) {
 		$('#accounts_tab').addClass("active");
 		$('#supports_tab').removeClass("active")
 		$("#tickets_display").addClass('hidden');
