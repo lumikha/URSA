@@ -262,12 +262,15 @@ date_default_timezone_set("Asia/Manila");
         $bill_state = $_POST['acc_bill_state'];
         $bill_zip = $_POST['acc_bill_zip'];
         $prod_handle = $_POST['acc_product'];
+        $plan_id = $_POST['acc_product'];
         $comp_quantity = $_POST['acc_component'];
         $coupon_code = $_POST['acc_coupon'];
 
         /* check what is changed, this is for logs */
         $changes = array();
         $i=0;
+        $cardStripeUpd = array();
+        $planprodUpdate = "";
         while(isset($result_db_customers['Items'][$i])) {
             if($result_db_customers['Items'][$i]['customer_id']['S'] == $_GET['id']) {
                 if($business_name != $result_db_customers['Items'][$i]['business_name']['S']) {
@@ -325,21 +328,33 @@ date_default_timezone_set("Asia/Manila");
                 }
                 if($bill_address != $result_db_customers['Items'][$i]['customer_billing_address']['S']) {
                     array_push($changes, "Billing Address 1");
+                    array_push($cardStripeUpd, 'address_line1');
                 }
                 if($bill_address_2 != $result_db_customers['Items'][$i]['customer_suite_no']['S']) {
                     array_push($changes, "Billing Address 2");
+                    array_push($cardStripeUpd, 'address_line2');
                 }
                 if($bill_city != $result_db_customers['Items'][$i]['customer_billing_city']['S']) {
                     array_push($changes, "Billing City");
+                    array_push($cardStripeUpd, 'address_city');
                 }
                 if($bill_state != $result_db_customers['Items'][$i]['customer_billing_state']['S']) {
                     array_push($changes, "Office State");
+                   array_push( $cardStripeUpd, 'address_state');
                 }
                 if($bill_zip != $result_db_customers['Items'][$i]['customer_billing_zip']['S']) {
                     array_push($changes, "Postal Code");
+                    array_push($cardStripeUpd, 'address_zip');
                 }
-                if($prod_handle != $result_db_customers['Items'][$i]['product_handle']['S']) {
-                    array_push($changes, "Product");
+                if($usingPayPortal == "chargify") {
+                    if($prod_handle != $result_db_customers['Items'][$i]['product_handle']['S']) {
+                        array_push($changes, "Product");
+                    }
+                }
+                if($usingPayPortal == "stripe") {
+                    if($plan_id != $result_db_customers['Items'][$i]['plan_id']['S']) {
+                        array_push($changes, "Product");
+                    }
                 }
                 if($comp_quantity != $result_db_customers['Items'][$i]['product_component_quantity']['S']) {
                     array_push($changes, "Component Quantity");
@@ -351,42 +366,42 @@ date_default_timezone_set("Asia/Manila");
             $i++;
         }
 
-        if($prod_handle == 'prod_001') {
-            $prodID = 3881312;
-            $prodName = "Basic Plan";
-        } else if($prod_handle == 'plan_002') {
-            $prodID = 3881313;
-            $prodName = "Start-up Plan";
-        } else if($prod_handle == 'plan_005') {
-            $prodID = 3881318;
-            $prodName = "Upgrade to Start-up Plan";
-        } else if($prod_handle == 'plan_003') {
-            $prodID = 3881314;
-            $prodName = "Business Plan";
-        } else if($prod_handle == 'plan_006') {
-            $prodID = 3881319;
-            $prodName = "Upgrade to Business Plan";
-        } else if($prod_handle == 'plan_004') {
-            $prodID = 3881316;
-            $prodName = "Enterprise Plan";
-        } else {
-            $prodID = 3881320;
-            $prodName = "Upgrade to Enterprise Plan";
-        }
-
-        if($coupon_code == 'SAVE50') {  
-            $couponName = "Discount Coupon";
-        } else if($coupon_code == 'FREDOM') {
-            $couponName = "Domain Coupon";
-        } else if($coupon_code == 'REFER') {
-            $couponName = "Referral Coupon";
-        } else if($coupon_code == 'REMOVE') {
-            $couponName = "null";
-        } else {
-            $couponName = "null";
-        }
-
         if($usingPayPortal == "chargify") {
+            if($prod_handle == 'prod_001') {
+                $prodID = 3881312;
+                $prodName = "Basic Plan";
+            } else if($prod_handle == 'plan_002') {
+                $prodID = 3881313;
+                $prodName = "Start-up Plan";
+            } else if($prod_handle == 'plan_005') {
+                $prodID = 3881318;
+                $prodName = "Upgrade to Start-up Plan";
+            } else if($prod_handle == 'plan_003') {
+                $prodID = 3881314;
+                $prodName = "Business Plan";
+            } else if($prod_handle == 'plan_006') {
+                $prodID = 3881319;
+                $prodName = "Upgrade to Business Plan";
+            } else if($prod_handle == 'plan_004') {
+                $prodID = 3881316;
+                $prodName = "Enterprise Plan";
+            } else {
+                $prodID = 3881320;
+                $prodName = "Upgrade to Enterprise Plan";
+            }
+
+            if($coupon_code == 'SAVE50') {  
+                $couponName = "Discount Coupon";
+            } else if($coupon_code == 'FREDOM') {
+                $couponName = "Domain Coupon";
+            } else if($coupon_code == 'REFER') {
+                $couponName = "Referral Coupon";
+            } else if($coupon_code == 'REMOVE') {
+                $couponName = "null";
+            } else {
+                $couponName = "null";
+            }
+
             $test = true;
             $customer = new ChargifyCustomer(NULL, $test);
             $upd_subscription = new ChargifySubscription(NULL, $test);
@@ -440,11 +455,86 @@ date_default_timezone_set("Asia/Manila");
             } catch (ChargifyValidationException $cve) {
                 echo $cve->getMessage();
             }
+
+            $planprodUpdate = '":product_id": "'.@$prodID.'",
+                ":product_handle": "'.@$prod_handle.'",
+                ":product_name": "'.@$prodName.'",';
+
+            $param_ppU = "product_id=:product_id,
+              product_handle=:product_handle,
+              product_name=:product_name,";
         }
 
         if($usingPayPortal == "stripe") {
-            
+            if($plan_id == 'ursa_basic_plan') {
+                $planName = "Basic Plan";
+            } else if($plan_id == 'ursa_startup_plan') {
+                $planName = "Start-up Plan";
+            } else if($plan_id == 'ursa_upgrade_to_startup_plan') {
+                $planName = "Upgrade to Start-up Plan";
+            } else if($plan_id == 'ursa_business_plan') {
+                $planName = "Business Plan";
+            } else if($plan_id == 'ursa_upgrade_to_business_plan') {
+                $planName = "Upgrade to Business Plan";
+            } else if($plan_id == 'ursa_enterprise_plan') {
+                $planName = "Enterprise Plan";
+            } else {
+                $planName = "Upgrade to Enterprise Plan";
+            }
 
+            if($coupon_code == 'SAVE50') {  
+                $couponName = "Discount Coupon";
+            } else if($coupon_code == 'FREDOM') {
+                $couponName = "Domain Coupon";
+            } else if($coupon_code == 'REFER') {
+                $couponName = "Referral Coupon";
+            } else if($coupon_code == 'REMOVE') {
+                $couponName = "null";
+            } else {
+                $couponName = "null";
+            }
+
+            if(!empty($cardStripeUpd)) {
+                $customer = \Stripe\Customer::retrieve($payportalID);
+
+                $unprotected_response_object = json_decode(json_encode($customer), true);
+
+                foreach($unprotected_response_object['sources']['data'] as $inv) {
+                    $card_id = $inv['id'];
+                }
+
+                try {
+                    $card = $customer->sources->retrieve($card_id);
+                    foreach($cardStripeUpd as $cSU) {
+                        if($cSU == 'address_line1') {
+                            $card->address_line1 = $bill_address;
+                        }
+                        if($cSU == 'address_line2') {
+                            $card->address_line2 = $bill_address_2;
+                        }
+                        if($cSU == 'address_city') {
+                            $card->address_city = $bill_city;
+                        }
+                        if($cSU == 'address_state') {
+                            $card->address_state = $bill_state;
+                        }
+                        if($cSU == 'address_zip') {
+                            $card->address_zip = $bill_zip;
+                        }
+                    }
+                    $response = $card->save();
+                    //print_r($response);
+                } catch (\Stripe\Error\InvalidRequest $e) {
+                    $body = $e->getJsonBody();
+                    print_r($e);
+                }
+            }
+
+            $planprodUpdate = '":plan_id": "'.@$plan_id.'",
+                ":plan_name": "'.@$planName.'",';
+
+            $param_ppU = "plan_id=:plan_id,
+              plan_name=:plan_name,";
         }
 
         $key_upt = $marshaler->marshalJson('
@@ -490,9 +580,7 @@ date_default_timezone_set("Asia/Manila");
                 ":customer_billing_city": "'.@$bill_city.'",
                 ":customer_billing_state": "'.@$bill_state.'",
                 ":customer_billing_zip": "'.@$bill_zip.'",
-                ":product_id": "'.@$prodID.'",
-                ":product_handle": "'.@$prod_handle.'",
-                ":product_name": "'.@$prodName.'",
+                '.$planprodUpdate.'
                 ":product_component_quantity": "'.@$comp_quantity.'",
                 ":product_coupon_code": "'.@$coupon_code.'",
                 ":product_coupon_name": "'.@$couponName.'"
@@ -519,9 +607,7 @@ date_default_timezone_set("Asia/Manila");
                     customer_billing_city=:customer_billing_city,
                     customer_billing_state=:customer_billing_state,
                     customer_billing_zip=:customer_billing_zip,
-                    product_id=:product_id,
-                    product_handle=:product_handle,
-                    product_name=:product_name,
+                    '.$param_ppU.'
                     product_component_quantity=:product_component_quantity,
                     product_coupon_code=:product_coupon_code,
                     product_coupon_name=:product_coupon_name
@@ -561,8 +647,14 @@ date_default_timezone_set("Asia/Manila");
 
         try {
             $result_apr_acc = $dynamodb->updateItem($params_upt_acc);
-            $product_handle = $prod_handle;
-            $product_name = $prodName;
+            if($usingPayPortal == "chargify") {
+                $product_handle = $prod_handle;
+                $product_name = $prodName;
+            }
+            if($usingPayPortal == "stripe") {
+                $plan_id = $plan_id;
+                $plan_name = $planName;
+            }
             $product_coupon_code = $coupon_code;
             $product_coupon_name = $couponName;
             $product_component_quantity = $comp_quantity;
