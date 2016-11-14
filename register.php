@@ -791,7 +791,7 @@ select
             </div>
             <div class="grid_3 omega">
               <label>Zip</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido4"><p id="error4" class="error"></p></span>
-              <input type="text" class="form-control" id="biz-zip" name="biz-zip" onkeypress="return KeyPressBZip(event)" onclick="clickField4()">
+              <input type="text" class="form-control" id="biz-zip" name="biz-zip" maxlength="6" onkeypress="return KeyPressBZip(event)" onclick="clickField4()">
             </div>
           </div>
 
@@ -826,7 +826,7 @@ select
             </div>
             <div class="grid_5 omega">
               <label>Alternate/Mobile Number</label>&nbsp;&nbsp;<span class="hido" id="hidomnum"><p id="errormnum" class="error"></p></span>
-              <input type="text" class="form-control" id="biz-mnumber" name="biz-mnumber" maxlength="10">
+              <input type="text" class="form-control" id="biz-mnumber" name="biz-mnumber" maxlength="11" onkeypress="return KeyPressMNumber(event)"  onclick="clickFieldmnum()">
             </div>
           </div>
 
