@@ -580,14 +580,14 @@ $err_msg = "";
       font-size: 12px;
       font-style: italic; 
       display: inline;
-      color: #C63C33 ;
+      color: #e31549 ;
     }
 
     #error_check_all {
       font-size: 20px;
       font-style: italic;
       font-weight: bold;
-      color: #C63C33;
+      color: #e31549;
       text-align: center;
     }
   </style>
