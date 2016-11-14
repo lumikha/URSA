@@ -331,6 +331,13 @@ body
     margin-left: 5em;
   }
 
+  /**account.php**/
+
+  .account_tab
+  {
+    margin-top: 10em !important;
+  }
+
  }
 
 
@@ -629,6 +636,13 @@ body
     margin-left: 12em;
   }
 
+  /**account.php**/
+
+  .account_tab
+  {
+    margin-top: 10em !important;
+  }
+
 
 }
  
@@ -912,10 +926,6 @@ font-size: 12px;
 
 
 
-
-
-
-
 /** END support.php**/
 
  #previewAtt
@@ -955,6 +965,13 @@ font-size: 12px;
   .regbutton
   {
     margin-left: 20em;
+  }
+
+  /**account.php**/
+
+  .account_tab
+  {
+    margin-top: 10em !important;
   }
 
 
@@ -1129,6 +1146,12 @@ font-size: 12px;
   {
     margin-left: 0.5em !important;
   }
+
+  /**account.php**/
+    .tab-content-account
+    {
+      margin-left: -1em !important;
+    }
 
 }
   
@@ -1311,10 +1334,21 @@ font-size: 12px;
     margin-left: 20%;
   }
 
+  /**account.php**/
+
+  .tab-content-account
+  {
+    margin-left: -62.5em !important;
+    margin-top: 7em !important;
+  }
+
+
+}
+
 
 
   
-}
+
 
 
  
