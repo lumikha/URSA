@@ -488,6 +488,9 @@ try{
         if($uniqueFilename2 != ""){
             $comma_separated = implode(",", $attachmentName);
         }
+        if(empty($subject)) {
+            $subject = "(no email subject)";
+        }
         $t_id = UID();
         if(!empty($FOUND_BODY)){
             $item_t_add = $marshaler->marshalJson('
