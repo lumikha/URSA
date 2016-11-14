@@ -175,7 +175,7 @@ date_default_timezone_set("Asia/Manila");
             $billing_sum = "$".number_format(($totalInv /100), 2, '.', ' ');
 
             /** get customer subscription status **/
-            $customer = \Stripe\Customer::retrieve("cus_9WCSPWLu50oIa1");
+            $customer = \Stripe\Customer::retrieve($payportalID);
 
             $uro2 = json_decode(json_encode($customer), true);
 
