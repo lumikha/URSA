@@ -693,7 +693,7 @@ select
         <fieldset>
         <div class="formtitle"><h3>Business Information</h3></div>
           <div class="thisisrequired">
-            <b class="asterisk_req">*</b> <i>This fields are required.</i>
+            <b class="asterisk_req">*</b> <i>These fields are required.</i>
           </div>
           <div class="form-group">
             <div class="grid_10 alpha ">
@@ -707,7 +707,7 @@ select
               <label>Business Address 1</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido2"><p id="error2" class="error"></p></span>
               <input type="text" class="form-control" id="biz-street" name="biz-street" onkeypress="return KeyPressBStreet(event)" onclick="clickField2()">
             </div>
-            <div class="grid_5 omega">
+            <div class="grid_5 omega" style="margin-top: 0.85em;">
               <label>Suite/Apartment No.</label>
               <input type="text" class="form-control" name="suite-number">
             </div>
