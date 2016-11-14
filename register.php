@@ -707,7 +707,7 @@ select
         <fieldset>
         <div class="formtitle"><h3>Business Information</h3> </div>
           <div class="thisisrequired">
-            <b class="asterisk_req">*</b> <i>These fields are required.</i>
+            <b class="asterisk_req">*</b> <i>Th fields are required.</i>
           </div>
           <div class="form-group">
             <div class="grid_10 alpha ">
@@ -824,7 +824,7 @@ select
               </div>
               
             </div>
-            <div class="grid_5 omega">
+            <div class="grid_5 omega" style="margin-top: 0.85em;">
               <label>Alternate/Mobile Number</label>&nbsp;&nbsp;<span class="hido" id="hidomnum"><p id="errormnum" class="error"></p></span>
               <input type="text" class="form-control" id="biz-mnumber" name="biz-mnumber" maxlength="11" onkeypress="return KeyPressMNumber(event)"  onclick="clickFieldmnum()">
             </div>
@@ -953,7 +953,7 @@ select
                     ?>
                 </select>
               </div>
-              <div class="grid_5 omega">
+              <div class="grid_5 omega" style="margin-top: 0.85em;">
                 <label>Title</label>
                 <select name="title" id="title" class="form-control">
                 <?php 
@@ -990,7 +990,7 @@ select
                 <label>Email</label>&nbsp;&nbsp;<span class="hido" id="hido3"><p id="error3" class="error"></p></span>
                 <input type="text" class="form-control" id="c-eadd" name="c-eadd" value="<?php if(empty($err_msg)){echo $p2_email;}else{echo $_POST['c-eadd'];} ?>" readonly>
               </div>
-              <div class="grid_5 omega">
+              <div class="grid_5 omega" style="margin-top: -0.85em;">
                 <label>Contact Number</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido4"><p id="error4" class="error"></p></span>
                 <input type="text" class="form-control" id="c-phone" name="c-phone" maxlength="10" onkeypress="return KeyPressPhone(event)" onclick="clickField4()" value="<?php if(!empty($err_msg)){echo $_POST['c-phone'];} ?>">
               </div>
@@ -1001,7 +1001,7 @@ select
                 <label>Billing Address 1</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido5"><p id="error5" class="error"></p></span>
                 <input type="text" class="form-control" id="c-street" name="c-street" onkeypress="return KeyPressStreet(event)" onclick="clickField5()" value="<?php if(empty($err_msg)){echo $p2_street;}else{echo $_POST['c-street'];} ?>">
               </div>
-              <div class="grid_5 omega">
+              <div class="grid_5 omega" style="margin-top: 0.85em;">
                 <label>Suite/Apartment Number</label>
                 <input type="text" class="form-control" name="c-street2" value="<?php if(!empty($err_msg)){echo $_POST['c-street2'];} ?>">
               </div>
