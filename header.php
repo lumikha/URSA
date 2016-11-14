@@ -138,7 +138,7 @@
                         <li><a class="hidden">Hidden</a></li>
                         <li><a id="btn_account" class="nl" href="#account" data-toggle="tab">Account</a></li>
                         <li><a id="btn_provisioning" class="nl" href="#provisioning" data-toggle="tab" >Provisioning</a></li>
-                        <li><a id="btn_support" class="nl" href="support">Support</a></li>
+                        <li><a id="btn_support" class="nl" href="#support" data-toggle="tab">Support</a></li>
                         <li><a id="btn_customer" class="nl" href="#customer" data-toggle="tab" >Customer</a></li>
                         <li><a id="btn_quality" class="nl" href="#quality" data-toggle="tab" >Quality</a></li>
                         <li><a id="btn_dashboard" class="nl" href="#dashboard" data-toggle="tab" >Dashboard</a></li>

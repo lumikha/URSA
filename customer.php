@@ -108,7 +108,7 @@
                         ?>
 
                         <!--alert box below tab content-->
-
+                            <!--
                             <div class="alert alert-danger fade in">
                                 <span class="closebtn"  onclick="this.parentElement.style.display='none';">&times;</span> 
                                     This is an alert box. Sample only. <strong>Oh snap! You got an error!</strong> 
@@ -125,7 +125,7 @@
                                     </div>
                                 </div>
                             </div>
-
+                            -->
                         <!--end of alert box-->
                         </div>
 

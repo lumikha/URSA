@@ -376,13 +376,18 @@ $err_msg = "";
     $l = @$_POST['blname'][0];
     $cp = str_replace("-", "", @$btn_number);
     $keywords = $full_n." ".$f.$l." ".$f." ".$l." ".$cp;
+    if(!empty($_POST['title'])) {
+        $title = $_POST['title'];
+      } else {
+        $title = "null";
+      }
       
     $eav = $marshaler->marshalJson('
       {
         ":'.$IdLabel.'": "'.@$IdValue.'",
         ":business_name": "'.@$_POST['bussiness-name'].'",
         ":customer_salutation": "'.@$_POST['salut'].'",
-        ":customer_title": "'.@$_POST['title'].'",
+        ":customer_title": "'.$title.'",
         ":customer_first_name": "'.@$_POST['bfname'].'",
         ":customer_last_name": "'.@$_POST['blname'].'",
         ":customer_email": "'.@$_POST['c-eadd'].'",

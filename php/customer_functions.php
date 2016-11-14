@@ -76,7 +76,13 @@ date_default_timezone_set("Asia/Manila");
                     }
 
                     $salutation = $result_db_customers['Items'][$i]['customer_salutation']['S'];
-                    $title = $result_db_customers['Items'][$i]['customer_title']['S'];
+
+                    if(isset($result_db_customers['Items'][$i]['customer_title']['S']) && $result_db_customers['Items'][$i]['customer_title']['S'] != "null") {
+                        $title = $result_db_customers['Items'][$i]['customer_title']['S'];
+                    } else {
+                        $title = null;
+                    }
+
                     $sales_date = $result_db_customers['Items'][$i]['sale_date']['S'];
                     $sales_agent = $result_db_customers['Items'][$i]['sale_agent']['S'];
                     $sales_center = $result_db_customers['Items'][$i]['sale_center']['S'];
@@ -203,6 +209,8 @@ date_default_timezone_set("Asia/Manila");
             $sales_center = null;
             $sales_date = null;
             $sales_agent = null;
+            $cancelled = "no";
+            $cancel_reason = "";
         }
 
         if($cust_status == "trialing") {
