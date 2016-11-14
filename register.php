@@ -25,6 +25,7 @@
 
   if(isset($_POST['submit_business_form'])) {
     //adding - to phone number
+    /*
     $num_arr = array_map('intval', str_split($_POST['biz-pnumber']));
     $fin_num = array();
     array_push($fin_num, '1-');
@@ -46,9 +47,12 @@
       $k++;
     }
     $btn_number = implode("",$fin_num);
+    */
+    $btn_number = "1".$_POST['biz-pnumber'];
 
     //adding - to alternate mobile number
     if(!empty($_POST['biz-mnumber'])) {
+      /*
       $num_arr2 = array_map('intval', str_split($_POST['biz-mnumber']));
       $fin_num2 = array();
       array_push($fin_num2, '1-');
@@ -70,6 +74,10 @@
         $z++;
       }
       $btn_number2 = implode("",$fin_num2);
+      */
+      $btn_number2 = "1".$_POST['biz-mnumber'];
+    } else {
+      $btn_number2 = "null";
     }
 
     $cust_id = GUID();
@@ -90,13 +98,9 @@
       $count_paymet++;
     }
     $suite_num=@$_POST['suite-number'];
-    $num2=@$_POST['btn_number2'];
     $web=@$_POST['biz-web'];
     if(empty($suite_num)){
       $suite_num = "null";
-    }
-    if(empty($num2)){
-      $num2 = "null";
     }
     if(empty($web)){
       $web = "null";
@@ -115,7 +119,7 @@
         "business_phone_no": "'.@$btn_number.'",
         "business_email": "'.@$_POST['biz-eadd'].'",
         "business_website": "'.$web.'",
-        "business_alternate_phone_no": "'.$num2.'",
+        "business_alternate_phone_no": "'.$btn_number2.'",
         "business_post_address": "'.@$_POST['biz-post-address'].'",
         "business_hours": "'.$b_hours.'",
         "payment_method": "'.@$paymethod.'"
@@ -172,6 +176,8 @@ $err_msg = "";
     }
     ');
 
+    $btn_number = "1".$_POST["c-phone"];
+
     $num_arr = array_map('intval', str_split($_POST["c-phone"]));
     $fin_num = array();
     array_push($fin_num, '1-');
@@ -192,7 +198,7 @@ $err_msg = "";
       array_push($fin_num, $num_arr[$k]);
       $k++;
     }
-    $btn_number = implode("",$fin_num);
+    $btn_charNumber = implode("",$fin_num);
 
     if($stripe == false) {
       if($_POST["product-handle"] == 'prod_001') {
@@ -225,7 +231,7 @@ $err_msg = "";
       $new_customer->last_name = $_POST["blname"];
       $new_customer->email = $_POST["c-eadd"];
       $new_customer->organization = stripslashes($_POST["bussiness-name"]);
-      $new_customer->phone = $btn_number;
+      $new_customer->phone = $btn_charNumber;
       $saved_customer = $new_customer->create();
       
       $new_payment_profile = new ChargifyCreditCard(NULL, $test);
@@ -318,7 +324,6 @@ $err_msg = "";
             "Sale Center" => $_POST['sales-center'],
             "Sale Date" => $sale_date,
             "Sale Agent" => $_POST['sales-agent']
-
           ),
           "plan" => "ursa_basic_plan",
           "account_balance" => 100, //in cents
@@ -511,7 +516,8 @@ $err_msg = "";
           "customer_id": "'.@$_POST['created_doc_id'].'",
           "email": "'.@$_POST['c-eadd'].'",
           "password": "'.@$user_pass_final.'",
-          "userType": "Customer"
+          "userType": "Customer",
+          "status": "active"
         }
       ');
 
@@ -707,7 +713,7 @@ select
         <fieldset>
         <div class="formtitle"><h3>Business Information</h3> </div>
           <div class="thisisrequired">
-            <b class="asterisk_req">*</b> <i>Th fields are required.</i>
+            <b class="asterisk_req">*</b> <i>These fields are required.</i>
           </div>
           <div class="form-group">
             <div class="grid_10 alpha ">
@@ -826,7 +832,7 @@ select
             </div>
             <div class="grid_5 omega" style="margin-top: 0.85em;">
               <label>Alternate/Mobile Number</label>&nbsp;&nbsp;<span class="hido" id="hidomnum"><p id="errormnum" class="error"></p></span>
-              <input type="text" class="form-control" id="biz-mnumber" name="biz-mnumber" maxlength="11" onkeypress="return KeyPressMNumber(event)"  onclick="clickFieldmnum()">
+              <input type="text" class="form-control" id="biz-mnumber" name="biz-mnumber" maxlength="10" onkeypress="return KeyPressMNumber(event)"  onclick="clickFieldmnum()">
             </div>
           </div>
 

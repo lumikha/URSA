@@ -358,7 +358,7 @@
             <?php if($usingPayPortal) { ?>
                 <button class="btn btn-danger" type="submit" name="upd_acc">Update</button>
             <?php } else { ?>
-                
+                <button class="btn btn-danger" type="submit" name="upd_acc">Re-enroll customer</button>
             <?php } ?>
             </div>
         </div>

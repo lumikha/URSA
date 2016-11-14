@@ -25,6 +25,7 @@
 
   if(isset($_POST['submit_business_form'])) {
     //adding - to phone number
+    /*
     $num_arr = array_map('intval', str_split($_POST['biz-pnumber']));
     $fin_num = array();
     array_push($fin_num, '1-');
@@ -46,9 +47,12 @@
       $k++;
     }
     $btn_number = implode("",$fin_num);
+    */
+    $btn_number = "1".$_POST['biz-pnumber'];
 
     //adding - to alternate mobile number
     if(!empty($_POST['biz-mnumber'])) {
+      /*
       $num_arr2 = array_map('intval', str_split($_POST['biz-mnumber']));
       $fin_num2 = array();
       array_push($fin_num2, '1-');
@@ -70,6 +74,10 @@
         $z++;
       }
       $btn_number2 = implode("",$fin_num2);
+      */
+      $btn_number2 = "1".$_POST['biz-mnumber'];
+    } else {
+      $btn_number2 = "null";
     }
 
     $cust_id = GUID();
@@ -90,13 +98,9 @@
       $count_paymet++;
     }
     $suite_num=@$_POST['suite-number'];
-    $num2=@$_POST['btn_number2'];
     $web=@$_POST['biz-web'];
     if(empty($suite_num)){
       $suite_num = "null";
-    }
-    if(empty($num2)){
-      $num2 = "null";
     }
     if(empty($web)){
       $web = "null";
@@ -115,7 +119,7 @@
         "business_phone_no": "'.@$btn_number.'",
         "business_email": "'.@$_POST['biz-eadd'].'",
         "business_website": "'.$web.'",
-        "business_alternate_phone_no": "'.$num2.'",
+        "business_alternate_phone_no": "'.$btn_number2.'",
         "business_post_address": "'.@$_POST['biz-post-address'].'",
         "business_hours": "'.$b_hours.'",
         "payment_method": "'.@$paymethod.'"
@@ -157,6 +161,9 @@
 /***** SECOND FORM *****/
 $err_msg = "";
   if(isset($_POST['submit_billing_form'])) {
+
+    $sale_date = date("m/d/Y");
+
     if($stripe == true) {
       require_once 'lib/stripe/init.php';
     } else {
@@ -169,6 +176,7 @@ $err_msg = "";
     }
     ');
 
+    /*
     $num_arr = array_map('intval', str_split($_POST["c-phone"]));
     $fin_num = array();
     array_push($fin_num, '1-');
@@ -190,6 +198,8 @@ $err_msg = "";
       $k++;
     }
     $btn_number = implode("",$fin_num);
+    */
+    $btn_number = "1".$_POST["c-phone"];
 
     if($stripe == false) {
       if($_POST["product-handle"] == 'prod_001') {
@@ -275,95 +285,89 @@ $err_msg = "";
     } else {
       \Stripe\Stripe::setApiKey('sk_test_T8cInYaDaLdip8ZpmtPzaq9B');
 
-      $token = \Stripe\Token::create(array(
-        "card" => array(
-          "number" => $_POST["card-number"],
-          "exp_month" => $_POST["card-expiry-month"],
-          "exp_year" => $_POST["card-expiry-year"],
-          "cvc" => $_POST["card-cvc"],
-          "name" => $_POST["bfname"]." ".$_POST["blname"],
-          "address_line1" => $_POST["c-street"],
-          "address_line2" => $_POST["c-street2"],
-          "address_city" => $_POST["c-city"],
-          "address_country" => "US",
-          "address_state" => $_POST["c-state"],
-          "address_zip" => $_POST["c-zip"]
-          )
-      ));
+      try {
+        $token = \Stripe\Token::create(array(
+          "card" => array(
+            "number" => $_POST["card-number"],
+            "exp_month" => $_POST["card-expiry-month"],
+            "exp_year" => $_POST["card-expiry-year"],
+            "cvc" => $_POST["card-cvc"],
+            "name" => $_POST["bfname"]." ".$_POST["blname"],
+            "address_line1" => $_POST["c-street"],
+            "address_line2" => $_POST["c-street2"],
+            "address_city" => $_POST["c-city"],
+            "address_country" => "US",
+            "address_state" => $_POST["c-state"],
+            "address_zip" => $_POST["c-zip"]
+            )
+        ));
 
-      $newCustomer = \Stripe\Customer::create(array(
-        'source'   => $token,
-        "email" => $_POST["c-eadd"],
-        /*
-        "metadata" => array(
-          "Business Name" => "BusinessTest",
-          "Business Email" => "sample@test.com",
-          "Business Phone No." => 1234567890,
-          "Business Mobile No." => 124567890,
-          "Business Address Street" => "AddressTest",
-          "Business Address City" => "CityTest",
-          "Business Address State" => "UX",
-          "Business Address Country" => "US",
-          "Business Address Zip" => "6200",
-          "Hours of Operation" => "24/7",
-          "24/7 Operation?" => "Yes",
-          "Post Address?" => "No",
-          "Payment Accepted" => "Cash",
-          "Sale Center" => "TST",
-          "Sale Date" => "10/10/2016",
-          "Sale Agent" => "Saddam Hussein"
-        ),*/
-        "plan" => "ursa_basic_plan",
-        "account_balance" => 100, //in cents
-        "description" => stripslashes($_POST["bussiness-name"])
-      ));
+        $newCustomer = \Stripe\Customer::create(array(
+          'source'   => $token,
+          "email" => $_POST["c-eadd"],
+          "metadata" => array(
+            "Business Name" => stripslashes($_POST["bussiness-name"]),
+            "Sale Center" => $_POST['sales-center'],
+            "Sale Date" => $sale_date,
+            "Sale Agent" => $_POST['sales-agent']
+          ),
+          "plan" => "ursa_basic_plan",
+          "account_balance" => 100, //in cents
+          "description" => stripslashes($_POST["bussiness-name"])
+        ));
 
-      $unprotected_response_object = json_decode(json_encode($newCustomer), true);
+        $unprotected_response_object = json_decode(json_encode($newCustomer), true);
 
-      $IdLabel = 'stripe_id';
+        $IdLabel = 'stripe_id';
 
-      foreach($unprotected_response_object as $obj=>$val) {
-        if($obj == "id") {
-          $IdValue = $val;
+        foreach($unprotected_response_object as $obj=>$val) {
+          if($obj == "id") {
+            $IdValue = $val;
+          }
+          if($obj == "default_source") {
+            $pp_id = '":payment_processor_id": "'.$val.'",';
+          }
         }
-        if($obj == "default_source") {
-          $pp_id = '":payment_processor_id": "'.$val.'",';
+
+        if($_POST["product-handle"] == 'prod_001') {
+          $planID = 'ursa_basic_plan';
+          $planName = "Basic Plan";
+        } else if($_POST["product-handle"] == 'plan_002') {
+          $planID = 'ursa_startup_plan';
+          $planName = "Start-up Plan";
+        } else if($_POST["product-handle"] == 'plan_005') {
+          $planID = 'ursa_upgrade_to_startup_plan';
+          $planName = "Upgrade to Start-up Plan";
+        } else if($_POST["product-handle"] == 'plan_003') {
+          $planID = 'ursa_business_plan';
+          $planName = "Business Plan";
+        } else if($_POST["product-handle"] == 'plan_006') {
+          $planID = 'ursa_upgrade_to_business_plan';
+          $planName = "Upgrade to Business Plan";
+        } else if($_POST["product-handle"] == 'plan_004') {
+          $planID = 'ursa_enterprise_plan';
+          $planName = "Enterprise Plan";
+        } else {
+          $planID = 'ursa_upgrade_to_enterprise_plan';
+          $planName = "Upgrade to Enterprise Plan";
         }
+
+        $prod_comp_coup = '":plan_id": "'.$planID.'",
+          ":plan_name": "'.$planName.'",
+          ":product_component_id": "prod_9WCNxQgw3GjcHe",
+          ":product_component_name": "Custom Company Domain",
+          ":product_component_quantity": "0",
+          ":product_coupon_code": "null",
+          ":product_coupon_name": "null",';
+
+        $param_pcc = "plan_id=:plan_id,
+            plan_name=:plan_name,";
+      } catch(\Stripe\Error\Card $e) {
+        $body = $e->getJsonBody();
+        $err  = $body['error'];
+        $done = 1;
+        $err_msg = $err['message'];
       }
-
-      if($_POST["product-handle"] == 'prod_001') {
-        $planID = 'ursa_basic_plan';
-        $planName = "Basic Plan";
-      } else if($_POST["product-handle"] == 'plan_002') {
-        $planID = 'ursa_startup_plan';
-        $planName = "Start-up Plan";
-      } else if($_POST["product-handle"] == 'plan_005') {
-        $planID = 'ursa_upgrade_to_startup_plan';
-        $planName = "Upgrade to Start-up Plan";
-      } else if($_POST["product-handle"] == 'plan_003') {
-        $planID = 'ursa_business_plan';
-        $planName = "Business Plan";
-      } else if($_POST["product-handle"] == 'plan_006') {
-        $planID = 'ursa_upgrade_to_business_plan';
-        $planName = "Upgrade to Business Plan";
-      } else if($_POST["product-handle"] == 'plan_004') {
-        $planID = 'ursa_enterprise_plan';
-        $planName = "Enterprise Plan";
-      } else {
-        $planID = 'ursa_upgrade_to_enterprise_plan';
-        $planName = "Upgrade to Enterprise Plan";
-      }
-
-      $prod_comp_coup = '":plan_id": "'.$planID.'",
-        ":plan_name": "'.$planName.'",
-        ":product_component_id": "prod_9ReoN1lDyTnk7A",
-        ":product_component_name": "Custom Company Domain",
-        ":product_component_quantity": "0",
-        ":product_coupon_code": "null",
-        ":product_coupon_name": "null",';
-
-      $param_pcc = "plan_id=:plan_id,
-          plan_name=:plan_name,";
     }
 
     $street2=@$_POST['c-street2'];
@@ -497,7 +501,8 @@ $err_msg = "";
         "customer_id": "'.@$_POST['created_doc_id'].'",
         "email": "'.@$_POST['c-eadd'].'",
         "password": "'.@$user_pass_final.'",
-        "userType": "Customer"
+        "userType": "Customer",
+        "status": "active"
       }
     ');
 
@@ -812,7 +817,7 @@ select
             </div>
             <div class="grid_5 omega" style="margin-top: 0.85em;">
               <label>Alternate/Mobile Number</label>&nbsp;&nbsp;<span class="hido" id="hidomnum"><p id="errormnum" class="error"></p></span>
-              <input type="text" class="form-control" id="biz-mnumber" name="biz-mnumber" maxlength="11" onkeypress="return KeyPressMNumber(event)"  onclick="clickFieldmnum()">
+              <input type="text" class="form-control" id="biz-mnumber" name="biz-mnumber" maxlength="10" onkeypress="return KeyPressMNumber(event)"  onclick="clickFieldmnum()">
             </div>
           </div>
 
