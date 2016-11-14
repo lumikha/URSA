@@ -9,6 +9,7 @@
 	<title>Enroll Customer</title>
   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
   <link rel="stylesheet" type="text/css" href="js/dataTables/dataTables.bootstrap.min.css"/>
+  <link rel="Shortcut icon" href="img/ursa_tab_logo.png"/>
   <style>
   	#success_information a{
   		text-decoration: none;
@@ -91,10 +92,16 @@ h1
       		<h3>You have successfully enrolled a new customer. </h3> <br> <br>
       		
       	       <div class="grid_2 push_4">
-                <input type="submit" class="btn btn-primary regbutton" name="" value="Enroll New Customer">
+                <input type="submit" class="btn btn-primary regbutton" name="" onclick="redirect()" value="Enroll New Customer">
                </div>
       		    	</div>
   	</div>
 </div>
 </body>
 </html>
+
+<script>
+  function redirect() {
+    window.location = "register2";
+  }
+</script>

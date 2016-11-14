@@ -558,7 +558,8 @@ $err_msg = "";
   if($done == 2) {
     ?>
     <script>
-      window.location = "success_register.php?e=<?php echo $_POST['c-eadd']; ?>&p=<?php echo $user_pass_final; ?>";
+      //window.location = "success_register.php?e=<?php echo $_POST['c-eadd']; ?>&p=<?php echo $user_pass_final; ?>"; //this is for local test
+      window.location = "success_register1";
     </script>
     <?php
   }
@@ -666,6 +667,15 @@ select
   background-color: #FFF;
 }
 
+.thisisrequired {
+  float: right;
+}
+
+.asterisk_req {
+  font-size: 20px;
+  color: red;
+}
+
 </style>
 
 <?php if($done == 0 || $done != 1) { ?>
@@ -695,18 +705,20 @@ select
       
       <form class="form-horizontal" action="" method="POST" enctype="multipart/form-data" onsubmit="return checkFields_enroll1();">
         <fieldset>
-        <div class="formtitle"><h3>Business Information</h3><br> </div>
-          
+        <div class="formtitle"><h3>Business Information</h3> </div>
+          <div class="thisisrequired">
+            <b class="asterisk_req">*</b> <i>This fields are required.</i>
+          </div>
           <div class="form-group">
             <div class="grid_10 alpha ">
-              <label>Business Name </label>&nbsp;&nbsp;<span class="hido" id="hido1"><p id="error1" class="error"></p></span>
+              <label>Business Name </label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido1"><p id="error1" class="error"></p></span>
               <input type="text" class="form-control" id="biz-name" name="biz-name" onkeypress="return KeyPressBName(event)" onclick="clickField1()">
             </div>
           </div>
 
           <div class="form-group">
             <div class="grid_5 alpha">
-              <label>Business Address 1</label>&nbsp;&nbsp;<span class="hido" id="hido2"><p id="error2" class="error"></p></span>
+              <label>Business Address 1</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido2"><p id="error2" class="error"></p></span>
               <input type="text" class="form-control" id="biz-street" name="biz-street" onkeypress="return KeyPressBStreet(event)" onclick="clickField2()">
             </div>
             <div class="grid_5 omega">
@@ -717,11 +729,11 @@ select
 
           <div class="form-group">
             <div class="grid_5 alpha">
-              <label>City</label>&nbsp;&nbsp;<span class="hido" id="hido3"><p id="error3" class="error"></p></span>
+              <label>City</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido3"><p id="error3" class="error"></p></span>
               <input type="text" class="form-control" id="biz-city" name="biz-city" onkeypress="return KeyPressBCity(event)" onclick="clickField3()">
             </div>
             <div class="grid_2">
-              <label>State</label>&nbsp;&nbsp;<span class="hido" id="hido4-state"><p id="error4-state" class="error"></p></span>
+              <label>State</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido4-state"><p id="error4-state" class="error"></p></span>
               <select class="form-control" id="biz-state" name="biz-state" onchange="ChangeState()">
                 <option value='' disabled selected>Select</option>
                 <option value="AL">AL</option> 
@@ -778,18 +790,18 @@ select
               </select>
             </div>
             <div class="grid_3 omega">
-              <label>Zip</label>&nbsp;&nbsp;<span class="hido" id="hido4"><p id="error4" class="error"></p></span>
+              <label>Zip</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido4"><p id="error4" class="error"></p></span>
               <input type="text" class="form-control" id="biz-zip" name="biz-zip" onkeypress="return KeyPressBZip(event)" onclick="clickField4()">
             </div>
           </div>
 
           <div class="form-group">
             <div class="grid_5 alpha">
-              <label>Business Phone</label>&nbsp;&nbsp;<span class="hido" id="hido5"><p id="error5" class="error"></p></span>
+              <label>Business Phone</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido5"><p id="error5" class="error"></p></span>
               <input type="text" class="form-control" id="biz-pnumber" name="biz-pnumber" maxlength="10" onkeypress="return KeyPressBPNumber(event)" onclick="clickField5()">
             </div>
             <div class="grid_5 omega">
-              <label>Email Address</label>&nbsp;&nbsp;<span class="hido" id="hido6"><p id="error6" class="error"></p></span>
+              <label>Email Address</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido6"><p id="error6" class="error"></p></span>
               <input type="text" class="form-control" id="biz-eadd" name="biz-eadd" onkeypress="return KeyPressBEAdd(event)" onclick="clickField6()">
             </div>
           </div>
@@ -803,7 +815,7 @@ select
 
           <div class="form-group">
             <div class="grid_5 alpha">
-              <label>Hours of Operation</label>&nbsp;&nbsp;<span class="hido" id="hido7"><p id="error7" class="error"></p></span>
+              <label>Hours of Operation</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido7"><p id="error7" class="error"></p></span>
               <div class="os">
                 <label> 24 / 7?</label>
                 <input type="radio" id="allthetime_yes" name="allthetime" value="true"  onchange="alltime();">Yes
@@ -838,7 +850,7 @@ select
 
           <div class="form-group">
             <div class="grid_10 alpha">
-              <label>Payment Accepted</label>&nbsp;&nbsp;<span class="hido" id="hido8"><p id="error8" class="error"></p></span>
+              <label>Payment Accepted</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido8"><p id="error8" class="error"></p></span>
               <div class="form-group">
                 <div class="grid_10 alpha checkboxes">
                   <div class=" grid_10">
@@ -909,8 +921,10 @@ select
           <input type="hidden" id="option_1_hidden_value" 
           value="<?php if(empty($err_msg)){echo $p2_state;}else{echo $_POST['c-state'];} ?>">
           <fieldset>
-            <div class="formtitle"><h3>Billing Information</h3></div><br> 
-
+            <div class="formtitle"><h3>Billing Information</h3></div> 
+            <div class="thisisrequired">
+              <b class="asterisk_req">*</b> <i>This fields are required.</i>
+            </div>
             <div class="form-group">
               <div class="grid_10 alpha">
                 <label>Business Name</label>
@@ -920,7 +934,7 @@ select
 
             <div class="form-group">
               <div class="grid_5 alpha">
-                <label>Salutation</label>&nbsp;&nbsp;<span class="hido" id="hido-sal"><p id="error-sal" class="error"></p></span>
+                <label>Salutation</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido-sal"><p id="error-sal" class="error"></p></span>
                 <select name="salut" id="salut" class="form-control" onchange="ChangeSal()">
                 <?php 
                   $arr_sltn = array('Mr','Mrs','Ms','Miss','Dr','Herr','Monsieur','Hr','Frau','A V M','Admiraal','Admiral','Air Cdre','Air Commodore','Air Marshal','Air Vice Marshal','Alderman','Alhaji','Ambassador','Baron','Barones','Brig','Brig Gen','Brig General','Brigadier','Brigadier General','Brother','Canon','Capt','Captain','Cardinal','Cdr','Chief','Cik','Cmdr','Col','Col Dr','Colonel','Commandant','Commander','Commissioner','Commodore','Comte','Comtessa','Congressman','Conseiller','Consul','Conte','Contessa','Corporal','Councillor','Count','Countess','Crown Prince','Crown Princess','Dame','Datin','Dato','Datuk','Datuk Seri','Deacon','Deaconess','Dean','Dhr','Dipl Ing','Doctor','Dott','Dott sa','Dr','Dr Ing','Dra','Drs','Embajador','Embajadora','En','Encik','Eng','Eur Ing','Exma Sra','Exmo Sr','F O','Father','First Lieutient','First Officer','Flt Lieut','Flying Officer','Fr','Frau','Fraulein','Fru','Gen','Generaal','General','Governor','Graaf','Gravin','Group Captain','Grp Capt','H E Dr','H H','H M','H R H','Hajah','Haji','Hajim','Her Highness','Her Majesty','Herr','High Chief','His Highness','His Holiness','His Majesty','Hon','Hr','Hra','Ing','Ir','Jonkheer','Judge','Justice','Khun Ying','Kolonel','Lady','Lcda','Lic','Lieut','Lieut Cdr','Lieut Col','Lieut Gen','Lord','M','M L','M R','Madame','Mademoiselle','Maj Gen','Major','Master','Mevrouw','Miss','Mlle','Mme','Monsieur','Monsignor','Mr','Mrs','Ms','Mstr','Nti','Pastor','President','Prince','Princess','Princesse','Prinses','Prof','Prof Dr','Prof Sir','Professor','Puan','Puan Sri','Rabbi','Rear Admiral','Rev','Rev Canon','Rev Dr','Rev Mother','Reverend','Rva','Senator','Sergeant','Sheikh','Sheikha','Sig','Sig na','Sig ra','Sir','Sister','Sqn Ldr','Sr','Sr D','Sra','Srta','Sultan','Tan Sri','Tan Sri Dato','Tengku','Teuku','Than Puying','The Hon Dr','The Hon Justice','The Hon Miss','The Hon Mr','The Hon Mrs','The Hon Ms','The Hon Sir','The Very Rev','Toh Puan','Tun','Vice Admiral','Viscount','Viscountess','Wg Cdr');
@@ -962,11 +976,11 @@ select
             </div>
             <div class="form-group">
               <div class="grid_5 alpha">
-                <label>First Name</label>&nbsp;&nbsp;<span class="hido" id="hido1"><p id="error1" class="error"></p></span>
+                <label>First Name</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido1"><p id="error1" class="error"></p></span>
                 <input type="text" class="form-control" id="bfname" name="bfname" onkeypress="return KeyPressFName(event)" onclick="clickField1()" value="<?php if(!empty($err_msg)){echo $_POST['bfname'];} ?>">
               </div>
               <div class="grid_5 omega">
-                <label>Last Name</label>&nbsp;&nbsp;<span class="hido" id="hido2"><p id="error2" class="error"></p></span>
+                <label>Last Name</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido2"><p id="error2" class="error"></p></span>
                 <input type="text" class="form-control" id="blname" name="blname" onkeypress="return KeyPressLName(event)" onclick="clickField2()" value="<?php if(!empty($err_msg)){echo $_POST['blname'];} ?>">
               </div>
             </div>
@@ -977,14 +991,14 @@ select
                 <input type="text" class="form-control" id="c-eadd" name="c-eadd" value="<?php if(empty($err_msg)){echo $p2_email;}else{echo $_POST['c-eadd'];} ?>" readonly>
               </div>
               <div class="grid_5 omega">
-                <label>Contact Number</label>&nbsp;&nbsp;<span class="hido" id="hido4"><p id="error4" class="error"></p></span>
+                <label>Contact Number</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido4"><p id="error4" class="error"></p></span>
                 <input type="text" class="form-control" id="c-phone" name="c-phone" maxlength="10" onkeypress="return KeyPressPhone(event)" onclick="clickField4()" value="<?php if(!empty($err_msg)){echo $_POST['c-phone'];} ?>">
               </div>
             </div>
 
             <div class="form-group">
               <div class="grid_5 alpha">
-                <label>Billing Address 1</label>&nbsp;&nbsp;<span class="hido" id="hido5"><p id="error5" class="error"></p></span>
+                <label>Billing Address 1</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido5"><p id="error5" class="error"></p></span>
                 <input type="text" class="form-control" id="c-street" name="c-street" onkeypress="return KeyPressStreet(event)" onclick="clickField5()" value="<?php if(empty($err_msg)){echo $p2_street;}else{echo $_POST['c-street'];} ?>">
               </div>
               <div class="grid_5 omega">
@@ -995,11 +1009,11 @@ select
 
             <div class="form-group">
               <div class="grid_5 alpha">
-                <label>City</label>&nbsp;&nbsp;<span class="hido" id="hido6"><p id="error6" class="error"></p></span>
+                <label>City</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido6"><p id="error6" class="error"></p></span>
                 <input type="text" class="form-control" id="c-city" name="c-city" onkeypress="return KeyPressCity(event)" onclick="clickField6()" value="<?php if(empty($err_msg)){echo $p2_city;}else{echo $_POST['c-city'];} ?>">
               </div>
               <div class="grid_2">
-               <label>State</label>&nbsp;&nbsp;<span class="hido" id="hido7-state"><p id="error7-state" class="error"></p></span>
+               <label>State</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido7-state"><p id="error7-state" class="error"></p></span>
                 <select class="form-control" name="c-state" id="c-state" onchange="ChangeState()">
                   <?php if(empty($err_msg) && !empty($p2_state)) {
                     echo "<option value='' id='option_1'>".$p2_state."</option>";
@@ -1063,22 +1077,22 @@ select
                 </select>
               </div>
               <div class="grid_3 omega">
-                <label>Zip</label>&nbsp;&nbsp;<span class="hido" id="hido7"><p id="error7" class="error"></p></span>
+                <label>Zip</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido7"><p id="error7" class="error"></p></span>
                 <input type="text" class="form-control" id="c-zip" name="c-zip" maxlength="6" onkeypress="return KeyPressZip(event)" onclick="clickField7()" value="<?php if(empty($err_msg)){echo $p2_zip;}else{echo $_POST['c-zip'];} ?>">
               </div>
             </div>
 
             <div class="form-group">
               <div class="grid_5 alpha">
-                <label>Card Number</label>&nbsp;&nbsp;<span class="hido" id="hido8"><p id="error8" class="error"></p></span>
+                <label>Card Number</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido8"><p id="error8" class="error"></p></span>
                 <input type="text" class="form-control" id="card-number" name="card-number" onkeypress="return KeyPressCCNumber(event)" onclick="clickField8()" value="<?php if(!empty($err_msg)){echo $_POST['card-number'];} ?>">
               </div>
               <div class="grid_3">
-               <label> CVC </label>
+               <label> CVC </label><b class="asterisk_req">*</b>
                 <input type="text" class="form-control" id="card-cvc" name="card-cvc" maxlength="3" onkeypress="return KeyPressCVC(event)" onclick="clickField9()" value="<?php if(!empty($err_msg)){echo $_POST['card-cvc'];} ?>">
               </div>
               <div class="grid_2 omega">
-                <label>Exp. Date (mm/yy)</label>
+                <label>Exp. Date (mm/yy)</label><b class="asterisk_req">*</b>
                 <div style="display: inline;">
                   <input type="text" class="form-control" style="float: left; width: 45%;"  maxlength="2" id="card-expiry-month" name="card-expiry-month" onkeypress="return KeyPressCCExpiryMM(event)" onclick="clickField10()" value="<?php if(!empty($err_msg)){echo $_POST['card-expiry-month'];} ?>">
                   <input type="text" class="form-control" style="float: left; width: 45%; margin-left: 5%;" maxlength="2" id="card-expiry-year" name="card-expiry-year" onkeypress="return KeyPressCCExpiryYY(event)" onclick="clickField11()" value="<?php if(!empty($err_msg)){echo $_POST['card-expiry-year'];} ?>">
@@ -1088,7 +1102,7 @@ select
 
             <div class="form-group">
               <div class="grid_5 alpha">
-                <label>Sales Agent</label>&nbsp;&nbsp;<span class="hido" id="hido12"><p id="error12" class="error"></p></span>
+                <label>Sales Agent</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido12"><p id="error12" class="error"></p></span>
                 <select class="form-control" id="sales-agent" name="sales-agent" onchange="ChangeAgent()">
                 <?php 
                   if(!empty($err_msg)) {
