@@ -336,6 +336,22 @@
                 </select>
             </div>
         </div>
+        <div class="grid_9">
+            <div class="dropdown grid_2 alpha">
+                <label>Cancelled?</label><br/>
+                <?php if($cancelled == "yes") { ?>
+                    <label class="radio-inline"><input type="radio" name="cancel" id="cancel_yes" value="yes" checked="checked" onclick="cancelAccYes()">Yes</label>
+                    <label class="radio-inline"><input type="radio" name="cancel" id="cancel_no" value="no" onclick="cancelAccNo()">No</label>
+                <?php } else { ?>
+                    <label class="radio-inline"><input type="radio" name="cancel" id="cancel_yes" value="yes" onclick="cancelAccYes()">Yes</label>
+                    <label class="radio-inline"><input type="radio" name="cancel" id="cancel_no" value="no" checked="checked" onclick="cancelAccNo()">No</label>
+                <?php } ?>
+            </div>
+            <div class="grid_5">
+                <label class="<?php echo $check; ?>">Cancellation Reason</label>
+                <textarea class="form-control" rows="5" name="cancel_reason" id="cancel_reason" placeholder="Cancel Reason" style="resize: vertical;" value="<?php echo $cancel_reason; ?>"><?php echo $cancel_reason; ?></textarea>
+            </div>
+        </div>
         <?php if(isset($_GET['id'])) { ?>
         <div class="row">
             <div class="col-md-1 col-md-offset-5 col-sm-1 col-sm-offset-5 col-xs-1 col-xs-offset-4">

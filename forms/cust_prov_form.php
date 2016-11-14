@@ -26,11 +26,11 @@
             <div class="dropdown grid_2 alpha">
                 <label>Cancelled?</label><br/>
                 <?php if($cancelled == "yes") { ?>
-                    <label class="radio-inline"><input type="radio" name="cancel" id="cancel_yes" value="yes" checked="checked" onclick="cancelYes()">Yes</label>
-                    <label class="radio-inline"><input type="radio" name="cancel" id="cancel_no" value="no" onclick="cancelNo()">No</label>
+                    <label class="radio-inline"><input type="radio" name="cancel" id="cancel_yes" value="yes" checked="checked" onclick="cancelProvYes()">Yes</label>
+                    <label class="radio-inline"><input type="radio" name="cancel" id="cancel_no" value="no" onclick="cancelProvNo()">No</label>
                 <?php } else { ?>
-                    <label class="radio-inline"><input type="radio" name="cancel" id="cancel_yes" value="yes" onclick="cancelYes()">Yes</label>
-                    <label class="radio-inline"><input type="radio" name="cancel" id="cancel_no" value="no" checked="checked" onclick="cancelNo()">No</label>
+                    <label class="radio-inline"><input type="radio" name="cancel" id="cancel_yes" value="yes" onclick="cancelProvYes()">Yes</label>
+                    <label class="radio-inline"><input type="radio" name="cancel" id="cancel_no" value="no" checked="checked" onclick="cancelProvNo()">No</label>
                 <?php } ?>
             </div>
             <div class="grid_5">

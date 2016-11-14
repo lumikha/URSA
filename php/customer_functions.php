@@ -265,6 +265,12 @@ date_default_timezone_set("Asia/Manila");
         $plan_id = $_POST['acc_product'];
         $comp_quantity = $_POST['acc_component'];
         $coupon_code = $_POST['acc_coupon'];
+        $cancelled = $_POST['cancel'];
+        if($cancelled == "yes") {
+            $cancel_reason = $_POST['cancel_reason'];
+        } else {
+            $cancel_reason = "";
+        }
 
         /* check what is changed, this is for logs */
         $changes = array();
@@ -451,6 +457,14 @@ date_default_timezone_set("Asia/Manila");
                             $coupon->add();
                         }
                     } 
+                }
+
+                if($cancelled == "yes") {
+                    //array_push($changes, "Account to Canceled");
+                    //$subscription_cancel = new ChargifySubscription(NULL, $test);
+                    //$subscription_cancel->id = $result_customer_id_search[0]->id;
+                    //$subscription_cancel->cancellation_message = $cancel_reason;
+                    //$subscription_cancel->cancel();
                 }
             } catch (ChargifyValidationException $cve) {
                 echo $cve->getMessage();

@@ -1,3 +1,38 @@
+function customerPageOnload() {
+    checkIfCancelAccTab();
+    checkIfCancelProvTab();
+}
+
+//account tab
+function checkIfCancelAccTab() {
+    if($('#cust_account_form #cancel_no').is(":checked") == true) {
+        cancelAccNo();
+    }
+}
+
+function cancelAccYes() {
+    $('#cust_account_form #cancel_reason').prop('disabled', false);
+}
+
+function cancelAccNo() {
+    $('#cust_account_form #cancel_reason').prop('disabled', true);
+}
+
+//provisioning tab
+function checkIfCancelProvTab() {
+    if($('#cust_provisioning_form #cancel_no').is(":checked") == true) {
+        cancelProvNo();
+    }
+}
+
+function cancelProvYes() {
+    $('#cust_provisioning_form #cancel_reason').prop('disabled', false);
+}
+
+function cancelProvNo() {
+    $('#cust_provisioning_form #cancel_reason').prop('disabled', true);
+}
+
 function cancelCall() {
     $('.cs_loading').addClass("hidden");
     $('#call_body').removeClass("hidden");

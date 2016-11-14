@@ -16,8 +16,6 @@
 <?php if(basename($_SERVER['PHP_SELF']) == "customer.php") { ?>
 <script type="text/javascript">
       $(document).ready(function(){
-        checkIfCancel();
-        
         document.getElementById('search_result_view').style.display = "none";
         var lastTab = $.cookie('last_tab');
         if(lastTab != "#admin"){
@@ -50,20 +48,6 @@ function onRemoveTag(tag) {
 
 function onChangeTag(input,tag) {
 	alert("Changed a tag: " + tag);
-}
-
-function checkIfCancel() {
-    if(document.getElementById("cancel_no").checked == true) {
-        cancelNo();
-    }
-}
-
-function cancelYes() {
-    $('#cancel_reason').prop('disabled', false);
-}
-
-function cancelNo() {
-    $('#cancel_reason').prop('disabled', true);
 }
 
 $(function() {

@@ -204,4 +204,9 @@
 </div>
 
 <script type="text/javascript" src="scripts/customer_scripts.js"></script>
+<script>
+    $(document).ready(function() {
+        customerPageOnload();
+    });
+</script>
                      

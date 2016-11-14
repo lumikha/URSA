@@ -1,6 +1,7 @@
 <?php
 
   require_once 'settings.php'; 
+  $stripe = true; //redeclaring this variable
   require_once 'lib/dynamoDB/dbConnect.php';
   use Aws\DynamoDb\Exception\DynamoDbException;
   use Aws\DynamoDb\Marshaler;
