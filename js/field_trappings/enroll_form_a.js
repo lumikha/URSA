@@ -60,7 +60,14 @@ function checkFields_enroll1(){
 	    checkError.push("4-state"); }
 
 	if (bizzip) {
-	        $('#hido4').addClass('hido'); }
+	    //$('#hido4').addClass('hido'); }
+	    if(bizzip.length == 5) {
+	        $('#hido4').addClass('hido'); } 
+	    else {
+	    	$('#hido4').removeClass('hido');
+	    	$('#hido4').removeClass('hidob'); 
+	    	document.getElementById("error4").innerHTML = "Must contain 5 digit number.";
+	    	checkError.push("4a"); } }
 	else {
 	    $('#hido4').removeClass('hido');
 	    $('#hido4').removeClass('hidob'); 
@@ -138,7 +145,7 @@ function checkFields_enroll1(){
         if(checkError[0] == "2" || checkError[0] == "2a") { $('#biz-street').focus(); }
         if(checkError[0] == "3" || checkError[0] == "3a") { $('#biz-city').focus(); }
         if(checkError[0] == "4-state") { $('#biz-state').focus(); }
-        if(checkError[0] == "4") { $('#biz-zip').focus(); }
+        if(checkError[0] == "4" || checkError[0] == "4a") { $('#biz-zip').focus(); }
         if(checkError[0] == "5" || checkError[0] == "5a") { $('#biz-pnumber').focus(); }
         if(checkError[0] == "6" || checkError[0] == "6a" || checkError[0] == "6b") { $('#biz-eadd').focus(); }
         if(checkError[0] == "7") { $('#spinner').focus(); }

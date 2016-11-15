@@ -133,7 +133,57 @@ $("#cust_account_form").validate({
         $(this).find(":input.error:first").focus();
     },
     submitHandler: function(form) {
-        form.submit();
+        var errorForm = 0;
+
+        //check primary phone
+        var str = $('#acc_phone').val();
+        var i = str.length;
+        var count = 0;
+        var res = "";
+        while(count < i) {
+            if(str[count] != '-') {
+                res += str[count];
+            }
+            count++;
+        }
+
+        if(res.length != 11) {
+            $('#errpp').text('must be 11 digits');
+            $('#acc_phone').focus();
+            errorForm = 1;
+        } 
+
+        //check office phone
+        if($('#acc_office_phone').val() != null) {
+            var str1 = $('#acc_office_phone').val();
+            var i1 = str1.length;
+            var count1 = 0;
+            var res1 = "";
+            while(count1 < i1) {
+                if(str1[count1] != '-') {
+                    res1 += str1[count1];
+                }
+                count1++;
+            }
+
+            if(res1.length != 11) {
+                $('#errofficep').text('must be 11 digits');
+                $('#acc_office_phone').focus();
+                errorForm = 1;
+            }
+        }
+
+        if($('#acc_bill_zip').val().length != 5) {
+            $('#errzip').text('must be 5 digits');
+            $('#acc_bill_zip').focus();
+            errorForm = 1;
+        }
+
+        if(errorForm == 0) {
+            form.submit();
+        } else {
+            return false;
+        }
     }
 });
     
@@ -163,3 +213,60 @@ $("#email_box").mousewheel(function(event, delta) {
     this.scrollLeft -= (delta * 30);
     event.preventDefault();
 });
+
+function KeyPressPrimeP(evt){
+    $('#errpp').empty();
+    var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        if(charCode == 45) {
+            return true;
+        } else {
+            return false; 
+        }
+    } else {
+        return true; 
+    } 
+}
+
+function KeyPressAltP(evt){
+    $('#errofficep').empty();
+    var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        if(charCode == 45) {
+            return true;
+        } else {
+            return false; 
+        }
+    } else {
+        return true; 
+    } 
+}
+
+function KeyPressMobileP(evt){
+    $('#errmp').empty();
+    var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        if(charCode == 45) {
+            return true;
+        } else {
+            return false; 
+        }
+    } else {
+        return true; 
+    } 
+}
+
+function KeyPressZIP(evt){
+    $('#errzip').empty();
+    var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+    } else {
+        return true; 
+    } 
+}
+
+function reEnrollCustomer(id) {
+    window.open('register2?pn=1&cid='+id, '_blank');
+    //alert(id);
+}

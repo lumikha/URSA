@@ -120,7 +120,14 @@ function checkFields_enroll2(){
 	    checkError.push("7state"); }
 
 	if (czip) {
-	        $('#hido7').addClass('hido'); }
+	    //$('#hido7').addClass('hido'); }
+	    if(czip.length == 5) {
+	        $('#hido7').addClass('hido'); } 
+	    else {
+	    	$('#hido7').removeClass('hido');
+	    	$('#hido7').removeClass('hidob'); 
+	    	document.getElementById("error7").innerHTML = "Must contain 5 digit number.";
+	    	checkError.push("7a"); } }
 	else {
 	    $('#hido7').removeClass('hido');
 	    $('#hido7').removeClass('hidob'); 
@@ -177,7 +184,7 @@ function checkFields_enroll2(){
         if(checkError[0] == "5" || checkError[0] == "5a") { $('#c-street').focus(); }
         if(checkError[0] == "6" || checkError[0] == "6a") { $('#c-city').focus(); }
         if(checkError[0] == "7state") { $('#c-state').focus(); }
-        if(checkError[0] == "7") { $('#c-zip').focus(); }
+        if(checkError[0] == "7" || checkError[0] == "7a") { $('#c-zip').focus(); }
         if(checkError[0] == "8") { $('#card-number').focus(); }
         if(checkError[0] == "9") { $('#card-cvc').focus(); }
         if(checkError[0] == "10") { $('#card-expiry-month').focus(); }

@@ -28,3 +28,8 @@ body {
     moz-border-radius: 4px;
     webkit-border-radius: 4px;
 }
+.specific_error {
+    margin-left: 5px;
+    color: red;
+    font-style: italic;
+}

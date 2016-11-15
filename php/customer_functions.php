@@ -22,7 +22,11 @@ date_default_timezone_set("Asia/Manila");
                 $customer_db_id = $result_db_customers['Items'][$i]['customer_id']['S'];
                 $business_name = $result_db_customers['Items'][$i]['business_name']['S'];
                 $business_address = $result_db_customers['Items'][$i]['business_address']['S'];
-                $business_address_2 = $result_db_customers['Items'][$i]['business_suite_no']['S'];
+                if($result_db_customers['Items'][$i]['business_suite_no']['S'] != "null") {
+                    $business_address_2 = $result_db_customers['Items'][$i]['business_suite_no']['S'];
+                } else {
+                    $business_address_2 = null;
+                }
                 $business_city = $result_db_customers['Items'][$i]['business_city']['S'];
                 $business_state = $result_db_customers['Items'][$i]['business_state']['S'];
                 $business_zip = $result_db_customers['Items'][$i]['business_zip']['S'];
@@ -62,12 +66,15 @@ date_default_timezone_set("Asia/Manila");
                     $fname = $result_db_customers['Items'][$i]['customer_first_name']['S'];
                     $lname = $result_db_customers['Items'][$i]['customer_last_name']['S'];
                     $phone = $result_db_customers['Items'][$i]['customer_phone_no']['S'];
+                    $office_phone = $business_phone;
 
+                    /*
                     if(isset($result_db_customers['Items'][$i]['customer_alternate_phone_no']['S']) && $result_db_customers['Items'][$i]['customer_alternate_phone_no']['S'] != "null") {
                         $alt_phone = $result_db_customers['Items'][$i]['customer_alternate_phone_no']['S'];
                     } else {
                         $alt_phone = null;
                     }
+                    */
 
                     if(isset($result_db_customers['Items'][$i]['customer_mobile_no']['S']) && $result_db_customers['Items'][$i]['customer_mobile_no']['S'] != "null") {
                         $mobile = $result_db_customers['Items'][$i]['customer_mobile_no']['S'];
@@ -96,7 +103,12 @@ date_default_timezone_set("Asia/Manila");
                     $cc_exp_mm = $result_db_customers['Items'][$i]['customer_card_expire_month']['S'];
                     $cc_exp_yy = $result_db_customers['Items'][$i]['customer_card_expire_year']['S'];
                     $bill_address = $result_db_customers['Items'][$i]['customer_billing_address']['S'];
-                    $bill_address_2 = $result_db_customers['Items'][$i]['customer_suite_no']['S'];
+                    if($result_db_customers['Items'][$i]['business_suite_no']['S'] != "null") {
+                        $bill_address_2 = $result_db_customers['Items'][$i]['business_suite_no']['S'];
+                    } else {
+                        $bill_address_2 = null;
+                    }
+                    //$bill_address_2 = $result_db_customers['Items'][$i]['customer_suite_no']['S'];
                     $bill_city = $result_db_customers['Items'][$i]['customer_billing_city']['S'];
                     $bill_state = $result_db_customers['Items'][$i]['customer_billing_state']['S'];
                     $bill_zip = $result_db_customers['Items'][$i]['customer_billing_zip']['S'];
@@ -188,6 +200,10 @@ date_default_timezone_set("Asia/Manila");
             foreach($uro2['subscriptions']['data'] as $inv) {
                 $cust_status = $inv['status'];
             }
+
+            if(!isset($cust_status)) {
+                $cust_status = "canceled";
+            } 
         } else {
             $business_category = "null";
             $billing_sum = "None";
@@ -197,8 +213,8 @@ date_default_timezone_set("Asia/Manila");
             $fname = null;
             $lname = null;
             $title = null;
-            $phone = $business_phone;
-            $alt_phone = null;
+            $phone = null;
+            $office_phone = $business_phone;
             $mobile = null;
             $alt_email = null;
             $bill_address = null;
@@ -213,43 +229,53 @@ date_default_timezone_set("Asia/Manila");
             $cancel_reason = "";
         }
 
-        if($cust_status == "trialing") {
-        ?><style>
-            .cust_id {
-                color: #A261B1;
+        //prime phone number - customer number
+        if($phone != null) {
+            $num_arr = array_map('intval', str_split($phone));
+            $fin_num = array();
+            array_push($fin_num, $num_arr[0].'-');
+            $i = 1;
+            while($i < 4){
+              array_push($fin_num, $num_arr[$i]);
+              $i++;
             }
-        </style><?php
-        } elseif($cust_status == "active") {
-        ?><style>
-            .cust_id {
-                color: #26B68E;
+            array_push($fin_num, '-');
+            $j = 4;
+            while($j < 7){
+              array_push($fin_num, $num_arr[$j]);
+              $j++;
             }
-        </style><?php
-        } elseif($cust_status == "past_due") {
-        ?><style>
-            .cust_id {
-                color: #E05A19;
+            array_push($fin_num, '-');
+            $k = 7;
+            while($k < 11){
+              array_push($fin_num, $num_arr[$k]);
+              $k++;
             }
-        </style><?php
-        } elseif($cust_status == "unpaid") {
-        ?><style>
-            .cust_id {
-                color: #C63C33;
-            }
-        </style><?php
-        } elseif($cust_status == "canceled") {
-        ?><style>
-            .cust_id {
-                color: #323232;
-            }
-        </style><?php
-        } else {
-        ?><style>
-            .cust_id {
-                color: #EAE17F;
-            }
-        </style><?php
+            $phone = implode("",$fin_num);
         }
+
+        //office number - business phone number
+        $num_arr1 = array_map('intval', str_split($office_phone));
+        $fin_num1 = array();
+        array_push($fin_num1, $num_arr1[0].'-');
+        $i = 1;
+        while($i < 4){
+          array_push($fin_num1, $num_arr1[$i]);
+          $i++;
+        }
+        array_push($fin_num1, '-');
+        $j = 4;
+        while($j < 7){
+          array_push($fin_num1, $num_arr1[$j]);
+          $j++;
+        }
+        array_push($fin_num1, '-');
+        $k = 7;
+        while($k < 11){
+          array_push($fin_num1, $num_arr1[$k]);
+          $k++;
+        }
+        $office_phone = implode("",$fin_num1);
     } 
 
     if(isset($_POST['upd_acc'])) {
@@ -260,7 +286,7 @@ date_default_timezone_set("Asia/Manila");
         $fname = $_POST['acc_fname'];
         $lname = $_POST['acc_lname'];
         $phone = $_POST['acc_phone'];
-        $alt_phone = $_POST['acc_alter_phone'];
+        $office_phone = $_POST['acc_office_phone'];
         $mobile = $_POST['acc_mobile_phone'];
         $email = $_POST['acc_email'];
         $alt_email = $_POST['acc_alter_email'];
@@ -273,12 +299,19 @@ date_default_timezone_set("Asia/Manila");
         $plan_id = $_POST['acc_product'];
         $comp_quantity = $_POST['acc_component'];
         $coupon_code = $_POST['acc_coupon'];
-        $cancelled = $_POST['cancel'];
-        if($cancelled == "yes") {
-            $cancel_reason = $_POST['cancel_reason'];
-        } else {
-            $cancel_reason = "";
+
+        if(isset($_POST['cancel'])) {
+            $cancelled = $_POST['cancel'];
+            if($cancelled == "yes") {
+                $cancel_reason = $_POST['cancel_reason'];
+            } else {
+                $cancel_reason = "";
+            }
         }
+
+        $phone = str_replace('-', '', $phone);
+        $office_phone = str_replace('-', '', $office_phone);
+
 
         /* check what is changed, this is for logs */
         $changes = array();
@@ -308,6 +341,10 @@ date_default_timezone_set("Asia/Manila");
                 if($phone != $result_db_customers['Items'][$i]['customer_phone_no']['S']) {
                     array_push($changes, "Primary Phone No.");
                 }
+                if($office_phone != $result_db_customers['Items'][$i]['business_phone_no']['S']) {
+                    array_push($changes, "Office No.");
+                }
+                /*
                 if(isset($result_db_customers['Items'][$i]['customer_alternate_phone_no']['S']) && $result_db_customers['Items'][$i]['customer_alternate_phone_no']['S'] != "null") {
                     if($alt_phone != $result_db_customers['Items'][$i]['customer_alternate_phone_no']['S']) {
                         array_push($changes, "Alternate Phone No.");
@@ -318,6 +355,7 @@ date_default_timezone_set("Asia/Manila");
                         array_push($changes, "Alternate Phone No.");
                     }
                 }
+                */
                 if(isset($result_db_customers['Items'][$i]['customer_mobile_no']['S']) && $result_db_customers['Items'][$i]['customer_mobile_no']['S'] != "null") {
                     if($mobile != $result_db_customers['Items'][$i]['customer_mobile_no']['S']) {
                         array_push($changes, "Mobile No.");
@@ -468,11 +506,12 @@ date_default_timezone_set("Asia/Manila");
                 }
 
                 if($cancelled == "yes") {
-                    //array_push($changes, "Account to Canceled");
-                    //$subscription_cancel = new ChargifySubscription(NULL, $test);
-                    //$subscription_cancel->id = $result_customer_id_search[0]->id;
-                    //$subscription_cancel->cancellation_message = $cancel_reason;
-                    //$subscription_cancel->cancel();
+                    array_push($changes, "Account to Canceled");
+                    $subscription_cancel = new ChargifySubscription(NULL, $test);
+                    $subscription_cancel->id = $result_customer_id_search[0]->id;
+                    $subscription_cancel->cancellation_message = $cancel_reason;
+                    $subscription_cancel->cancel();
+                    $cust_status = "canceled";
                 }
             } catch (ChargifyValidationException $cve) {
                 echo $cve->getMessage();
@@ -552,6 +591,26 @@ date_default_timezone_set("Asia/Manila");
                 }
             }
 
+            if($cancelled == "yes") {
+                $customer1 = \Stripe\Customer::retrieve($payportalID);
+
+                $unprotected_response_object1 = json_decode(json_encode($customer1), true);
+
+                foreach($unprotected_response_object1['subscriptions']['data'] as $inv1) {
+                    $subID = $inv1['id'];
+                }
+
+                try {
+                    $sub = \Stripe\Subscription::retrieve($subID);
+                    $cancel = $sub->cancel();
+                    array_push($changes, "Account to Canceled");
+                    $cust_status = "canceled";
+                } catch (\Stripe\Error\InvalidRequest $e) {
+                    $body = $e->getJsonBody();
+                    print_r($e);
+                }
+            }
+
             $planprodUpdate = '":plan_id": "'.@$plan_id.'",
                 ":plan_name": "'.@$planName.'",';
 
@@ -572,11 +631,13 @@ date_default_timezone_set("Asia/Manila");
             $alternate_email = '":customer_alternate_email": "'.@$alt_email.'",';
         }
 
+        /*
         if(empty($alt_phone)) {
             $alternate_phone = '":customer_alternate_phone_no": "null",';
         } else {
             $alternate_phone = '":customer_alternate_phone_no": "'.@$alt_phone.'",';
         }
+        */
 
         if(empty($mobile)) {
             $mobile_phone = '":customer_mobile_no": "null",';
@@ -588,11 +649,11 @@ date_default_timezone_set("Asia/Manila");
             {
                 ":business_name": "'.@$business_name.'",
                 ":business_category": "'.@$business_category.'",
+                ":business_phone_no": "'.@$office_phone.'",
                 ":customer_salutation": "'.@$salutation.'",
                 ":customer_title": "'.@$title.'",
                 ":customer_first_name": "'.@$fname.'",
                 ":customer_last_name": "'.@$lname.'",
-                '.$alternate_phone.'
                 ":customer_phone_no": "'.@$phone.'",
                 '.$mobile_phone.'
                 ":customer_email": "'.@$email.'",
@@ -615,12 +676,12 @@ date_default_timezone_set("Asia/Manila");
             'UpdateExpression' =>
                 'set business_name=:business_name,
                     business_category=:business_category,
+                    business_phone_no=:business_phone_no,
                     customer_salutation=:customer_salutation,
                     customer_title=:customer_title,
                     customer_first_name=:customer_first_name,
                     customer_last_name=:customer_last_name,
                     customer_phone_no=:customer_phone_no,
-                    customer_alternate_phone_no=:customer_alternate_phone_no,
                     customer_mobile_no=:customer_mobile_no,
                     customer_email=:customer_email,
                     customer_alternate_email=:customer_alternate_email,
@@ -706,6 +767,55 @@ date_default_timezone_set("Asia/Manila");
                     }
                 }
                 $all_logs = $result_db_logs['Items'];
+
+                //prime phone number - customer number
+                if($phone != null) {
+                    $num_arr = array_map('intval', str_split($phone));
+                    $fin_num = array();
+                    array_push($fin_num, $num_arr[0].'-');
+                    $i = 1;
+                    while($i < 4){
+                      array_push($fin_num, $num_arr[$i]);
+                      $i++;
+                    }
+                    array_push($fin_num, '-');
+                    $j = 4;
+                    while($j < 7){
+                      array_push($fin_num, $num_arr[$j]);
+                      $j++;
+                    }
+                    array_push($fin_num, '-');
+                    $k = 7;
+                    while($k < 11){
+                      array_push($fin_num, $num_arr[$k]);
+                      $k++;
+                    }
+                    $phone = implode("",$fin_num);
+                }
+
+                //office number - business phone number
+                $num_arr1 = array_map('intval', str_split($office_phone));
+                $fin_num1 = array();
+                array_push($fin_num1, $num_arr1[0].'-');
+                $i = 1;
+                while($i < 4){
+                  array_push($fin_num1, $num_arr1[$i]);
+                  $i++;
+                }
+                array_push($fin_num1, '-');
+                $j = 4;
+                while($j < 7){
+                  array_push($fin_num1, $num_arr1[$j]);
+                  $j++;
+                }
+                array_push($fin_num1, '-');
+                $k = 7;
+                while($k < 11){
+                  array_push($fin_num1, $num_arr1[$k]);
+                  $k++;
+                }
+                $office_phone = implode("",$fin_num1);
+
             } catch (DynamoDbException $e) {
                 echo "Unable to scan LOGS:\n";
                 echo $e->getMessage() . "\n";
@@ -715,6 +825,44 @@ date_default_timezone_set("Asia/Manila");
             echo $e->getMessage() . "\n";
         }
     }
+
+        if($cust_status == "trialing") {
+        ?><style>
+            .cust_id {
+                color: #A261B1;
+            }
+        </style><?php
+        } elseif($cust_status == "active") {
+        ?><style>
+            .cust_id {
+                color: #26B68E;
+            }
+        </style><?php
+        } elseif($cust_status == "past_due") {
+        ?><style>
+            .cust_id {
+                color: #E05A19;
+            }
+        </style><?php
+        } elseif($cust_status == "unpaid") {
+        ?><style>
+            .cust_id {
+                color: #C63C33;
+            }
+        </style><?php
+        } elseif($cust_status == "canceled") {
+        ?><style>
+            .cust_id {
+                color: #323232;
+            }
+        </style><?php
+        } else {
+        ?><style>
+            .cust_id {
+                color: #EAE17F;
+            }
+        </style><?php
+        }
 
 /*COMMENTED UPT PROV FOR A WHILE
     if(isset($_POST['upd_prov'])) {

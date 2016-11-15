@@ -797,7 +797,7 @@ select
             </div>
             <div class="grid_3 omega">
               <label>Zip</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido4"><p id="error4" class="error"></p></span>
-              <input type="text" class="form-control" id="biz-zip" name="biz-zip" maxlength="6" onkeypress="return KeyPressBZip(event)" onclick="clickField4()">
+              <input type="text" class="form-control" id="biz-zip" name="biz-zip" maxlength="5" onkeypress="return KeyPressBZip(event)" onclick="clickField4()">
             </div>
           </div>
 
@@ -1084,7 +1084,7 @@ select
               </div>
               <div class="grid_3 omega">
                 <label>Zip</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido7"><p id="error7" class="error"></p></span>
-                <input type="text" class="form-control" id="c-zip" name="c-zip" maxlength="6" onkeypress="return KeyPressZip(event)" onclick="clickField7()" value="<?php if(empty($err_msg)){echo $p2_zip;}else{echo $_POST['c-zip'];} ?>">
+                <input type="text" class="form-control" id="c-zip" name="c-zip" maxlength="5" onkeypress="return KeyPressZip(event)" onclick="clickField7()" value="<?php if(empty($err_msg)){echo $p2_zip;}else{echo $_POST['c-zip'];} ?>">
               </div>
             </div>
 

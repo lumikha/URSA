@@ -115,16 +115,16 @@
         <br/>
         <div class="grid_9">
             <div class="grid_3 alpha">
-                <label class="<?php echo $check; ?>">Primary Phone<label class="error rem-bor" for="acc_phone" generated="true"></label></label>
-                <input type="text" name="acc_phone" class="form-control" placeholder="Primary Phone" value="<?php echo $phone; ?>">
+                <label class="<?php echo $check; ?>">Primary Phone<label class="error rem-bor" for="acc_phone" generated="true"></label></label><span class="specific_error" id="errpp"></span>
+                <input type="text" name="acc_phone" id="acc_phone" class="form-control" placeholder="Primary Phone" value="<?php echo $phone; ?>" onkeypress="return KeyPressPrimeP(event)">
             </div>
             <div class="grid_3">
-                <label class="<?php echo $check; ?>">Alternate Phone<label class="error rem-bor" for="acc_alter_phone" generated="true"></label></label>
-                <input type="text" name="acc_alter_phone" class="form-control" placeholder="Alternate Phone" value="<?php if($alt_phone!="null"){ echo $alt_phone; }?>">
+                <label class="<?php echo $check; ?>">Office Phone<label class="error rem-bor" for="acc_office_phone" generated="true"></label></label><span class="specific_error" id="errofficep"></span>
+                <input type="text" name="acc_office_phone" id="acc_office_phone" class="form-control" placeholder="Alternate Phone" value="<?php if($office_phone!="null"){ echo $office_phone; }?>" onkeypress="return KeyPressAltP(event)">
             </div>
             <div class="grid_3 omega">
-                <label class="<?php echo $check; ?>">Mobile Phone<label class="error rem-bor" for="acc_mobile_phone" generated="true"></label></label>
-                <input type="text" name="acc_mobile_phone" class="form-control" placeholder="Mobile Phone" value="<?php if($mobile!="null"){ echo $mobile; }?>">
+                <label class="<?php echo $check; ?>">Mobile Phone<label class="error rem-bor" for="acc_mobile_phone" generated="true"></label></label><span class="specific_error" id="errmp"></span>
+                <input type="text" name="acc_mobile_phone" class="form-control" placeholder="Mobile Phone" value="<?php if($mobile!="null"){ echo $mobile; }?>" onkeypress="return KeyPressMobileP(event)">
             </div>
         </div>
         <div class="grid_9">
@@ -220,8 +220,8 @@
                 </select>
             </div>
             <div class="grid_3 omega">
-                <label class="<?php echo $check; ?>">Postal Code<label class="error rem-bor" for="acc_bill_zip" generated="true"></label></label>
-                <input type="text" name="acc_bill_zip" class="form-control" placeholder="Postal Code" value="<?php echo $bill_zip; ?>">
+                <label class="<?php echo $check; ?>">Postal Code<label class="error rem-bor" for="acc_bill_zip" generated="true"></label></label><span class="specific_error" id="errzip"></span>
+                <input type="text" name="acc_bill_zip" id="acc_bill_zip" class="form-control" placeholder="Postal Code" maxlength="5" value="<?php echo $bill_zip; ?>" onkeypress="return KeyPressZIP(event)">
             </div>
         </div>
         <br/>
@@ -337,20 +337,28 @@
             </div>
         </div>
         <div class="grid_9">
-            <div class="dropdown grid_2 alpha">
-                <label>Cancelled?</label><br/>
-                <?php if($cancelled == "yes") { ?>
-                    <label class="radio-inline"><input type="radio" name="cancel" id="cancel_yes" value="yes" checked="checked" onclick="cancelAccYes()">Yes</label>
-                    <label class="radio-inline"><input type="radio" name="cancel" id="cancel_no" value="no" onclick="cancelAccNo()">No</label>
-                <?php } else { ?>
-                    <label class="radio-inline"><input type="radio" name="cancel" id="cancel_yes" value="yes" onclick="cancelAccYes()">Yes</label>
-                    <label class="radio-inline"><input type="radio" name="cancel" id="cancel_no" value="no" checked="checked" onclick="cancelAccNo()">No</label>
-                <?php } ?>
-            </div>
-            <div class="grid_5">
-                <label class="<?php echo $check; ?>">Cancellation Reason</label>
-                <textarea class="form-control" rows="5" name="cancel_reason" id="cancel_reason" placeholder="Cancel Reason" style="resize: vertical;" value="<?php echo $cancel_reason; ?>"><?php echo $cancel_reason; ?></textarea>
-            </div>
+            <?php if($cust_status != "canceled") { ?>
+                <div class="dropdown grid_2 alpha">
+                    <label>Cancelled?</label><br/>
+                    <?php if($cancelled == "yes") { ?>
+                        <label class="radio-inline"><input type="radio" name="cancel" id="cancel_yes" value="yes" checked="checked" onclick="cancelAccYes()">Yes</label>
+                        <label class="radio-inline"><input type="radio" name="cancel" id="cancel_no" value="no" onclick="cancelAccNo()">No</label>
+                    <?php } else { ?>
+                        <label class="radio-inline"><input type="radio" name="cancel" id="cancel_yes" value="yes" onclick="cancelAccYes()">Yes</label>
+                        <label class="radio-inline"><input type="radio" name="cancel" id="cancel_no" value="no" checked="checked" onclick="cancelAccNo()">No</label>
+                    <?php } ?>
+                </div>
+                <div class="grid_5">
+                    <label class="<?php echo $check; ?>">Cancellation Reason</label>
+                    <textarea class="form-control" rows="5" name="cancel_reason" id="cancel_reason" placeholder="Cancel Reason" style="resize: vertical;" value="<?php echo $cancel_reason; ?>"><?php echo $cancel_reason; ?></textarea>
+                </div>
+            <?php } else { 
+                    if($usingPayPortal) {
+            ?>
+                        <button class="btn btn-success" type="button" name="reactivate_acc">Reactivate this Account</button>
+            <?php
+                    } 
+                } ?>
         </div>
         <?php if(isset($_GET['id'])) { ?>
         <div class="row">
@@ -358,7 +366,7 @@
             <?php if($usingPayPortal) { ?>
                 <button class="btn btn-danger" type="submit" name="upd_acc">Update</button>
             <?php } else { ?>
-                <button class="btn btn-danger" type="submit" name="upd_acc">Re-enroll customer</button>
+                <button class="btn btn-danger" type="button" name="reenroll_acc" onclick="reEnrollCustomer('<?=$customer_db_id?>')">Re-enroll customer</button>
             <?php } ?>
             </div>
         </div>

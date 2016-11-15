@@ -15,6 +15,23 @@
   $done = 0;
   $error_message = "";
 
+  if(isset($_GET['pn'])) {
+    $done = $_GET['pn'];
+    $created_doc_id = $_GET['cid'];
+    $iscan=0;
+    while(isset($result_db_customers['Items'][$iscan])) {
+      if($result_db_customers['Items'][$iscan]['customer_id']['S'] == $created_doc_id) {
+        $p2_bname = $result_db_customers['Items'][$iscan]['business_name']['S'];
+        $p2_email = $result_db_customers['Items'][$iscan]['business_email']['S'];
+        $p2_street = $result_db_customers['Items'][$iscan]['business_address']['S'];
+        $p2_city = $result_db_customers['Items'][$iscan]['business_city']['S'];
+        $p2_state = $result_db_customers['Items'][$iscan]['business_state']['S'];
+        $p2_zip = $result_db_customers['Items'][$iscan]['business_zip']['S'];
+      }
+      $iscan++;
+    }
+  }
+
   function GUID() {
     $t = microtime(true);
     $micro = sprintf("%06d",($t - floor($t)) * 1000000);
@@ -782,7 +799,7 @@ select
             </div>
             <div class="grid_3 omega">
               <label>Zip</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido4"><p id="error4" class="error"></p></span>
-              <input type="text" class="form-control" id="biz-zip" name="biz-zip" maxlength="6" onkeypress="return KeyPressBZip(event)" onclick="clickField4()">
+              <input type="text" class="form-control" id="biz-zip" name="biz-zip" maxlength="5" onkeypress="return KeyPressBZip(event)" onclick="clickField4()">
             </div>
           </div>
 
@@ -1067,7 +1084,7 @@ select
               </div>
               <div class="grid_3 omega">
                 <label>Zip</label><b class="asterisk_req">*</b>&nbsp;&nbsp;<span class="hido" id="hido7"><p id="error7" class="error"></p></span>
-                <input type="text" class="form-control" id="c-zip" name="c-zip" maxlength="6" onkeypress="return KeyPressZip(event)" onclick="clickField7()" value="<?php if(empty($err_msg)){echo $p2_zip;}else{echo $_POST['c-zip'];} ?>">
+                <input type="text" class="form-control" id="c-zip" name="c-zip" maxlength="5" onkeypress="return KeyPressZip(event)" onclick="clickField7()" value="<?php if(empty($err_msg)){echo $p2_zip;}else{echo $_POST['c-zip'];} ?>">
               </div>
             </div>
 
