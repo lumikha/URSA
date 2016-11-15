@@ -300,6 +300,10 @@ date_default_timezone_set("Asia/Manila");
         $comp_quantity = $_POST['acc_component'];
         $coupon_code = $_POST['acc_coupon'];
 
+        if(empty($bill_address_2)) {
+            $bill_address_2 = "null";
+        }
+
         if(isset($_POST['cancel'])) {
             $cancelled = $_POST['cancel'];
             if($cancelled == "yes") {
@@ -743,6 +747,9 @@ date_default_timezone_set("Asia/Manila");
             $product_component_quantity = $comp_quantity;
             if($changes != null) {
                 $result_add_log = $dynamodb->putItem($params_add_log);
+            }
+            if($bill_address_2 == "null") {
+                $bill_address_2 = null;
             }
 
             $params3 = [
