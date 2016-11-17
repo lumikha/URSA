@@ -563,30 +563,65 @@ tinymce.init({
       //text: 'Saved Replies',
       icon: 'save',
       onclick: function() {
-      	$("#add_reply").removeClass("hidden");
+      	$("#modal_add_reply").modal("show");
+      	//$("#add_reply").removeClass("hidden");
         //alert(tinymce.get('commit_msg').getContent());
           //editor.insertContent('{{name}},<br><br>Thanks for staying with us.<b> We are committed to making your Map Pop experience a sustained success</b>. We are committed to delivering greater online visibility to your business.<br><br>If there is anything we can do to improve your site or your listings, <b>please let us know</b>.<br><br> If you have questions, please don’t hesitate to email us at help@mappop.com or give us a call at 1.954.905.6164 between 9:00AM – 5:00PM EST.<br>');
       }
     });
     editor.addButton('savedReply', {
+      //type: 'menubutton',
+      text: 'Saved Replies',
+      icon: 'newdocument',
+      onclick: function() {
+      	$("#modal_replies").modal("show");
+        //alert(tinymce.get('commit_msg').getContent());
+          //editor.insertContent('{{name}},<br><br>Thanks for staying with us.<b> We are committed to making your Map Pop experience a sustained success</b>. We are committed to delivering greater online visibility to your business.<br><br>If there is anything we can do to improve your site or your listings, <b>please let us know</b>.<br><br> If you have questions, please don’t hesitate to email us at help@mappop.com or give us a call at 1.954.905.6164 between 9:00AM – 5:00PM EST.<br>');
+      }
+    });
+    /*
+    var menuItems = [];
+    var repNum = $("#repNum").val();
+    for(var i=1;i<repNum;i++){
+    	var repName = $('#repName'+i).val();
+    	var repContent = $('#repContent1').val();
+        menuItems.push({
+            text: repName.replace(".txt",""),
+            onclick: function () {
+                editor.insertContent(repContent);
+            }
+        });
+    }
+
+    editor.addButton('savedReply', {
           type: 'menubutton',
           text: 'Saved Replies',
           icon: 'newdocument',
-          menu: [{
-            text: 'Thanks for Staying with MopPop',
+          menu: menuItems
+          /*, 
+          {
+            text: $('#repName2').val(),
             onclick: function() {
-              editor.insertContent('{{name}},<br><br>Thanks for staying with us.<b> We are committed to making your Map Pop experience a sustained success</b>. We are committed to delivering greater online visibility to your business.<br><br>If there is anything we can do to improve your site or your listings, <b>please let us know</b>.<br><br> If you have questions, please don’t hesitate to email us at help@mappop.com or give us a call at 1.954.905.6164 between 9:00AM – 5:00PM EST.<br>');
-          }
-          }, {
-            text: 'We Have Your Information Update',
-            onclick: function() {
-              editor.insertContent('{{name}},<br><br>Hello from Map Pop! This email confirms that you have updated your information with Map Pop.<br><br><b>Here are the items that you have updated:</b><br>-<br>-<br>-<br><br>If you have more information to update or if you didn’t make this action, please don’t hesitate to email us at help@mappop.com or give us a call at 1.954.905.6164 between 9:00AM – 5:00PM EST.<br>');
+              editor.insertContent(document.getElementById("repContent2").value);
             }
-          }]
+          }, 
+          {
+            
+          }
+          
         });
+    */
   }
   });
-
+     
+function hey(num){
+	alert("hey"+num);
+}
+function changeText(data){
+	tinymce.get('commit_msg').setContent(data);
+	//$('#select_reply').attr('selected','selected');
+	$("#country option:selected").attr("selected", "selected");
+}
 
 function saveReply(){
 	var response=document.getElementById("response");
@@ -603,6 +638,8 @@ function saveReply(){
         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xmlhttp.send(data);
 	$("#add_reply").addClass("hidden");
+	$("#add_reply_loading").removeClass("hidden");
+	close_add_reply();
 }
 
 //function to get parameters in url
@@ -620,3 +657,8 @@ var getUrlParameter = function getUrlParameter(sParam) {
 		}
 	}
 };
+function close_add_reply(){
+	$('#modal_add_reply').modal('hide');
+	$('#add_reply_loading').addClass('hidden');
+	$('#add_reply').removeClass('hidden');
+}

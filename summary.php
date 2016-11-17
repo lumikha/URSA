@@ -85,6 +85,7 @@
 	<div id="modal_cont" class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-body">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<form method="POST">
 					<input type="type" id="cID_new_thread" name="cTID" hidden>
 					<input type="type" id="curr_status" name="curr_status" hidden>
@@ -145,14 +146,10 @@
 							</section>
 						</div>
 					</div>
-						<form class="form-inline">
-							  <div id="reply_group" class="form-group has-success has-feedback pullright" style="position:absolute;width:300px;z-index:1">
-							    <div id="add_reply" class="input-group hidden" >
-							    	<input type="text" id="reply_name" name="reply_name" class="form-control" placeholder="Name" required style="height:30px;">
-							      <span class="input-group-addon btn btn-success" onclick="saveReply();return false;">Add</span>
-							    </div>
-							  </div>
-							</form>
+					<?php
+						
+?>
+						
 					<?php
 					//error_reporting(E_ALL);
 					//var_dump($_SERVER);
@@ -170,13 +167,84 @@
 					<div class="row">
 						<center>
 							<input id="new_thread" type="Submit" class="btn btn-danger" name="new_thread" value="Add Note">
-							<input id="send_reply" type="Submit" class="btn btn-danger hidden" name="send_reply" value="Send Reply">
+							<input id="send_reply" type="Submit" class="btn btn-danger hidden" name="send_reply" value="Send Reply">	
 							
-							
-				      <div id="response" hidden></div>
+				      		<div id="response" hidden></div>
 						</center>
 					</div>
 				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal_add_reply" tabindex="-1" role="dialog" style="margin-left: -5em;">
+	<div id="modal_cont" class="modal-dialog modal-sm">
+		<div class="modal-content">
+		<div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title">Add Reply</h4>
+      	</div>                   
+		<div class="modal-body">
+			<h1 id="add_reply_loading" class="hidden">Loading ...</h1>
+			<form class="form-inline">
+			  <div id="reply_group" class="form-group has-success has-feedback pullright">
+			    <div id="add_reply" class="input-group" >
+			    	<input type="text" id="reply_name" name="reply_name" class="form-control" placeholder="Name" required style="height:30px;">
+			      	<span class="input-group-addon btn btn-success" onclick="saveReply();return false;">Add</span>
+			    </div>
+			  </div>
+			</form>
+		</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modal_replies" tabindex="-1" role="dialog" style="margin-left: -5em;">
+	<div id="modal_cont" class="modal-dialog modal-sm">
+		<div class="modal-content">
+		<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Saved Replies</h4>
+      </div>                   
+			<div class="modal-body">
+				<?php
+							DEFINE ('PAGES', 'lib/savedReplies/'); //Define the directory path
+						$directory = new DirectoryIterator(PAGES); //Get all the contents in the directory 
+						$rep_num = 1;
+						//echo "<select class='form-control' onChange='changeText(this.value)' name='replies'>";
+						foreach ($directory as $files) { //Check that the contents of the directory are each files  and then do what you want with them after you have the name of the file. 
+						    if ($files->isFile()) {
+						        $file_name = $files->getFilename();
+						        $my_page = file_get_contents(PAGES. $file_name); //Collect the content of the file.
+						        //echo '<option selected="true" disabled="disabled">Saved Replies</option>';
+						        //echo '<option value="'.$my_page.'">'.str_replace(".txt", "",$file_name).'</option>';
+						        //echo '<option value="">Clear</option>';
+						        //echo $file_name;
+						       // echo $my_page; // Do what you want with the contents of the file.
+						        echo "<input type='text' id='repName$rep_num' name='repName$rep_num' value='$file_name' hidden>";
+						        echo "<textarea id='repContent$rep_num' name='repContent$rep_num' hidden>$my_page</textarea>";
+						        $rep_num++;
+						    } else {
+						        //Insert nothing into the $my_privacy_policy variable.
+						    }
+						}
+								
+						echo "<input type='text' id='repNum' name='repNum' value='$rep_num' hidden>";
+
+
+								echo "<select class='form-control' onChange='changeText(this.value)' id='select_reply' name='replies'>";
+							    //echo '<option id="country" selected="true" disabled="disabled" style="display: none;">Saved Replies</option>';
+								foreach ($directory as $value) {
+									if ($value->isFile()) {
+										$file_n = $value->getFilename();
+									    $my_p = file_get_contents(PAGES. $file_n); //Collect the content of the file.
+									    echo '<option value="'.$my_p.'">'.str_replace(".txt", "",$file_n).'</option>';
+									}
+								}
+							    echo '<option value="">Clear</option>';
+								echo "</select>";
+							?>
 			</div>
 		</div>
 	</div>
