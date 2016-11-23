@@ -671,7 +671,7 @@ function removeReply()
     	var reply_name = sel.options[sel.selectedIndex].text;
         $.ajax({
           url: 'removeReply.php',
-          data: {'file' : "lib/savedReplies/"+reply_name+".txt"},
+          data: {'file' : "php/savedReplies/"+reply_name+".txt"},
           success: function (response) {
              // do something
              $('#modal_replies').modal('hide');

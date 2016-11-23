@@ -155,7 +155,7 @@
 					//var_dump($_SERVER);
 					$post_data = @$_POST['data'];
 					if (!empty($post_data)) {
-					    $dir = 'lib/savedReplies/';
+					    $dir = 'php/savedReplies/';
 					    $file = $_REQUEST['reply_name'];
 					    $filename = $dir.$file.'.txt';
 					    $handle = fopen($filename, "w");
@@ -209,7 +209,7 @@
       </div>                   
 			<div class="modal-body">
 				<?php
-							DEFINE ('PAGES', 'lib/savedReplies/'); //Define the directory path
+							DEFINE ('PAGES', 'php/savedReplies/'); //Define the directory path
 						$directory = new DirectoryIterator(PAGES); //Get all the contents in the directory 
 						$rep_num = 1;
 						//echo "<select class='form-control' onChange='changeText(this.value)' name='replies'>";
