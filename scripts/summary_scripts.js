@@ -620,7 +620,7 @@ function hey(num){
 function changeText(data){
 	tinymce.get('commit_msg').setContent(data);
 	//$('#select_reply').attr('selected','selected');
-	$("#country option:selected").attr("selected", "selected");
+	//$("#country option:selected").attr("selected", "selected");
 }
 
 function saveReply(){
@@ -661,4 +661,24 @@ function close_add_reply(){
 	$('#modal_add_reply').modal('hide');
 	$('#add_reply_loading').addClass('hidden');
 	$('#add_reply').removeClass('hidden');
+}
+function removeReply()
+{
+    //var r = confirm("Are you sure you want to delete this Image?")
+    //if(r == true)
+    //{
+    	var sel = document.getElementById("select_reply");
+    	var reply_name = sel.options[sel.selectedIndex].text;
+        $.ajax({
+          url: 'removeReply.php',
+          data: {'file' : "lib/savedReplies/"+reply_name+".txt"},
+          success: function (response) {
+             // do something
+             $('#modal_replies').modal('hide');
+          },
+          error: function () {
+             // do something
+          }
+        });
+    //}
 }

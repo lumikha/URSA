@@ -232,9 +232,11 @@
 								
 						echo "<input type='text' id='repNum' name='repNum' value='$rep_num' hidden>";
 
-
+								echo "<form class='form-inline'>
+										<div class='form-group has-feedback pullright'>
+										<div class='input-group' style='width:110%'>";
 								echo "<select class='form-control' onChange='changeText(this.value)' id='select_reply' name='replies'>";
-							    //echo '<option id="country" selected="true" disabled="disabled" style="display: none;">Saved Replies</option>';
+							    echo '<option id="country" selected="true" disabled="disabled" style="display: none;">Saved Replies</option>';
 								foreach ($directory as $value) {
 									if ($value->isFile()) {
 										$file_n = $value->getFilename();
@@ -244,6 +246,10 @@
 								}
 							    echo '<option value="">Clear</option>';
 								echo "</select>";
+								?>
+								<span class='input-group-addon btn btn-danger' onclick='removeReply();'>Remove</span>
+								<?php
+								echo "</div></div></form>";
 							?>
 			</div>
 		</div>
