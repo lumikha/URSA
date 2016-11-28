@@ -265,18 +265,17 @@
 		</div>
 	</div>
 </div>
-
-<div class="container_12 boxsummary hidden" style="left: 150px;" id="tickets_display">  
-	<div class="full-width-div">        
+<div class="full-width-div"> 
+	<div class="container_12 boxsummary hidden" style="left: 150px;" id="tickets_display"> 
 		<div class="container_12" style="margin-top:0em;">
 			<div id="boxesSum" class="row text-center">
 				<div class="grid_2 push_1 alpha ticketbutton" style="padding: 1em;margin-right:1em;margin-bottom:1em;border:solid #A60800 2px;color:#A60800"><a href="#" onclick="return addTicket();"><strong>Ticket</strong></a></div>
 				<div class="grid_2 push_1 omega twiliobutton" style="padding: 1em;margin-right:1em;margin-bottom:1em;border:solid #340570 2px;color:#340570"><a href="#" onclick="return showTwilio();"><strong>Twilio</strong></a></div>
 			</div>
 		</div>
-	</div>
+	
 	<div class="container_12">
-		<div id="sumArea" class="grid_5 alpha" style="overflow-y: scroll; overflow-x: hidden; height: 550px; ">
+		<div id="sumArea" class="grid_5 push_1 alpha" style="overflow-y: scroll; overflow-x: hidden; height: 550px; ">
 		<?php 
 		foreach($arr_msgs as $a_m) { 
 			$mID = $a_m['ticket_id'];

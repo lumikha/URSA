@@ -37,6 +37,26 @@
     <!--media queries-->
     <link rel="stylesheet" type="text/css" href="css/ursa/mediaquery.css">
 
+    <!-- FOR MEDIA QUERIES TO BE ORGANIZED
+
+    <link rel="stylesheet" type="text/css" href="css/ursa/XS.css">
+
+    <link rel="stylesheet" type="text/css" href="css/ursa/SM.css">
+
+    <link rel="stylesheet" type="text/css" href="css/ursa/MD.css">
+
+    <link rel="stylesheet" type="text/css" href="css/ursa/normal_laptops.css">
+
+    <link rel="stylesheet" type="text/css" href="css/ursa/LG_largelaptops.css"> 
+
+    -->
+
+    
+
+    
+
+
+
     <!--for font awesome (external link); angle down for previous conversation show and hide-->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 </head>

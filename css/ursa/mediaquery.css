@@ -191,7 +191,7 @@ body
   .ticketsummary
   {
     text-align: center;
-    margin-left: 4em !important;
+    margin-left: 3.2em !important;
   }
 
   .round-div
@@ -341,7 +341,7 @@ body
  }
 
 
-/** Mobile Landscape Width to Tablet Portrait Width **/
+/** SMALL DEVICES: Mobile Landscape Width to Tablet Portrait Width **/
 @media only screen and (min-width: 480px) and (max-width: 767px) 
 
 {
@@ -503,7 +503,7 @@ body
   .ticketsummary
   {
     text-align: center;
-    margin-left: 7.25em !important;
+    margin-left: 7.75em !important;
   }
 
 
@@ -533,11 +533,7 @@ body
     cursor: pointer;
   }
 
-  
-  {
-    margin-top: -1em !important;
-.glyphicon-resize-small
-  }
+
 
   .glyphicon-remove
   {
@@ -649,7 +645,7 @@ body
 
 
 
-/**Small devices**/
+/**medium devices**/
 @media only screen and (min-width: 768px) and (max-width: 959px) 
 {
 
@@ -819,7 +815,7 @@ body
   /**tickets summary and round-div **/
   .ticketsummary
   {
-    margin-left: 8em !important;
+    margin-left: 12.25em !important;
     text-align: center !important;
 
    
@@ -1023,14 +1019,14 @@ font-size: 12px;
 .boxsummary
 {
    position: relative;
-   left: 8em !important;
-   right: auto;
+   left: 10.45em !important;
+   
 }
 
 
 #sumArea
 {
-  margin-left: -3.50em;
+  margin-left: -2em;
 }
 
 .round-div
@@ -1042,12 +1038,6 @@ font-size: 12px;
    margin-top: 1.5em; 
    
   }
-
-  .ticketsummary
-  {
-    margin-left: 1em !important;
-  }
-
 
 
 /*START support.php*/
@@ -1194,31 +1184,29 @@ font-size: 12px;
 
 /**START of summary.php**/
 
+.boxsummary
+{
+  position: relative;
+  left: 8em !important;
+  margin-top: -5.25em !important;
+   
+}
 
- #boxesSum
-
-  {
-  
-    margin-top: -5.25em !important;
-    margin-left: 3.5em !important;
-
-  }
 
 #sumArea
 {
-  margin-left: 14.5em !important;
   right: auto;
   padding-left: 0em;
-
+  margin-left: 0.5em;
 }
 
 .round-div
-  {
+{
    max-width: 45px;
    max-height: 45px;
    margin-top: 1.5em !important;
    
-  }
+}
 
   .ticketlist
   {
@@ -1227,10 +1215,6 @@ font-size: 12px;
 
 
 
-.ticketsummary
-{
-  margin-left: 10em !important;
-}
 
 
 /**customer.php**/

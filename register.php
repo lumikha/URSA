@@ -596,6 +596,21 @@ $err_msg = "";
        
     <!--media queries-->
     <link rel="stylesheet" type="text/css" href="css/ursa/mediaquery.css">
+
+
+    <!-- FOR MEDIA QUERIES TO BE ORGANIZED
+
+    <link rel="stylesheet" type="text/css" href="css/ursa/XS.css">
+
+    <link rel="stylesheet" type="text/css" href="css/ursa/SM.css">
+
+    <link rel="stylesheet" type="text/css" href="css/ursa/MD.css">
+
+    <link rel="stylesheet" type="text/css" href="css/ursa/normal_laptops.css">
+
+    <link rel="stylesheet" type="text/css" href="css/ursa/LG_largelaptops.css"> 
+
+    -->
   <style>
     .error {
       font-size: 12px;
