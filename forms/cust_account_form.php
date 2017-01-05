@@ -355,7 +355,7 @@
             <?php } else { 
                     if($usingPayPortal) {
             ?>
-                        <button class="btn btn-success" type="button" name="reactivate_acc">Reactivate this Account</button>
+                        <button class="btn btn-success" type="button" name="reactivate_acc">Re-subscribe this Account</button>
             <?php
                     } 
                 } ?>

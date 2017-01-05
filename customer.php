@@ -5,6 +5,28 @@
 
 <link rel="stylesheet" type="text/css" href="css/customer_style.css"/>
 
+    <div class="modal fade" id="modalCancelSub" tabindex="-1" role="dialog">
+        <div id="modal_dialog" class="modal-dialog modal-md" >
+            <div class="modal-content">
+                <span>
+                </span>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <center><span>Are you sure to cancel subscription<br> for this customer?</span></center>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <center>
+                            <button class="btn btn-danger" onclick="proceedCancelSubYes()">Yes</button>
+                            <button class="btn btn-danger" data-dismiss="modal">No</button>
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!--TWILIO CALL MODAL -->
     <div class="modal fade" id="callTwilio" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">

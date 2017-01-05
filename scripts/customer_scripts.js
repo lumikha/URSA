@@ -11,11 +11,26 @@ function checkIfCancelAccTab() {
 }
 
 function cancelAccYes() {
+    $('#modalCancelSub').modal('show');
     $('#cust_account_form #cancel_reason').prop('disabled', false);
 }
 
 function cancelAccNo() {
     $('#cust_account_form #cancel_reason').prop('disabled', true);
+}
+
+var proceedCancelSub = false;
+function proceedCancelSubYes() {
+    proceedCancelSub = true;
+    $('#modalCancelSub').modal('hide');
+}
+
+if(proceedCancelSub == false) {
+    $('#modalCancelSub').on('hidden.bs.modal', function (e) {
+        $("#cust_account_form #cancel_yes").prop("checked", false);
+        $("#cust_account_form #cancel_no").prop("checked", true);
+        cancelAccNo();
+    });
 }
 
 //provisioning tab

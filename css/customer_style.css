@@ -33,3 +33,10 @@ body {
     color: red;
     font-style: italic;
 }
+#modalCancelSub {
+    margin-top: 100px !important;
+}
+#modalCancelSub span{
+    font-weight: bold;
+    font-size: 20px;
+}
