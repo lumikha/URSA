@@ -133,7 +133,7 @@ table thead
                     $th_arr_fin2 = "";
                     $th_arr2 = array();
                     foreach($aUN['notes'] as $nl2) {
-                        array_push($th_arr2, "<i><b>".$nl2['n_created_by']['S']."</b></i> added note||+||<span style='float: right;'>".$nl2['n_created_at']['S']."</span>||+||<p>".$nl2['n_content']['S']."</p>~^^^~");
+                        array_push($th_arr2, "<i><b>".$nl2['n_created_by']."</b></i> added note||+||<span style='float: right;'>".$nl2['n_created_at']."</span>||+||<p>".$nl2['n_content']."</p>~^^^~");
                     }
 
                     $thArrCnt2 = 0;

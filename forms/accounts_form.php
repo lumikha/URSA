@@ -55,35 +55,35 @@
         <?php   
             $arrAccounts = array();
             $cnt = 0;
-            foreach ($result_db_customers['Items'] as $i) {
-                $cust = $marshaler->unmarshalItem($i); 
+            foreach ($result_db_customers as $i) {
+                $cust = $i; 
                 array_push($arrAccounts, $cust);
-                $arrAccounts[$cust['customer_id']] = $arrAccounts[$cnt];
+                $arrAccounts[$cust->getKeyId()] = $arrAccounts[$cnt];
                 unset($arrAccounts[$cnt]);
                 $cnt++;
             }
 
             krsort($arrAccounts);
             foreach($arrAccounts as $acs) {
-                if(isset($acs['chargify_id']) || isset($acs['stripe_id'])) {
-                    if(isset($acs['chargify_id'])) {
+                if(isset($acs->chargify_id) || isset($acs->stripe_id)) {
+                    if(isset($acs->chargify_id)) {
                         $payportalID = "chargify_id";
-                    } 
-                    if(isset($acs['stripe_id'])) {
+                    }
+                    if(isset($acs->stripe_id)) {
                         $payportalID = "stripe_id";
                     }
-                    ?><tr style="margin-left: 10px;"><td class="oneAcc" onclick="oneAccount('<?=$acs["customer_id"]?>')"><?php
-                        echo '<span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> &nbsp;&nbsp;&nbsp;<strong style="font-size: 20px; color: #31708f;">'.$acs['business_name'].'</strong><br>
-                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;'.$acs['customer_first_name'].' '.$acs['customer_last_name'].'&nbsp;&nbsp;&nbsp; 
-                            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp; '.$acs['business_email'].'';
+                    ?><tr style="margin-left: 10px;"><td class="oneAcc" onclick="oneAccount('<?=$acs->getKeyId()?>')"><?php
+                        echo '<span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> &nbsp;&nbsp;&nbsp;<strong style="font-size: 20px; color: #31708f;">'.$acs->business_name.'</strong><br>
+                            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;'.$acs->customer_first_name.' '.$acs->customer_last_name.'&nbsp;&nbsp;&nbsp; 
+                            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp; '.$acs->business_email.'';
                         echo '</td></tr>';
                 } else {
-                    ?><tr style="margin-left: 10px;"><td class="oneAcc" onclick="oneAccount('<?=$acs["customer_id"]?>')"><?php
-                        echo '<span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> &nbsp;&nbsp;&nbsp;<strong style="font-size: 20px; color: #31708f;">'.$acs['business_name'].'</strong>
+                    ?><tr style="margin-left: 10px;"><td class="oneAcc" onclick="oneAccount('<?=$acs->getKeyId()?>')"><?php
+                        echo '<span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> &nbsp;&nbsp;&nbsp;<strong style="font-size: 20px; color: #31708f;">'.$acs->business_name.'</strong>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-info-sign" style="color: #aa2727"></span>&nbsp;<i style="color: #7c7777">Incomplete data</i>
                             <br>
                             
-                            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp; '.$acs['business_email'].'';
+                            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp; '.$acs->business_email.'';
                         echo '</td></tr>';
                 }
             } 

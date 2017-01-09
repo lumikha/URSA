@@ -1,97 +1,62 @@
 <?php
     require_once 'settings.php';
-    require_once 'lib/dynamoDB/dbConnect.php';
+    require_once 'lib/datastore/dbConnect.php';
     require_once 'lib/google/apiclient/src/Google/autoload.php';
-
+    $ticket_check = $obj_gateway_ticket->fetchAll("SELECT * FROM ticket");
     $tbname = 'ursa-tickets';
     $tbid = 'ticket_id';
 
-    $params_t_check = [
-    'TableName' => $tbname,
-    'ProjectionExpression' => $tbid.',ticket_number,ticket_gmail_id,ticket_name_from,ticket_email_subject,ticket_email_from,ticket_email_body,ticket_embedded_image,ticket_email_attachment,ticket_notes,ticket_status'
-    ];
-
-    try {
-        while (true) {
-            $ticket_check = $dynamodb->scan($params_t_check);
-
-            foreach ($ticket_check['Items'] as $i) {
-                $movie = $marshaler->unmarshalItem($i);
-            }
-
-            if (isset($ticket_check['LastEvaluatedKey'])) {
-                $params_t_check['ExclusiveStartKey'] = $ticket_check['LastEvaluatedKey'];
-                $ticket_check = $dynamodb->scan($params_t_check);
-            } else {
-                break;
-            }
-        }
-    } catch (DynamoDbException $e) {
-        echo "Unable to scan USERS:\n";
-        echo $e->getMessage() . "\n";
-    }
-
     $test = array();
-    foreach ($ticket_check['Items'] as $obj) {
-        if($obj['ticket_gmail_id']['S']){
-            array_push($test, $obj['ticket_gmail_id']['S']);
+    foreach ($ticket_check as $obj) {
+        if($obj->ticket_gmail_id){
+            array_push($test, $obj->ticket_gmail_id);
         }
     }
 
     $arr_msgs = array();
     $cnt_tckts = 0;
-    foreach ($ticket_check['Items'] as $obj2) {
-        if($obj2['ticket_gmail_id']['S'] && $obj2['ticket_status']['S'] != "closed"){
-            $bdy_image = decodeBody(@$obj2['ticket_email_body']['S']);
+    foreach ($ticket_check as $obj2) {
+        if($obj2->ticket_gmail_id && $obj2->ticket_status != "closed"){
+            $bdy_image = decodeBody(@$obj2->ticket_email_body);
 
-            $arr_emb = explode(',', $obj2['ticket_embedded_image']['S']);
+            $arr_emb = explode(',', $obj2->ticket_embedded_image);
 
             preg_match_all('/src="cid:(.*)"/Uims', $bdy_image, $matches);
             if(count($matches)) {
                 $cnt_emb = 0;
                 foreach($matches[1] as $match) {
                     $search = "src=\"cid:$match\"";
-                    $replace = "src=".$att_path.$obj2['ticket_gmail_id']['S']."/".$arr_emb[$cnt_emb];
+                    $replace = "src=".$att_path.$obj2->ticket_gmail_id."/".$arr_emb[$cnt_emb];
                     $bdy_image = str_replace($search, $replace, $bdy_image);  
                     $cnt_emb++;       
                 }
             }
             $arr_att = array();
-            $att_file = $obj2['ticket_email_attachment']['S'];
+            $att_file = $obj2->ticket_email_attachment;
             $arr = explode(',', $att_file);
                      
             if(preg_match('/.php/',$att_file)){
                 foreach ($arr as $key) {
-                    @$attmts = file_get_contents($att_path.$obj2['ticket_gmail_id']['S'].'/attachments/'.$key);
+                    @$attmts = file_get_contents($att_path.$obj2->ticket_gmail_id.'/attachments/'.$key);
                     array_push($arr_att, $attmts);
                 }
             }
             
-            if($obj2['ticket_notes']['S'] == "(null)") {
+            if($obj2->ticket_notes == "(null)") {
                 $noteLists = null;
             } else {
                 $arr_notes = array();
-                $nExp = explode(',', $obj2['ticket_notes']['S']);
+                $nExp = explode(',', $obj2->ticket_notes);
                 foreach($nExp as $tn) {
-                    $get_notes = $marshaler->marshalJson('
-                        {
-                            "ticket_note_id": "'.$tn.'"
-                        }
-                    ');
-                    $params_get_notes = [
-                        'TableName' => 'ursa-ticket-notes',
-                        'Key' => $get_notes
-                    ];
-
+                    $data_tNote = $obj_gateway_note->fetchById($tn);
                     try {
-                        $data_tNote = $dynamodb->getItem($params_get_notes);
                         array_push($arr_notes, array(
-                            "n_id" => $data_tNote['Item']['ticket_note_id'],
-                            "n_created_at" => $data_tNote['Item']['note_created_at'],
-                            "n_created_by" => $data_tNote['Item']['note_created_by'],
-                            "n_content" => $data_tNote['Item']['note_content']
+                            "n_id" => $data_tNote->ticket_note_id,
+                            "n_created_at" => $data_tNote->note_created_at,
+                            "n_created_by" => $data_tNote->note_created_by,
+                            "n_content" => $data_tNote->note_content
                         ));
-                    } catch (DynamoDbException $e) {
+                    } catch (Exception $e) {
                         echo $e->getMessage() . "\n";
                     }
                 }
@@ -105,14 +70,14 @@
             }
 
             array_push($arr_msgs, array(
-                $tbid => $obj2[$tbid]['S'],
-                "no" => $obj2['ticket_number']['S'],
-                "id" => $obj2['ticket_gmail_id']['S'],
-                "status" => $obj2['ticket_status']['S'],
-                "subject" => $obj2['ticket_email_subject']['S'],
+                $tbid => $obj2->getKeyId(),
+                "no" => $obj2->ticket_number,
+                "id" => $obj2->ticket_gmail_id,
+                "status" => $obj2->ticket_status,
+                "subject" => $obj2->ticket_email_subject,
                 "body" => $bdy_image,
-                "from" => $obj2['ticket_name_from']['S'],
-                "email" => $obj2['ticket_email_from']['S'],
+                "from" => $obj2->ticket_name_from,
+                "email" => $obj2->ticket_email_from,
                 "attachments" => $arr_att,
                 "notes" => $noteLists
             ));
@@ -493,38 +458,31 @@ try{
         }
         $t_id = UID();
         if(!empty($FOUND_BODY)){
-            $item_t_add = $marshaler->marshalJson('
-                {
-                    "'.$tbid.'": "'.$t_id.'",
-                    "ticket_number": "'.$cnt_tckts.'",
-                    "ticket_notes": "(null)",
-                    "ticket_status": "unassigned",
-                    "ticket_gmail_id": "'.$message_id.'",
-                    "ticket_email_from": "'.$from_email.'",
-                    "ticket_name_from": "'.$from.'",
-                    "ticket_email_subject": "'.$subject.'",
-                    "ticket_email_date": "'.$date.'",
-                    "ticket_email_body": "'.$body_msg.'",
-                    "ticket_embedded_image": "'.$uniqueFilename.'",
-                    "ticket_email_attachment": "'.$comma_separated.'",
-                    "ticket_updated_at": "(null)"
-                }
-            ');
 
-            $params_t_add = [
-                'TableName' => $tbname,
-                'Item' => $item_t_add
-            ];
+            $params_t_add = $obj_gateway_ticket->createEntity([
+                    "ticket_number"=> "".$cnt_tckts."",
+                    "ticket_notes"=> "(null)",
+                    "ticket_status"=> "unassigned",
+                    "ticket_gmail_id"=> "".$message_id."",
+                    "ticket_email_from"=> "".$from_email."",
+                    "ticket_name_from"=> "".$from."",
+                    "ticket_email_subject"=> "".$subject."",
+                    "ticket_email_date"=> "".$date."",
+                    "ticket_email_body"=> "".$body_msg."",
+                    "ticket_embedded_image"=> "".$uniqueFilename."",
+                    "ticket_email_attachment"=> "".$comma_separated."",
+                    "ticket_updated_at"=> "(null)"
+            ]);
 
             try {
-                $result = $dynamodb->putItem($params_t_add);
-            } catch (DynamoDbException $e) {
+                $obj_gateway_ticket->upsert($params_t_add);
+            } catch (Exception $e) {
                 echo "Unable to add item:\n";
                 echo $e->getMessage() . "\n";
             }
 
             array_unshift($arr_msgs, array(
-                $tbid => $t_id,
+                $tbid => $params_t_add->getKeyId(),
                 "no" => $cnt_tckts,
                 "id" => $message_id,
                 "status" => "unassigned",

@@ -2,14 +2,9 @@
 
   require_once 'settings.php'; 
   $stripe = true; //redeclaring this variable
-  require_once 'lib/dynamoDB/dbConnect.php';
-  use Aws\DynamoDb\Exception\DynamoDbException;
-  use Aws\DynamoDb\Marshaler;
-
+  require_once 'lib/datastore/dbConnect.php';
+  $result_db_customers = $obj_gateway_customer->fetchAll("SELECT * FROM customer");
   date_default_timezone_set("Asia/Manila");
-
-  $dynamodb = $sdk->createDynamoDb();
-  $marshaler = new Marshaler();
 
   $created_doc_id = "";
   $done = 0;
@@ -19,14 +14,14 @@
     $done = $_GET['pn'];
     $created_doc_id = $_GET['cid'];
     $iscan=0;
-    while(isset($result_db_customers['Items'][$iscan])) {
-      if($result_db_customers['Items'][$iscan]['customer_id']['S'] == $created_doc_id) {
-        $p2_bname = $result_db_customers['Items'][$iscan]['business_name']['S'];
-        $p2_email = $result_db_customers['Items'][$iscan]['business_email']['S'];
-        $p2_street = $result_db_customers['Items'][$iscan]['business_address']['S'];
-        $p2_city = $result_db_customers['Items'][$iscan]['business_city']['S'];
-        $p2_state = $result_db_customers['Items'][$iscan]['business_state']['S'];
-        $p2_zip = $result_db_customers['Items'][$iscan]['business_zip']['S'];
+    while(isset($result_db_customers[$iscan])) {
+      if($result_db_customers[$iscan]->customer_id == $created_doc_id) {
+        $p2_bname = $result_db_customers[$iscan]->business_name;
+        $p2_email = $result_db_customers[$iscan]->business_email;
+        $p2_street = $result_db_customers[$iscan]->business_address;
+        $p2_city = $result_db_customers[$iscan]->business_city;
+        $p2_state = $result_db_customers[$iscan]->business_state;
+        $p2_zip = $result_db_customers[$iscan]->business_zip;
       }
       $iscan++;
     }
@@ -123,39 +118,31 @@
       $web = "null";
     }
 
-    $item = $marshaler->marshalJson('
-      {
-        "customer_id": "'.$cust_id.'",
-        "business_name": "'.@$_POST['biz-name'].'",
-        "business_address": "'.@$_POST['biz-street'].'",
-        "business_suite_no": "'.$suite_num.'",
-        "business_city": "'.@$_POST['biz-city'].'",
-        "business_state": "'.@$_POST['biz-state'].'",
-        "business_zip": "'.@$_POST['biz-zip'].'",
-        "business_country": "US",
-        "business_phone_no": "'.@$btn_number.'",
-        "business_email": "'.@$_POST['biz-eadd'].'",
-        "business_website": "'.$web.'",
-        "business_alternate_phone_no": "'.$btn_number2.'",
-        "business_post_address": "'.@$_POST['biz-post-address'].'",
-        "business_hours": "'.$b_hours.'",
-        "payment_method": "'.@$paymethod.'"
-      }
-    ');
-    
-    $params = [
-      'TableName' => 'ursa-customers',
-      'Item' => $item
-    ];
+    $obj_customer = $obj_gateway_customer->createEntity([
+        "business_name"=> "".@$_POST['biz-name']."",
+        "business_address"=> "".@$_POST['biz-street']."",
+        "business_suite_no"=> "$suite_num",
+        "business_city"=> "".@$_POST['biz-city']."",
+        "business_state"=> "".@$_POST['biz-state']."",
+        "business_zip"=> "".@$_POST['biz-zip']."",
+        "business_country"=> "US",
+        "business_phone_no"=> "".@$btn_number."",
+        "business_email"=> "".@$_POST['biz-eadd']."",
+        "business_website"=> "$web",
+        "business_alternate_phone_no"=> "$btn_number2",
+        "business_post_address"=> "".@$_POST['biz-post-address']."",
+        "business_hours"=> "$b_hours",
+        "payment_method"=> "".@$paymethod.""
+    ]);
 
     try {
-      $result = $dynamodb->putItem($params);
-    } catch (DynamoDbException $e) {
+      $obj_gateway_customer->upsert($obj_customer);
+    } catch (Exception $e) {
       echo "Unable to add item:\n";
       echo $e->getMessage() . "\n";
     }
 
-    $created_doc_id = $cust_id;
+    $created_doc_id = $obj_customer->getKeyId();
 
     $p2_bname = $_POST['biz-name']; 
     $p2_email = $_POST['biz-eadd'];
@@ -186,13 +173,6 @@ $err_msg = "";
     } else {
       require_once 'lib/chargify/Chargify.php';
     }
-
-    $key = $marshaler->marshalJson('
-    {
-      "customer_id": "'.$_POST['created_doc_id'].'"
-    }
-    ');
-
     /*
     $num_arr = array_map('intval', str_split($_POST["c-phone"]));
     $fin_num = array();
@@ -276,9 +256,9 @@ $err_msg = "";
         $saved_subscription = $new_subscription->create();
 
         if(empty($saved_subscription->credit_card->customer_vault_token)) {
-          $pp_id = '":payment_processor_id": "N.A. - Bogus",';
+          $pp_id = "N.A. - Bogus";
         } else {
-          $pp_id = '":payment_processor_id": "'.$saved_subscription->credit_card->customer_vault_token.'",';
+          $pp_id = $saved_subscription->credit_card->customer_vault_token;
         }
       } catch(Exception $error) {
         $done = 1;
@@ -287,18 +267,14 @@ $err_msg = "";
 
       $IdLabel = 'chargify_id';
       $IdValue = $saved_customer->id;
-      $prod_comp_coup = '":product_id": "'.$prodID.'",
-        ":product_handle": "'.$_POST["product-handle"].'",
-        ":product_name": "'.$prodName.'",
-        ":product_component_id": "196368",
-        ":product_component_name": "Custom Company Domain",
-        ":product_component_quantity": "0",
-        ":product_coupon_code": "null",
-        ":product_coupon_name": "null",';
-
-      $param_pcc = "product_id=:product_id,
-          product_handle=:product_handle,
-          product_name=:product_name,";
+      $prod_id = $prodID;
+      $prod_handle = $_POST["product-handle"];
+      $prod_name = $prodName;
+      $prod_comp_id = "196368";
+      $prod_comp_name = "Custom Company Domain";
+      $prod_comp_quan = "0";
+      $prod_coup_code = "null";
+      $prod_coup_name = "null";
     } else {
       \Stripe\Stripe::setApiKey('sk_test_T8cInYaDaLdip8ZpmtPzaq9B');
 
@@ -342,7 +318,7 @@ $err_msg = "";
             $IdValue = $val;
           }
           if($obj == "default_source") {
-            $pp_id = '":payment_processor_id": "'.$val.'",';
+            $pp_id = $val;
           }
         }
 
@@ -369,16 +345,14 @@ $err_msg = "";
           $planName = "Upgrade to Enterprise Plan";
         }
 
-        $prod_comp_coup = '":plan_id": "'.$planID.'",
-          ":plan_name": "'.$planName.'",
-          ":product_component_id": "prod_9WCNxQgw3GjcHe",
-          ":product_component_name": "Custom Company Domain",
-          ":product_component_quantity": "0",
-          ":product_coupon_code": "null",
-          ":product_coupon_name": "null",';
+        $plan_id = $planID;
+        $plan_name = $planName;
+        $prod_comp_id = "prod_9WCNxQgw3GjcHe";
+        $prod_comp_name = "Custom Company Domain";
+        $prod_comp_quan = "0";
+        $prod_coup_code = "null";
+        $prod_coup_name = "null";
 
-        $param_pcc = "plan_id=:plan_id,
-            plan_name=:plan_name,";
       } catch(\Stripe\Error\Card $e) {
         $body = $e->getJsonBody();
         $err  = $body['error'];
@@ -402,164 +376,100 @@ $err_msg = "";
       } else {
         $title = "null";
       }
+
+      $obj_customer_update = $obj_gateway_customer->fetchById(@$_POST['created_doc_id']);
       
-    $eav = $marshaler->marshalJson('
-      {
-        ":'.$IdLabel.'": "'.@$IdValue.'",
-        ":business_name": "'.@$_POST['bussiness-name'].'",
-        ":customer_salutation": "'.@$_POST['salut'].'",
-        ":customer_title": "'.$title.'",
-        ":customer_first_name": "'.@$_POST['bfname'].'",
-        ":customer_last_name": "'.@$_POST['blname'].'",
-        ":customer_email": "'.@$_POST['c-eadd'].'",
-        ":customer_phone_no": "'.@$btn_number.'",
-        ":customer_billing_address": "'.@$_POST['c-street'].'",
-        ":customer_suite_no": "'.@$street2.'",
-        ":customer_billing_city": "'.@$_POST['c-city'].'",
-        ":customer_billing_state": "'.@$_POST['c-state'].'",
-        ":customer_billing_zip": "'.@$_POST['c-zip'].'",
-        ":customer_billing_country": "'."US".'",
-        ":customer_card_last_four": "'.substr($_POST['card-number'], -4).'",
-        ":customer_card_cvc": "'.@$_POST['card-cvc'].'",
-        ":customer_card_expire_month": "'.@$_POST['card-expiry-month'].'",
-        ":customer_card_expire_year": "'.@$_POST['card-expiry-year'].'",
-        '.$pp_id.'
-        '.$prod_comp_coup.'
-        ":sale_date": "'.date("m/d/Y").'",
-        ":sale_center": "'.@$_POST['sales-center'].'",
-        ":sale_agent": "'.@$_POST['sales-agent'].'",
-        ":business_category": "null",
-        ":prov_gmail": "null",
-        ":prov_keywords": "null",
-        ":prov_special_request": "null",
-        ":prov_existing_social1": "null",
-        ":prov_existing_social2": "null",
-        ":prov_biglo_website": "null",
-        ":prov_analytical_address": "null",
-        ":prov_google_plus": "null",
-        ":prov_google_maps": "null",
-        ":prov_facebook": "null",
-        ":prov_foursquare": "null",
-        ":prov_twitter": "null",
-        ":prov_linkedin": "null",
-        ":keywords": "'.$keywords.'"
+      $obj_customer_update->$IdLabel = "".@$IdValue."";
+      $obj_customer_update->business_name= "".@$_POST['bussiness-name']."";
+      $obj_customer_update->customer_salutation= "".@$_POST['salut']."";
+      $obj_customer_update->customer_title= "".$title."";
+      $obj_customer_update->customer_first_name= "".@$_POST['bfname']."";
+      $obj_customer_update->customer_last_name= "".@$_POST['blname']."";
+      $obj_customer_update->customer_email= "".@$_POST['c-eadd']."";
+      $obj_customer_update->customer_phone_no= "".@$btn_number."";
+      $obj_customer_update->customer_billing_address= "".@$_POST['c-street']."";
+      $obj_customer_update->customer_suite_no= "".@$street2."";
+      $obj_customer_update->customer_billing_city= "".@$_POST['c-city']."";
+      $obj_customer_update->customer_billing_state= "".@$_POST['c-state']."";
+      $obj_customer_update->customer_billing_zip= "".@$_POST['c-zip']."";
+      $obj_customer_update->customer_billing_country= "US";
+      $obj_customer_update->customer_card_last_four= "".substr($_POST['card-number'], -4)."";
+      $obj_customer_update->customer_card_cvc= "".@$_POST['card-cvc']."";
+      $obj_customer_update->customer_card_expire_month= "".@$_POST['card-expiry-month']."";
+      $obj_customer_update->customer_card_expire_year= "".@$_POST['card-expiry-year']."";
+      $obj_customer_update->payment_processor_id="$pp_id";
+
+      $obj_customer_update->product_component_id="$prod_comp_id";
+      $obj_customer_update->product_component_name="$prod_comp_name";
+      $obj_customer_update->product_component_quantity="$prod_comp_quan";
+      $obj_customer_update->product_coupon_code="$prod_coup_code";
+      $obj_customer_update->product_coupon_name="$prod_coup_name";
+      if(isset($prod_id) && isset($prod_handle) && isset($prod_name)){
+        $obj_customer_update->product_id="$prod_id";
+        $obj_customer_update->product_handle="$prod_handle";
+        $obj_customer_update->product_name="$prod_name";
+      }else if(isset($plan_id) && isset($plan_name)){
+        $obj_customer_update->plan_id="$plan_id";
+        $obj_customer_update->plan_name="$plan_name";
       }
-    ');
 
-    $params = [
-      'TableName' => 'ursa-customers',
-      'Key' => $key,
-      'UpdateExpression' =>
-        'set '.$IdLabel.'=:'.$IdLabel.',
-          business_name=:business_name,
-          customer_salutation=:customer_salutation,
-          customer_title=:customer_title,
-          customer_first_name=:customer_first_name,
-          customer_last_name=:customer_last_name,
-          customer_email=:customer_email,
-          customer_phone_no=:customer_phone_no,
-          customer_billing_address=:customer_billing_address,
-          customer_suite_no=:customer_suite_no,
-          customer_billing_city=:customer_billing_city,
-          customer_billing_state=:customer_billing_state,
-          customer_billing_zip=:customer_billing_zip,
-          customer_billing_country=:customer_billing_country,
-          customer_card_last_four=:customer_card_last_four,
-          customer_card_cvc=:customer_card_cvc,
-          customer_card_expire_month=:customer_card_expire_month,
-          customer_card_expire_year=:customer_card_expire_year,
-          payment_processor_id=:payment_processor_id,
-          '.$param_pcc.'
-          product_component_id=:product_component_id,
-          product_component_name=:product_component_name,
-          product_component_quantity=:product_component_quantity,
-          product_coupon_code=:product_coupon_code,
-          product_coupon_name=:product_coupon_name,
-          sale_date=:sale_date,
-          sale_center=:sale_center,
-          sale_agent=:sale_agent,
-          business_category=:business_category,
-          prov_gmail=:prov_gmail,
-          prov_keywords=:prov_keywords,
-          prov_special_request=:prov_special_request,
-          prov_existing_social1=:prov_existing_social1,
-          prov_existing_social2=:prov_existing_social2,
-          prov_biglo_website=:prov_biglo_website,
-          prov_analytical_address=:prov_analytical_address,
-          prov_google_plus=:prov_google_plus,
-          prov_google_maps=:prov_google_maps,
-          prov_facebook=:prov_facebook,
-          prov_foursquare=:prov_foursquare,
-          prov_twitter=:prov_twitter,
-          prov_linkedin=:prov_linkedin,
-          keywords=:keywords
-          ',
-      'ExpressionAttributeValues'=> $eav,
-      'ReturnValues' => 'UPDATED_NEW'
-    ];  
+      $obj_customer_update->sale_date= "".date("m/d/Y")."";
+      $obj_customer_update->sale_center= "".@$_POST['sales-center']."";
+      $obj_customer_update->sale_agent= "".@$_POST['sales-agent']."";
+      $obj_customer_update->business_category= "null";
+      $obj_customer_update->prov_gmail= "null";
+      $obj_customer_update->prov_keywords= "null";
+      $obj_customer_update->prov_special_request= "null";
+      $obj_customer_update->prov_existing_social1= "null";
+      $obj_customer_update->prov_existing_social2= "null";
+      $obj_customer_update->prov_biglo_website= "null";
+      $obj_customer_update->prov_analytical_address= "null";
+      $obj_customer_update->prov_google_plus= "null";
+      $obj_customer_update->prov_google_maps= "null";
+      $obj_customer_update->prov_facebook= "null";
+      $obj_customer_update->prov_foursquare= "null";
+      $obj_customer_update->prov_twitter= "null";
+      $obj_customer_update->prov_linkedin= "null";
+      $obj_customer_update->keywords= "".$keywords."";
 
-    try {
-      $result = $dynamodb->updateItem($params);
-      $done = 2;
-    } catch (DynamoDbException $e) {
-      $done = 1;
-      echo "Unable to update item:\n";
-      echo $e->getMessage() . "\n";
-    }
+      try {
+        $obj_gateway_customer->upsert($obj_customer_update);
+        $done = 2;
+      } catch (Google_Exception $e) {
+        $done = 1;
+        echo "Unable to update item:\n";
+        echo $e->getMessage() . "\n";
+      }
 
     $user_pass_a = mt_rand(0 , 100000);
     $user_pass_b = mt_rand(0 , 100000);
     $user_pass_final = $user_pass_a.$user_pass_b;
 
     $usr_id = GUID();
-    $item = $marshaler->marshalJson('
-      {
-        "user_id": "'.$usr_id.'",
-        "customer_id": "'.@$_POST['created_doc_id'].'",
-        "email": "'.@$_POST['c-eadd'].'",
-        "password": "'.@$user_pass_final.'",
-        "userType": "Customer",
-        "status": "active"
+    $obj_user = $obj_gateway_user->createEntity([
+          "customer_id"=> "".@$_POST['created_doc_id']."",
+          "email"=> "".@$_POST['c-eadd']."",
+          "password"=> "".@$user_pass_final."",
+          "userType"=> "Customer",
+          "status"=> "active"
+      ]);
+
+      try {
+         $obj_gateway_user->upsert($obj_user);
+      } catch (Exception $e) {
+        echo "Unable to add item:\n";
+        echo $e->getMessage() . "\n";
       }
-    ');
 
-    $params2 = [
-      'TableName' => 'ursa-users',
-      'Item' => $item
-    ];
+      $obj_customer_update_2 = $obj_gateway_customer->fetchById(@$_POST['created_doc_id']);
+      $obj_customer_update_2->user_id= "{$obj_user->getKeyId()}";
 
-    try {
-      $result2 = $dynamodb->putItem($params2);
-    } catch (DynamoDbException $e) {
-      echo "Unable to add item:\n";
-      echo $e->getMessage() . "\n";
-    }
-
-    $key3 = $marshaler->marshalJson('
-      {
-        "customer_id": "'.@$_POST['created_doc_id'].'"
+      try {
+        $obj_gateway_customer->upsert($obj_customer_update_2);
+      } catch (Exception $e) {
+        echo "Unable to update item:\n";
+        echo $e->getMessage() . "\n";
       }
-    ');
-    $eav3 = $marshaler->marshalJson('
-      {
-        ":user_id": "'.$usr_id.'"
-      }
-    ');
-    $params3 = [
-      'TableName' => 'ursa-customers',
-      'Key' => $key3,
-      'UpdateExpression' =>
-        'set user_id=:user_id ',
-      'ExpressionAttributeValues'=> $eav3,
-      'ReturnValues' => 'UPDATED_NEW'
-    ];
-
-    try {
-      $result3 = $dynamodb->updateItem($params3);
-    } catch (DynamoDbException $e) {
-      echo "Unable to update item:\n";
-      echo $e->getMessage() . "\n";
-    }
   }
 
   if($done == 2) {
@@ -598,7 +508,7 @@ $err_msg = "";
     <!--media queries-->
     <link rel="stylesheet" type="text/css" href="css/ursa/mediaquery.css">
 
-        <!-- FOR MEDIA QUERIES TO BE ORGANIZED
+<!-- FOR MEDIA QUERIES TO BE ORGANIZED
 
     <link rel="stylesheet" type="text/css" href="css/ursa/XS.css">
 
@@ -610,7 +520,8 @@ $err_msg = "";
 
     <link rel="stylesheet" type="text/css" href="css/ursa/LG_largelaptops.css"> 
 
-    -->ß
+    -->
+
   <style>
     .error {
       font-size: 12px;

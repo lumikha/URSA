@@ -1,7 +1,9 @@
 <?php 
 	require_once 'settings.php';
-	require 'lib/dynamoDB/dbConnect.php';
+	require 'lib/datastore/dbConnect.php';
 	require 'lib/chargify/Chargify.php';
+	$result_db_users = $obj_gateway_user->fetchAll("SELECT * FROM user");
+	$result_db_customers = $obj_gateway_customer->fetchAll("SELECT * FROM customer");
 
 	session_start();
 
@@ -20,11 +22,11 @@
 			$pieces = explode(",", $_COOKIE["URSA"]);
 
 			$i=0;
-			while(isset($result_db_users['Items'][$i])) {
-				if($result_db_users['Items'][$i]['user_id']['S'] == $pieces[0])
+			while(isset($result_db_users[$i])) {
+				if($result_db_users[$i]->user_id == $pieces[0])
 				{
-					$_GET['e'] = $result_db_users['Items'][$i]['email']['S'];
-					$_GET['p'] = $result_db_users['Items'][$i]['password']['S'];
+					$_GET['e'] = $result_db_users[$i]->email;
+					$_GET['p'] = $result_db_users[$i]->password;
 				}
 				$i++;
 			}
@@ -42,22 +44,22 @@
 		}
 
 		$i=0;
-		while(isset($result_db_users['Items'][$i])) {
-			if(($result_db_users['Items'][$i]['email']['S'] == $email) && ($result_db_users['Items'][$i]['password']['S'] == $pass)) {
-				$_SESSION['user_now_id'] = $result_db_users['Items'][$i]['user_id']['S'];
+		while(isset($result_db_users[$i])) {
+			if(($result_db_users[$i]->email == $email) && ($result_db_users[$i]->password == $pass)) {
+				$_SESSION['user_now_id'] = $result_db_users[$i]->getKeyId();
 				$_SESSION['user_now_email'] = $email;
-				$_SESSION['user_now_access_level'] = $result_db_users['Items'][$i]['userType']['S'];
-				if($result_db_users['Items'][$i]['userType']['S'] == 'Customer') {
-					$_SESSION['user_now_db_customer_id'] = $result_db_users['Items'][$i]['customer_id']['S'];
+				$_SESSION['user_now_access_level'] = $result_db_users[$i]->userType;
+				if($result_db_users[$i]->userType == 'Customer') {
+					$_SESSION['user_now_db_customer_id'] = $result_db_users[$i]->customer_id;
 					$_SESSION['type'] = "customer";
 					?>
 					<script>
 						window.location = "account"; //User Dashboard
 					</script>
 					<?php
-				}else if($result_db_users['Items'][$i]['userType']['S'] == 'Administrator') {
-					$_SESSION['user_now_fname'] = $result_db_users['Items'][$i]['user_first_name']['S'];
-					$_SESSION['user_now_lname'] = $result_db_users['Items'][$i]['user_last_name']['S'];
+				}else if($result_db_users[$i]->userType == 'Administrator') {
+					$_SESSION['user_now_fname'] = $result_db_users[$i]->user_first_name;
+					$_SESSION['user_now_lname'] = $result_db_users[$i]->user_last_name;
 					$_SESSION['type'] = "admin";
 					?>
 					<script>
@@ -65,8 +67,8 @@
 					</script>
 					<?php
 				} else {
-					$_SESSION['user_now_fname'] = $result_db_users['Items'][$i]['user_first_name']['S'];
-					$_SESSION['user_now_lname'] = $result_db_users['Items'][$i]['user_last_name']['S'];
+					$_SESSION['user_now_fname'] = $result_db_users[$i]->user_first_name;
+					$_SESSION['user_now_lname'] = $result_db_users[$i]->user_last_name;
 					$_SESSION['type'] = "agent";
 					?>
 					<script>
@@ -78,7 +80,7 @@
 				if(isset($_POST['remember'])) {
 					$cookie_name = 'URSA';
 					$cookie_time = (60 * 30);
-					$id = $result_db_users['Items'][$i]['user_id']['S'];
+					$id = $result_db_users[$i]->user_id;
 					setcookie ($cookie_name, $id. ',' .$email, time() + $cookie_time);
 				} 
 
@@ -113,58 +115,38 @@
 
 		$i=0;
 		$reset_email_found = false;
-		while(isset($result_db_users['Items'][$i])) {
-			if($result_db_users['Items'][$i]['email']['S'] == $r_email) {
+		while(isset($result_db_users[$i])) {
+			if($result_db_users[$i]->email == $r_email) {
 				$reset_email_found = true;
-				$userid = $result_db_users['Items'][$i]['user_id']['S'];
-				$userType = $result_db_users['Items'][$i]['userType']['S'];
+				$userid = $result_db_users[$i]->user_id;
+				$userType = $result_db_users[$i]->userType;
 
 				if($userType != "Customer") {
-					$fname = $result_db_users['Items'][$i]['user_first_name'];
+					$fname = $result_db_users[$i]->user_first_name;
 				} else {
-					$customer_ID = $result_db_users['Items'][$i]['user_id']['S'];
+					$customer_ID = $result_db_users[$i]->getKeyId();
 
 					$j=0;
-					while(isset($result_db_customers['Items'][$j])) {
-						if($result_db_customers['Items'][$j]['customer_id']['S'] == $customer_ID) {
-							$fname = $result_db_customers['Items'][$j]['customer_first_name']['S'];
+					while(isset($result_db_customers[$j])) {
+						if($result_db_customers[$j]->customer_id == $customer_ID) {
+							$fname = $result_db_customers[$j]->customer_first_name;
 						}
 						$j++;
 					}
 				}
 
-	            $key_np = $marshaler->marshalJson('
-				    {
-				        "user_id": "'.$userid.'"
-				    }
-			    ');
-			    $eav_np = $marshaler->marshalJson('
-				    {
-				        ":requested_new_password": "'.@$newpass.'",
-				        ":reset_verification_code": "'.@$vcode.'",
-				        ":reset_date_requested": "'.@$date.'",
-				        ":reset_date_request_expire": "'.@$exp_date.'"
-				    }
-				');
-				$params_np = [
-				    'TableName' => 'ursa-users',
-				    'Key' => $key_np,
-				    'UpdateExpression' =>
-				        'set requested_new_password=:requested_new_password,
-				        	reset_verification_code=:reset_verification_code,
-				        	reset_date_requested=:reset_date_requested,
-				        	reset_date_request_expire=:reset_date_request_expire,
-				        	',
-				    'ExpressionAttributeValues'=> $eav_np,
-				    'ReturnValues' => 'UPDATED_NEW'
-				];
+				$obj_update_user = $obj_gateway_user->fetchById('$userid');
+				$obj_update_user->requested_new_password="".@$newpass."";
+				$obj_update_user->reset_verification_code="".@$vcode."";
+				$obj_update_user->reset_date_requested="".@$date."";
+				$obj_update_user->reset_date_request_expire="".@$exp_date."";
 
 				try {
-				    $result_np = $dynamodb->updateItem($params_np);
-				} catch (DynamoDbException $e) {
-				    echo "Unable to update item:\n";
-				    echo $e->getMessage() . "\n";
-				}
+			      $obj_gateway_user->upsert($obj_customer);
+			    } catch (Exception $e) {
+			      echo "Unable to add item:\n";
+			      echo $e->getMessage() . "\n";
+			    }
 //????????????????????????????????????????????
 				/*	            
 				$whitelist = array('127.0.0.1', "::1");
@@ -220,25 +202,25 @@
 	if(isset($_SESSION['user_now_id'])) {
 		if(isset($_SESSION['user_now_db_customer_id'])) {
 			$i=0;
-			while(isset($result_db_customers['Items'][$i])) {
-				if($result_db_customers['Items'][$i]['customer_id']['S'] == $_SESSION['user_now_db_customer_id']) {
-					$email = $result_db_customers['Items'][$i]['customer_email']['S'];
-					$fname = $result_db_customers['Items'][$i]['customer_first_name']['S'];
-					$lname = $result_db_customers['Items'][$i]['customer_last_name']['S'];
-					$chargifyID = $result_db_customers['Items'][$i]['chargify_id']['S'];
-                	$salutation = $result_db_customers['Items'][$i]['customer_salutation']['S'];
-                	$title = $result_db_customers['Items'][$i]['customer_title']['S'];
-					$sales_date = $result_db_customers['Items'][$i]['sale_date']['S'];
-					$sales_agent = $result_db_customers['Items'][$i]['sale_agent']['S'];
-					$sales_center = $result_db_customers['Items'][$i]['sale_center']['S'];
-					$product_id = $result_db_customers['Items'][$i]['product_id']['S'];
-	                $product_handle = $result_db_customers['Items'][$i]['product_handle']['S'];
-	                $product_name = $result_db_customers['Items'][$i]['product_name']['S'];
-	                $product_component_id = $result_db_customers['Items'][$i]['product_component_id']['S'];
-	                $product_component_name = $result_db_customers['Items'][$i]['product_component_name']['S'];
-	                $product_component_quantity = $result_db_customers['Items'][$i]['product_component_quantity']['S'];
-	                $product_coupon_code = $result_db_customers['Items'][$i]['product_coupon_code']['S'];
-	                $product_coupon_name = $result_db_customers['Items'][$i]['product_coupon_name']['S'];
+			while(isset($result_db_customers[$i])) {
+				if($result_db_customers[$i]->customer_id == $_SESSION['user_now_db_customer_id']) {
+					$email = $result_db_customer[$i]->customer_email;
+					$fname = $result_db_customers[$i]->customer_first_name;
+					$lname = $result_db_customers[$i]->customer_last_name;
+					$chargifyID = $result_db_customers[$i]->chargify_id;
+                	$salutation = $result_db_customers[$i]->customer_salutation;
+                	$title = $result_db_customers[$i]->customer_title;
+					$sales_date = $result_db_customers[$i]->sale_date;
+					$sales_agent = $result_db_customers[$i]->sale_agent;
+					$sales_center = $result_db_customers[$i]->sale_center;
+					$product_id = $result_db_customers[$i]->product_id;
+	                $product_handle = $result_db_customers[$i]->product_handle;
+	                $product_name = $result_db_customers[$i]->product_name;
+	                $product_component_id = $result_db_customers[$i]->product_component_id;
+	                $product_component_name = $result_db_customers[$i]->product_component_name;
+	                $product_component_quantity = $result_db_customers[$i]->product_component_quantity;
+	                $product_coupon_code = $result_db_customers[$i]->product_coupon_code;
+	                $product_coupon_name = $result_db_customers[$i]->product_coupon_name;
 				}
 				$i++;
 			}
@@ -321,4 +303,3 @@
 			return $d->format("YmdHisu");
 	  }
 ?>
-	

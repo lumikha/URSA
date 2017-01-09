@@ -37,7 +37,7 @@
     <!--media queries-->
     <link rel="stylesheet" type="text/css" href="css/ursa/mediaquery.css">
 
-    <!-- FOR MEDIA QUERIES TO BE ORGANIZED
+<!-- FOR MEDIA QUERIES TO BE ORGANIZED
 
     <link rel="stylesheet" type="text/css" href="css/ursa/XS.css">
 
@@ -50,12 +50,6 @@
     <link rel="stylesheet" type="text/css" href="css/ursa/LG_largelaptops.css"> 
 
     -->
-
-    
-
-    
-
-
 
     <!--for font awesome (external link); angle down for previous conversation show and hide-->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
@@ -95,11 +89,11 @@
                                 </form>
                                 <div name="output" id="output" style="position:absolute; z-index:1;width: 200%;" ng-cloak >
                                     <div class="list-group">
-                                        <a class="list-group-item" onclick="oneSearchResult();" ng-if="search" ng-repeat="user in result = ( users | filter:search | limitTo:num)" href="customer?id={{ user.customer_id.S }}">
+                                        <a class="list-group-item" onclick="oneSearchResult();" ng-if="search" ng-repeat="user in result = ( users | filter:search | limitTo:num)" href="customer?id={{ user.customer_id }}">
                                             <span style="font-size:130%" class="text-info">
-                                                <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> {{user.business_name.S}}</span><br>
-                                                <span style="font-size:75%"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{user.customer_first_name.S}} {{user.customer_last_name.S}}, 
-                                                <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>  {{user.business_email.S}}
+                                                <span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span> {{user.business_name}}</span><br>
+                                                <span style="font-size:75%"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{user.customer_first_name}} {{user.customer_last_name}}, 
+                                                <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>  {{user.business_email}}
                                             </span>
                                         </a>
                                         <a class="list-group-item" ng-if="search" ng-hide="result.length">Opps, No Results Found ...</a>

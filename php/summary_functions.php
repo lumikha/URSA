@@ -1,30 +1,9 @@
 <?php
 require_once 'settings.php';
 require 'gmail_get_messages.php';
-
+$result_db_customers = $obj_gateway_customer->fetchAll("SELECT * FROM customer");
 $tbname = 'ursa-tickets';
 $tbid = 'ticket_id';
-
-$params_t_check = [
-	'TableName' => $tbname,
-	'ProjectionExpression' => $tbid.',ticket_number,ticket_gmail_id,ticket_name_from,ticket_email_subject,ticket_email_from,ticket_email_body,ticket_embedded_image,ticket_email_attachment,ticket_notes,ticket_status,ticket_updated_at'
-];
-
-try {
-	while (true) {
-		$ticket_check = $dynamodb->scan($params_t_check);
-
-		if (isset($ticket_check['LastEvaluatedKey'])) {
-			$params_t_check['ExclusiveStartKey'] = $ticket_check['LastEvaluatedKey'];
-			$ticket_check = $dynamodb->scan($params_t_check);
-		} else {
-			break;
-		}
-	}
-} catch (DynamoDbException $e) {
-	echo "Unable to scan USERS:\n";
-	echo $e->getMessage() . "\n";
-}
 
 $arr_unassigned = array();
 $arr_mine = array();
@@ -38,57 +17,47 @@ $closed = 0;
 $spam = 0;
 
 $cnt_tckts = 0;
-foreach ($ticket_check['Items'] as $obj2) {
-	if($obj2['ticket_gmail_id']['S'] && $obj2['ticket_status']['S'] != "closed"){
-		$bdy_image = decodeBody(@$obj2['ticket_email_body']['S']);
-		$arr_emb = explode(',', $obj2['ticket_embedded_image']['S']);
+foreach ($ticket_check as $obj2) {
+	if($obj2->ticket_gmail_id && $obj2->ticket_status != "closed"){
+		$bdy_image = decodeBody(@$obj2->ticket_email_body);
+		$arr_emb = explode(',', $obj2->ticket_embedded_image);
 
 		preg_match_all('/src="cid:(.*)"/Uims', $bdy_image, $matches);
 		if(count($matches)) {
 			$cnt_emb = 0;
 			foreach($matches[1] as $match) {
 				$search = "src=\"cid:$match\"";
-				$replace = "src=".$att_path.$obj2['ticket_gmail_id']['S']."/".$arr_emb[$cnt_emb];
+				$replace = "src=".$att_path.$obj2->ticket_gmail_id."/".$arr_emb[$cnt_emb];
 				$bdy_image = str_replace($search, $replace, $bdy_image);  
 				$cnt_emb++;       
 			}
 		}
 		$arr_att = array();
-		$att_file = $obj2['ticket_email_attachment']['S'];
+		$att_file = $obj2->ticket_email_attachment;
 		$arr = explode(',', $att_file);
                          
 		if(preg_match('/.php/',$att_file)) {
 			foreach ($arr as $key) {
-				@$attmts = file_get_contents($att_path.$obj2['ticket_gmail_id']['S'].'/attachments/'.$key);
+				@$attmts = file_get_contents($att_path.$obj2->ticket_gmail_id.'/attachments/'.$key);
 				array_push($arr_att, $attmts);
 			}
 		}
                 
-		if($obj2['ticket_notes']['S'] == "(null)") {
+		if($obj2->ticket_notes == "(null)") {
 			$noteLists = null;
 		} else {
 			$arr_notes = array();
-			$nExp = explode(',', $obj2['ticket_notes']['S']);
+			$nExp = explode(',', $obj2->ticket_notes);
 			foreach($nExp as $tn) {
-				$get_notes = $marshaler->marshalJson('
-					{
-						"ticket_note_id": "'.$tn.'"
-					}
-				');
-				$params_get_notes = [
-					'TableName' => 'ursa-ticket-notes',
-					'Key' => $get_notes
-				];
-
+				$data_tNote = $obj_gateway_note->fetchById($tn);
 				try {
-					$data_tNote = $dynamodb->getItem($params_get_notes);
 					array_push($arr_notes, array(
-						"n_id" => $data_tNote['Item']['ticket_note_id'],
-						"n_created_at" => $data_tNote['Item']['note_created_at'],
-						"n_created_by" => $data_tNote['Item']['note_created_by'],
-						"n_content" => $data_tNote['Item']['note_content']
+						"n_id" => $data_tNote->getKeyId(),
+						"n_created_at" => $data_tNote->note_created_at,
+						"n_created_by" => $data_tNote->note_created_by,
+						"n_content" => $data_tNote->note_content
 					));
-				} catch (DynamoDbException $e) {
+				} catch (Exception $e) {
 					echo $e->getMessage() . "\n";
 				}
 			}
@@ -101,87 +70,87 @@ foreach ($ticket_check['Items'] as $obj2) {
 			$arr_att = str_replace($locpath, $replace_livepath, $arr_att);
 		}
 
-		if($obj2['ticket_status']['S'] == 'unassigned') {
+		if($obj2->ticket_status == 'unassigned') {
 			array_push($arr_unassigned, array(
-				"ticket_id" => $obj2[$tbid]['S'],
-				"no" => $obj2['ticket_number']['S'],
-				"id" => $obj2['ticket_gmail_id']['S'],
-				"status" => $obj2['ticket_status']['S'],
-				"subject" => $obj2['ticket_email_subject']['S'],
+				"ticket_id" => $obj2->getKeyId(),
+				"no" => $obj2->ticket_number,
+				"id" => $obj2->ticket_gmail_id,
+				"status" => $obj2->ticket_status,
+				"subject" => $obj2->ticket_email_subject,
 				"body" => $bdy_image,
-				"from" => $obj2['ticket_name_from']['S'],
-				"email" => $obj2['ticket_email_from']['S'],
+				"from" => $obj2->ticket_name_from,
+				"email" => $obj2->ticket_email_from,
 				"attachments" => $arr_att,
-				"updated" => $obj2['ticket_updated_at']['S'],
+				"updated" => $obj2->ticket_updated_at,
 				"notes" => $noteLists
 			));
 			$unassigned++;
 		}
 
-		if($obj2['ticket_status']['S'] == 'mine') {
+		if($obj2->ticket_status == 'mine') {
 			array_push($arr_mine, array(
-				"ticket_id" => $obj2[$tbid]['S'],
-				"no" => $obj2['ticket_number']['S'],
-				"id" => $obj2['ticket_gmail_id']['S'],
-				"status" => $obj2['ticket_status']['S'],
-				"subject" => $obj2['ticket_email_subject']['S'],
+				"ticket_id" => $obj2->getKeyId(),
+				"no" => $obj2->ticket_number,
+				"id" => $obj2->ticket_gmail_id,
+				"status" => $obj2->ticket_status,
+				"subject" => $obj2->ticket_email_subject,
 				"body" => $bdy_image,
-				"from" => $obj2['ticket_name_from']['S'],
-				"email" => $obj2['ticket_email_from']['S'],
+				"from" => $obj2->ticket_name_from,
+				"email" => $obj2->ticket_email_from,
 				"attachments" => $arr_att,
-				"updated" => $obj2['ticket_updated_at']['S'],
+				"updated" => $obj2->ticket_updated_at,
 				"notes" => $noteLists
 			));
 			$mine++;
 		}
 
-		if($obj2['ticket_status']['S'] == 'assigned') {
+		if($obj2->ticket_status == 'assigned') {
 			array_push($arr_assigned, array(
-				"ticket_id" => $obj2[$tbid]['S'],
-				"no" => $obj2['ticket_number']['S'],
-				"id" => $obj2['ticket_gmail_id']['S'],
-				"status" => $obj2['ticket_status']['S'],
-				"subject" => $obj2['ticket_email_subject']['S'],
+				"ticket_id" => $obj2->getKeyId(),
+				"no" => $obj2->ticket_number,
+				"id" => $obj2->ticket_gmail_id,
+				"status" => $obj2->ticket_status,
+				"subject" => $obj2->ticket_email_subject,
 				"body" => $bdy_image,
-				"from" => $obj2['ticket_name_from']['S'],
-				"email" => $obj2['ticket_email_from']['S'],
+				"from" => $obj2->ticket_name_from,
+				"email" => $obj2->ticket_email_from,
 				"attachments" => $arr_att,
-				"updated" => $obj2['ticket_updated_at']['S'],
-				"assigned" => $obj2['ticket_assigned_to']['S'],
+				"updated" => $obj2->ticket_updated_at,
+				"assigned" => $obj2->ticket_assigned_to,
 				"notes" => $noteLists
 			));
 			$assigned++;
 		}
 
-		if($obj2['ticket_status']['S'] == 'closed') {
+		if($obj2->ticket_status == 'closed') {
 			array_push($arr_closed, array(
-				"ticket_id" => $obj2[$tbid]['S'],
-				"no" => $obj2['ticket_number']['S'],
-				"id" => $obj2['ticket_gmail_id']['S'],
-				"status" => $obj2['ticket_status']['S'],
-				"subject" => $obj2['ticket_email_subject']['S'],
+				"ticket_id" => $obj2->getKeyId(),
+				"no" => $obj2->ticket_number,
+				"id" => $obj2->ticket_gmail_id,
+				"status" => $obj2->ticket_status,
+				"subject" => $obj2->ticket_email_subject,
 				"body" => $bdy_image,
-				"from" => $obj2['ticket_name_from']['S'],
-				"email" => $obj2['ticket_email_from']['S'],
+				"from" => $obj2->ticket_name_from,
+				"email" => $obj2->ticket_email_from,
 				"attachments" => $arr_att,
-				"updated" => $obj2['ticket_updated_at']['S'],
+				"updated" => $obj2->ticket_updated_at,
 				"notes" => $noteLists
 			));
 			$closed++;
 		}
 
-		if($obj2['ticket_status']['S'] == 'spam') {
+		if($obj2->ticket_status == 'spam') {
 			array_push($arr_spam, array(
-				"ticket_id" => $obj2[$tbid]['S'],
-				"no" => $obj2['ticket_number']['S'],
-				"id" => $obj2['ticket_gmail_id']['S'],
-				"status" => $obj2['ticket_status']['S'],
-				"subject" => $obj2['ticket_email_subject']['S'],
+				"ticket_id" => $obj2->getKeyId(),
+				"no" => $obj2->ticket_number,
+				"id" => $obj2->ticket_gmail_id,
+				"status" => $obj2->ticket_status,
+				"subject" => $obj2->ticket_email_subject,
 				"body" => $bdy_image,
-				"from" => $obj2['ticket_name_from']['S'],
-				"email" => $obj2['ticket_email_from']['S'],
+				"from" => $obj2->ticket_name_from,
+				"email" => $obj2->ticket_email_from,
 				"attachments" => $arr_att,
-				"updated" => $obj2['ticket_updated_at']['S'],
+				"updated" => $obj2->ticket_updated_at,
 				"notes" => $noteLists
 			));
 		$spam++;
@@ -191,29 +160,29 @@ foreach ($ticket_check['Items'] as $obj2) {
 }
 
 $em_check = array();
-foreach ($result_db_customers['Items'] as $obj) {
-	if(isset($obj['chargify_id']['S'])) {
-		$paymentPotarlID = $obj['chargify_id']['S'];
+foreach ($result_db_customers as $obj) {
+	if(isset($obj->chargify_id)) {
+		$paymentPotarlID = $obj->chargify_id;
 	} 
-	if(isset($obj['stripe_id']['S'])) {
-		$paymentPotarlID = $obj['stripe_id']['S'];
+	if(isset($obj->stripe_id)) {
+		$paymentPotarlID = $obj->stripe_id;
 	}
 
-	if(isset($obj['customer_email']['S'])){
+	if(isset($obj->customer_email)){
 		array_push($em_check, array(
-			"id" => $obj['customer_id']['S'],
-            "email" => $obj['customer_email']['S'],
+			"id" => $obj->getKeyId(),
+            "email" => $obj->customer_email,
             "payportalid" => $paymentPotarlID,
-			"bname" => $obj['business_name']['S'],
-			"fname" => $obj['customer_first_name']['S'],
-			"lname" => $obj['customer_last_name']['S'],
-			"bphone" => $obj['business_phone_no']['S']
+			"bname" => $obj->business_name,
+			"fname" => $obj->customer_first_name,
+			"lname" => $obj->customer_last_name,
+			"bphone" => $obj->business_phone_no
 		));
 	}
 }
 
 if(@$_POST['new_thread']){
-	$new_note_id = GUID();
+	
         
 	if($_POST['status'] != $_POST['curr_status']) {
 		if(empty($_POST['message'])) {
@@ -229,39 +198,22 @@ if(@$_POST['new_thread']){
 	$updatedDateNow = date('Y/m/d H:i:s');
 
 	//insert new ticket note in ursa-ticket-notes
-	$new_note = $marshaler->marshalJson('
-		{
-			"ticket_note_id": "'.$new_note_id.'",
-			"ticket_id": "'.@$_POST['cTID'].'",
-			"note_content": "'.$n_ctnt.'",
-			"note_created_at": "'.$updatedDateNow.'",
-			"note_created_by": "'.$fname.'",
-			"ticket_current_status": "'.$_POST['status'].'"
-		}
-	');
-
-	$params_new_note = [
-		'TableName' => 'ursa-ticket-notes',
-		'Item' => $new_note
-	];
+	$params_new_note = $obj_gateway_note->createEntity([
+			"ticket_id"=> "".@$_POST['cTID']."",
+			"note_content"=> "".$n_ctnt."",
+			"note_created_at"=> "".$updatedDateNow."",
+			"note_created_by"=> "".$fname."",
+			"ticket_current_status"=> "".$_POST['status'].""
+	]);
 
 	//get list of existing notes for the current ticket_id
-	$get_notes = $marshaler->marshalJson('
-		{
-			"ticket_id": "'.$_POST['cTID'].'"
-		}
-	');
-
-	$params_get_ticket = [
-		'TableName' => 'ursa-tickets',
-		'Key' => $get_notes
-	];
 
 	try {
-		$dynamodb->putItem($params_new_note);
-		$ticket = $dynamodb->getItem($params_get_ticket);
-		json_encode($ticket["Item"]);
-		$existing_notes = $ticket['Item']['ticket_notes']['S'];
+		$obj_gateway_note->upsert($params_new_note);
+		$new_note_id = $params_new_note->getKeyId();
+		$ticket = $obj_gateway_ticket->fetchById($_POST['cTID']);
+		json_encode($ticket);
+		$existing_notes = $ticket->ticket_notes;
 
 		if($existing_notes == "(null)") {
 			$upd_note_lists = $new_note_id;
@@ -269,33 +221,17 @@ if(@$_POST['new_thread']){
 			$upd_note_lists = $existing_notes.",".$new_note_id;
 		}
 
-		$current_ticketID = $marshaler->marshalJson('
-			{
-				"ticket_id": "'.$_POST['cTID'].'"
-			}
-		');
+		$toUpdate = $obj_gateway_ticket->fetchById($_POST['cTID']);
+		$toUpdate->ticket_notes="".$upd_note_lists."";
+		$toUpdate->ticket_status="".$_POST['status']."";
+		$toUpdate->ticket_updated_at="".$updatedDateNow."";
 
-		$toUpdate = $marshaler->marshalJson('
-			{
-				":ticket_notes": "'.$upd_note_lists.'",
-				":ticket_status": "'.$_POST['status'].'",
-				":ticket_updated_at": "'.$updatedDateNow.'"
-			}
-		');
 
-		$params = [
-			'TableName' => 'ursa-tickets',
-			'Key' => $current_ticketID,
-			'UpdateExpression' => 'set ticket_notes=:ticket_notes, ticket_status=:ticket_status, ticket_updated_at=:ticket_updated_at', 
-			'ExpressionAttributeValues'=> $toUpdate,
-			'ReturnValues' => 'UPDATED_NEW'
-		];
-
-		$dynamodb->updateItem($params);
+		$obj_gateway_ticket->upsert($toUpdate);
 		?><script>
 			window.location.href = "summary";
 		</script><?php
-	} catch (DynamoDbException $e) {
+	} catch (Exception $e) {
 		echo $e->getMessage() . "\n";
 	}
 }

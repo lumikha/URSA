@@ -5,7 +5,7 @@
 
 <link rel="stylesheet" type="text/css" href="css/customer_style.css"/>
 
-    <div class="modal fade" id="modalCancelSub" tabindex="-1" role="dialog">
+<div class="modal fade" id="modalCancelSub" tabindex="-1" role="dialog">
         <div id="modal_dialog" class="modal-dialog modal-md" >
             <div class="modal-content">
                 <span>
@@ -184,17 +184,17 @@
                                     $touch_cnt = 0;
                                     $logs_this_cust = array();
                                     foreach ($all_logs as $object) {
-                                        $log_customer_id = $object['customer_id']['S'];
+                                        $log_customer_id = $object->customer_id;
                                         if($log_customer_id == $_GET['id'])
                                         {
                                             array_push($logs_this_cust, array(
-                                                "log_user_id" => $object['user_id']['S'],
-                                                "log_customer_id" => $object['customer_id']['S'],
-                                                "log_event" => $object['event']['S'],
-                                                "log_data" => $object['data']['S'],
-                                                "log_date" => $object['date']['S'],
+                                                "log_user_id" => $object->user_id,
+                                                "log_customer_id" => $object->customer_id,
+                                                "log_event" => $object->event,
+                                                "log_data" => $object->data,
+                                                "log_date" => $object->date,
                                             ));
-                                            $logs_this_cust[$object['date']['S']] = $logs_this_cust[$touch_cnt];
+                                            $logs_this_cust[$object->date] = $logs_this_cust[$touch_cnt];
                                             unset($logs_this_cust[$touch_cnt]);
                                             $touch_cnt++;
                                         }

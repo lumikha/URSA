@@ -1,7 +1,7 @@
 var myapp = angular.module("myapp",[]);
 
 myapp.controller("newController", function($scope,$http){
-	$http.get("lib/dynamoDB/search.php").success(function(response){
+	$http.get("lib/datastore/search.php").success(function(response){
 		$scope.users = response;
 	});
 	$scope.num = 5;

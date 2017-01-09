@@ -1,9 +1,10 @@
 <?php
     //========Twilio Connection========
-    require_once 'lib/twilio/Twilio/autoload.php'; // Loads the library
-    use Twilio\Rest\Client;
-
-$all_logs = $result_db_logs['Items'];
+    //require_once 'lib/twilio/Twilio/autoload.php'; // Loads the library
+    //use Twilio\Rest\Client;
+$result_db_logs = $obj_gateway_log->fetchAll("SELECT * FROM log");
+//$result_db_customers = $obj_gateway_customer->fetchAll("SELECT * FROM customer");
+$all_logs = $result_db_logs;
 date_default_timezone_set("Asia/Manila");
     $check = null;
     $usingPayPortal = "";
@@ -15,57 +16,57 @@ date_default_timezone_set("Asia/Manila");
         <?php
     } else {
         $i=0;
-        while(isset($result_db_customers['Items'][$i])) {
+        while(isset($result_db_customers[$i])) {
               
-            if($result_db_customers['Items'][$i]['customer_id']['S'] == $_GET['id']) {
+            if($result_db_customers[$i]->getKeyId() == $_GET['id']) {
 
-                $customer_db_id = $result_db_customers['Items'][$i]['customer_id']['S'];
-                $business_name = $result_db_customers['Items'][$i]['business_name']['S'];
-                $business_address = $result_db_customers['Items'][$i]['business_address']['S'];
-                if($result_db_customers['Items'][$i]['business_suite_no']['S'] != "null") {
-                    $business_address_2 = $result_db_customers['Items'][$i]['business_suite_no']['S'];
+                $customer_db_id = $result_db_customers[$i]->getKeyId();
+                $business_name = $result_db_customers[$i]->business_name;
+                $business_address = $result_db_customers[$i]->business_address;
+                if($result_db_customers[$i]->business_suite_no != "null") {
+                    $business_address_2 = $result_db_customers[$i]->business_suite_no;
                 } else {
                     $business_address_2 = null;
                 }
-                $business_city = $result_db_customers['Items'][$i]['business_city']['S'];
-                $business_state = $result_db_customers['Items'][$i]['business_state']['S'];
-                $business_zip = $result_db_customers['Items'][$i]['business_zip']['S'];
-                $business_country = $result_db_customers['Items'][$i]['business_country']['S'];
-                $business_phone = $result_db_customers['Items'][$i]['business_phone_no']['S'];
-                $business_email = $result_db_customers['Items'][$i]['business_email']['S'];
-                $business_alt_phone = $result_db_customers['Items'][$i]['business_alternate_phone_no']['S'];
-                $business_post_address = $result_db_customers['Items'][$i]['business_post_address']['S'];
-                $business_hours = $result_db_customers['Items'][$i]['business_hours']['S'];
-                $payment_method = $result_db_customers['Items'][$i]['payment_method']['S'];
+                $business_city = $result_db_customers[$i]->business_city;
+                $business_state = $result_db_customers[$i]->business_state;
+                $business_zip = $result_db_customers[$i]->business_zip;
+                $business_country = $result_db_customers[$i]->business_country;
+                $business_phone = $result_db_customers[$i]->business_phone_no;
+                $business_email = $result_db_customers[$i]->business_email;
+                $business_alt_phone = $result_db_customers[$i]->business_alternate_phone_no;
+                $business_post_address = $result_db_customers[$i]->business_post_address;
+                $business_hours = $result_db_customers[$i]->business_hours;
+                $payment_method = $result_db_customers[$i]->payment_method;
 
-                if(isset($result_db_customers['Items'][$i]['chargify_id']['S']) || isset($result_db_customers['Items'][$i]['stripe_id']['S'])) {
-                    if(isset($result_db_customers['Items'][$i]['chargify_id']['S'])) {
-                        $payportalID = $result_db_customers['Items'][$i]['chargify_id']['S'];
-                        $product_id = $result_db_customers['Items'][$i]['product_id']['S'];
-                        $product_handle = $result_db_customers['Items'][$i]['product_handle']['S'];
-                        $product_name = $result_db_customers['Items'][$i]['product_name']['S'];
+                if(isset($result_db_customers[$i]->chargify_id) || isset($result_db_customers[$i]->stripe_id)) {
+                    if(isset($result_db_customers[$i]->chargify_id)) {
+                        $payportalID = $result_db_customers[$i]->chargify_id;
+                        $product_id = $result_db_customers[$i]->product_id;
+                        $product_handle = $result_db_customers[$i]->product_handle;
+                        $product_name = $result_db_customers[$i]->product_name;
                         $usingPayPortal ="chargify";
-                    }else if(isset($result_db_customers['Items'][$i]['stripe_id']['S'])) {
-                        $payportalID = $result_db_customers['Items'][$i]['stripe_id']['S'];
-                        $plan_id = $result_db_customers['Items'][$i]['plan_id']['S'];
-                        $plan_name = $result_db_customers['Items'][$i]['plan_name']['S'];
+                    }else if(isset($result_db_customers[$i]->stripe_id)) {
+                        $payportalID = $result_db_customers[$i]->stripe_id;
+                        $plan_id = $result_db_customers[$i]->plan_id;
+                        $plan_name = $result_db_customers[$i]->plan_name;
                         $usingPayPortal = "stripe";
                     } else {
                         $payportalID = null;
                     }
-                    $business_category = $result_db_customers['Items'][$i]['business_category']['S'];
-                    $business_website = $result_db_customers['Items'][$i]['business_website']['S'];
-                    $email = $result_db_customers['Items'][$i]['customer_email']['S'];
+                    $business_category = $result_db_customers[$i]->business_category;
+                    $business_website = $result_db_customers[$i]->business_website;
+                    $email = $result_db_customers[$i]->customer_email;
 
-                    if(isset($result_db_customers['Items'][$i]['customer_alternate_email']['S']) && $result_db_customers['Items'][$i]['customer_alternate_email']['S'] != "null") {
-                        $alt_email = $result_db_customers['Items'][$i]['customer_alternate_email']['S'];
+                    if(isset($result_db_customers[$i]->customer_alternate_email) && $result_db_customers[$i]->customer_alternate_email != "null") {
+                        $alt_email = $result_db_customers[$i]->customer_alternate_email;
                     } else {
                         $alt_email = null;
                     }
 
-                    $fname = $result_db_customers['Items'][$i]['customer_first_name']['S'];
-                    $lname = $result_db_customers['Items'][$i]['customer_last_name']['S'];
-                    $phone = $result_db_customers['Items'][$i]['customer_phone_no']['S'];
+                    $fname = $result_db_customers[$i]->customer_first_name;
+                    $lname = $result_db_customers[$i]->customer_last_name;
+                    $phone = $result_db_customers[$i]->customer_phone_no;
                     $office_phone = $business_phone;
 
                     /*
@@ -76,63 +77,63 @@ date_default_timezone_set("Asia/Manila");
                     }
                     */
 
-                    if(isset($result_db_customers['Items'][$i]['customer_mobile_no']['S']) && $result_db_customers['Items'][$i]['customer_mobile_no']['S'] != "null") {
-                        $mobile = $result_db_customers['Items'][$i]['customer_mobile_no']['S'];
+                    if(isset($result_db_customers[$i]->customer_mobile_no) && $result_db_customers[$i]->customer_mobile_no != "null") {
+                        $mobile = $result_db_customers[$i]->customer_mobile_no;
                     } else {
                         $mobile = null;
                     }
 
-                    $salutation = $result_db_customers['Items'][$i]['customer_salutation']['S'];
+                    $salutation = $result_db_customers[$i]->customer_salutation;
 
-                    if(isset($result_db_customers['Items'][$i]['customer_title']['S']) && $result_db_customers['Items'][$i]['customer_title']['S'] != "null") {
-                        $title = $result_db_customers['Items'][$i]['customer_title']['S'];
+                    if(isset($result_db_customers[$i]->customer_title) && $result_db_customers[$i]->customer_title != "null") {
+                        $title = $result_db_customers[$i]->customer_title;
                     } else {
                         $title = null;
                     }
 
-                    $sales_date = $result_db_customers['Items'][$i]['sale_date']['S'];
-                    $sales_agent = $result_db_customers['Items'][$i]['sale_agent']['S'];
-                    $sales_center = $result_db_customers['Items'][$i]['sale_center']['S'];
+                    $sales_date = $result_db_customers[$i]->sale_date;
+                    $sales_agent = $result_db_customers[$i]->sale_agent;
+                    $sales_center = $result_db_customers[$i]->sale_center;
                     
-                    $product_component_id = $result_db_customers['Items'][$i]['product_component_id']['S'];
-                    $product_component_name = $result_db_customers['Items'][$i]['product_component_name']['S'];
-                    $product_component_quantity = $result_db_customers['Items'][$i]['product_component_quantity']['S'];
-                    $product_coupon_code = $result_db_customers['Items'][$i]['product_coupon_code']['S'];
-                    $product_coupon_name = $result_db_customers['Items'][$i]['product_coupon_name']['S'];
-                    $cc_last_four = $result_db_customers['Items'][$i]['customer_card_last_four']['S'];
-                    $cc_exp_mm = $result_db_customers['Items'][$i]['customer_card_expire_month']['S'];
-                    $cc_exp_yy = $result_db_customers['Items'][$i]['customer_card_expire_year']['S'];
-                    $bill_address = $result_db_customers['Items'][$i]['customer_billing_address']['S'];
-                    if($result_db_customers['Items'][$i]['business_suite_no']['S'] != "null") {
-                        $bill_address_2 = $result_db_customers['Items'][$i]['business_suite_no']['S'];
+                    $product_component_id = $result_db_customers[$i]->product_component_id;
+                    $product_component_name = $result_db_customers[$i]->product_component_name;
+                    $product_component_quantity = $result_db_customers[$i]->product_component_quantity;
+                    $product_coupon_code = $result_db_customers[$i]->product_coupon_code;
+                    $product_coupon_name = $result_db_customers[$i]->product_coupon_name;
+                    $cc_last_four = $result_db_customers[$i]->customer_card_last_four;
+                    $cc_exp_mm = $result_db_customers[$i]->customer_card_expire_month;
+                    $cc_exp_yy = $result_db_customers[$i]->customer_card_expire_year;
+                    $bill_address = $result_db_customers[$i]->customer_billing_address;
+                    if($result_db_customers[$i]->business_suite_no != "null") {
+                        $bill_address_2 = $result_db_customers[$i]->business_suite_no;
                     } else {
                         $bill_address_2 = null;
                     }
                     //$bill_address_2 = $result_db_customers['Items'][$i]['customer_suite_no']['S'];
-                    $bill_city = $result_db_customers['Items'][$i]['customer_billing_city']['S'];
-                    $bill_state = $result_db_customers['Items'][$i]['customer_billing_state']['S'];
-                    $bill_zip = $result_db_customers['Items'][$i]['customer_billing_zip']['S'];
+                    $bill_city = $result_db_customers[$i]->customer_billing_city;
+                    $bill_state = $result_db_customers[$i]->customer_billing_state;
+                    $bill_zip = $result_db_customers[$i]->customer_billing_zip;
                     $bill_country = "US";
                     //prov
-                    $gmail_acc = $result_db_customers['Items'][$i]['prov_gmail']['S'];
-                    $keywords = $result_db_customers['Items'][$i]['prov_keywords']['S'];
-                    $sp_request = $result_db_customers['Items'][$i]['prov_special_request']['S'];
-                    $social1 = $result_db_customers['Items'][$i]['prov_existing_social1']['S'];
-                    $social2 = $result_db_customers['Items'][$i]['prov_existing_social2']['S'];
-                    $biglo_site = $result_db_customers['Items'][$i]['prov_biglo_website']['S'];
-                    $analytical_address = $result_db_customers['Items'][$i]['prov_analytical_address']['S'];
-                    $google_plus = $result_db_customers['Items'][$i]['prov_google_plus']['S'];
-                    $google_maps = $result_db_customers['Items'][$i]['prov_google_maps']['S'];
-                    $facebook = $result_db_customers['Items'][$i]['prov_facebook']['S'];
-                    $foursquare = $result_db_customers['Items'][$i]['prov_foursquare']['S'];
-                    $twitter = $result_db_customers['Items'][$i]['prov_twitter']['S'];
-                    $linkedin = $result_db_customers['Items'][$i]['prov_linkedin']['S'];
+                    $gmail_acc = $result_db_customers[$i]->prov_gmail;
+                    $keywords = $result_db_customers[$i]->prov_keywords;
+                    $sp_request = $result_db_customers[$i]->prov_special_request;
+                    $social1 = $result_db_customers[$i]->prov_existing_social1;
+                    $social2 = $result_db_customers[$i]->prov_existing_social2;
+                    $biglo_site = $result_db_customers[$i]->prov_biglo_website;
+                    $analytical_address = $result_db_customers[$i]->prov_analytical_address;
+                    $google_plus = $result_db_customers[$i]->prov_google_plus;
+                    $google_maps = $result_db_customers[$i]->prov_google_maps;
+                    $facebook = $result_db_customers[$i]->prov_facebook;
+                    $foursquare = $result_db_customers[$i]->prov_foursquare;
+                    $twitter = $result_db_customers[$i]->prov_twitter;
+                    $linkedin = $result_db_customers[$i]->prov_linkedin;
                     //cancel
-                    if(isset($result_db_customers['Items'][$i]['cancelled']['S']) && $result_db_customers['Items'][$i]['cancelled']['S'] != "null") {
-                        $cancelled = $result_db_customers['Items'][$i]['cancelled']['S'];
-                        $cancel_reason = $result_db_customers['Items'][$i]['cancel_reason']['S'];
+                    if(isset($result_db_customers[$i]->cancelled) && $result_db_customers[$i]->cancelled != "null") {
+                        $cancelled = $result_db_customers[$i]->cancelled;
+                        $cancel_reason = $result_db_customers[$i]->cancel_reason;
                     } else {
-                        $cancelled = "no";
+                        $cancelled = "no"; 
                         $cancel_reason = "";
                     }
                 } 
@@ -322,30 +323,30 @@ date_default_timezone_set("Asia/Manila");
         $i=0;
         $cardStripeUpd = array();
         $planprodUpdate = "";
-        while(isset($result_db_customers['Items'][$i])) {
-            if($result_db_customers['Items'][$i]['customer_id']['S'] == $_GET['id']) {
-                if($business_name != $result_db_customers['Items'][$i]['business_name']['S']) {
+        while(isset($result_db_customers[$i])) {
+            if($result_db_customers[$i]->getKeyId() == $_GET['id']) {
+                if($business_name != $result_db_customers[$i]->business_name) {
                     array_push($changes, "Business Name");
                 }
-                if($business_category != $result_db_customers['Items'][$i]['business_category']['S']) {
+                if($business_category != $result_db_customers[$i]->business_category) {
                     array_push($changes, "Business Category");
                 }
-                if($salutation != $result_db_customers['Items'][$i]['customer_salutation']['S']) {
+                if($salutation != $result_db_customers[$i]->customer_salutation) {
                     array_push($changes, "Salutation");
                 }
-                if($title != $result_db_customers['Items'][$i]['customer_title']['S']) {
+                if($title != $result_db_customers[$i]->customer_title) {
                     array_push($changes, "Title");
                 }
-                if($fname != $result_db_customers['Items'][$i]['customer_first_name']['S']) {
+                if($fname != $result_db_customers[$i]->customer_first_name) {
                     array_push($changes, "First Name");
                 }
-                if($lname != $result_db_customers['Items'][$i]['customer_last_name']['S']) {
+                if($lname != $result_db_customers[$i]->customer_last_name) {
                     array_push($changes, "Last Name");
                 }
-                if($phone != $result_db_customers['Items'][$i]['customer_phone_no']['S']) {
+                if($phone != $result_db_customers[$i]->customer_phone_no) {
                     array_push($changes, "Primary Phone No.");
                 }
-                if($office_phone != $result_db_customers['Items'][$i]['business_phone_no']['S']) {
+                if($office_phone != $result_db_customers[$i]->business_phone_no) {
                     array_push($changes, "Office No.");
                 }
                 /*
@@ -360,8 +361,8 @@ date_default_timezone_set("Asia/Manila");
                     }
                 }
                 */
-                if(isset($result_db_customers['Items'][$i]['customer_mobile_no']['S']) && $result_db_customers['Items'][$i]['customer_mobile_no']['S'] != "null") {
-                    if($mobile != $result_db_customers['Items'][$i]['customer_mobile_no']['S']) {
+                if(isset($result_db_customers[$i]->customer_mobile_no) && $result_db_customers[$i]->customer_mobile_no != "null") {
+                    if($mobile != $result_db_customers[$i]->customer_mobile_no) {
                         array_push($changes, "Mobile No.");
                     }
                 } else {
@@ -370,11 +371,11 @@ date_default_timezone_set("Asia/Manila");
                         array_push($changes, "Mobile No.");
                     }
                 }
-                if($email != $result_db_customers['Items'][$i]['customer_email']['S']) {
+                if($email != $result_db_customers[$i]->customer_email) {
                     array_push($changes, "Primary Email");
                 }
-                if(isset($result_db_customers['Items'][$i]['customer_alternate_email']['S']) && $result_db_customers['Items'][$i]['customer_alternate_email']['S'] != "null") {
-                    if($alt_email != $result_db_customers['Items'][$i]['customer_alternate_email']['S']) {
+                if(isset($result_db_customers[$i]->customer_alternate_email) && $result_db_customers[$i]->customer_alternate_email != "null") {
+                    if($alt_email != $result_db_customers[$i]->customer_alternate_email) {
                         array_push($changes, "Alternate Email");
                     }
                 } else {
@@ -382,40 +383,40 @@ date_default_timezone_set("Asia/Manila");
                         array_push($changes, "Alternate Email");
                     }
                 }
-                if($bill_address != $result_db_customers['Items'][$i]['customer_billing_address']['S']) {
+                if($bill_address != $result_db_customers[$i]->customer_billing_address) {
                     array_push($changes, "Billing Address 1");
                     array_push($cardStripeUpd, 'address_line1');
                 }
-                if($bill_address_2 != $result_db_customers['Items'][$i]['customer_suite_no']['S']) {
+                if($bill_address_2 != $result_db_customers[$i]->customer_suite_no) {
                     array_push($changes, "Billing Address 2");
                     array_push($cardStripeUpd, 'address_line2');
                 }
-                if($bill_city != $result_db_customers['Items'][$i]['customer_billing_city']['S']) {
+                if($bill_city != $result_db_customers[$i]->customer_billing_city) {
                     array_push($changes, "Billing City");
                     array_push($cardStripeUpd, 'address_city');
                 }
-                if($bill_state != $result_db_customers['Items'][$i]['customer_billing_state']['S']) {
+                if($bill_state != $result_db_customers[$i]->customer_billing_state) {
                     array_push($changes, "Office State");
                    array_push( $cardStripeUpd, 'address_state');
                 }
-                if($bill_zip != $result_db_customers['Items'][$i]['customer_billing_zip']['S']) {
+                if($bill_zip != $result_db_customers[$i]->customer_billing_zip) {
                     array_push($changes, "Postal Code");
                     array_push($cardStripeUpd, 'address_zip');
                 }
                 if($usingPayPortal == "chargify") {
-                    if($prod_handle != $result_db_customers['Items'][$i]['product_handle']['S']) {
+                    if($prod_handle != $result_db_customers[$i]->product_handle) {
                         array_push($changes, "Product");
                     }
                 }
                 if($usingPayPortal == "stripe") {
-                    if($plan_id != $result_db_customers['Items'][$i]['plan_id']['S']) {
+                    if($plan_id != $result_db_customers[$i]->plan_id) {
                         array_push($changes, "Product");
                     }
                 }
-                if($comp_quantity != $result_db_customers['Items'][$i]['product_component_quantity']['S']) {
+                if($comp_quantity != $result_db_customers[$i]->product_component_quantity) {
                     array_push($changes, "Component Quantity");
                 }
-                if($coupon_code != $result_db_customers['Items'][$i]['product_coupon_code']['S']) {
+                if($coupon_code != $result_db_customers[$i]->product_coupon_code) {
                     array_push($changes, "Coupon");
                 }
             }
@@ -521,13 +522,10 @@ date_default_timezone_set("Asia/Manila");
                 echo $cve->getMessage();
             }
 
-            $planprodUpdate = '":product_id": "'.@$prodID.'",
-                ":product_handle": "'.@$prod_handle.'",
-                ":product_name": "'.@$prodName.'",';
+            $planprodUpdate_product_id = @$prodID;
+            $planprodUpdate_product_handle = @$prod_handle;
+            $planprodUpdate_product_name = @$prodName;
 
-            $param_ppU = "product_id=:product_id,
-              product_handle=:product_handle,
-              product_name=:product_name,";
         }
 
         if($usingPayPortal == "stripe") {
@@ -615,24 +613,18 @@ date_default_timezone_set("Asia/Manila");
                 }
             }
 
-            $planprodUpdate = '":plan_id": "'.@$plan_id.'",
-                ":plan_name": "'.@$planName.'",';
+            $planprodUpdate_plan_id = @$plan_id;
+            $planprodUpdate_plan_name = @$planName;
 
-            $param_ppU = "plan_id=:plan_id,
-              plan_name=:plan_name,";
         }
 
-        $key_upt = $marshaler->marshalJson('
-            {
-                "customer_id": "'.$customer_db_id.'"
-            }
-        ');
+        $params_upt_acc = $obj_gateway_customer->fetchById($customer_db_id);
 
 
         if(empty($alt_email)) {
-            $alternate_email = '":customer_alternate_email": "null",';
+            $alternate_email = 'null';
         } else {
-            $alternate_email = '":customer_alternate_email": "'.@$alt_email.'",';
+            $alternate_email = @$alt_email;
         }
 
         /*
@@ -644,65 +636,39 @@ date_default_timezone_set("Asia/Manila");
         */
 
         if(empty($mobile)) {
-            $mobile_phone = '":customer_mobile_no": "null",';
+            $mobile_phone = 'null';
         } else {
-            $mobile_phone = '":customer_mobile_no": "'.@$mobile.'",';
+            $mobile_phone = @$mobile;
         }
 
-        $eav_upt_acc = $marshaler->marshalJson('
-            {
-                ":business_name": "'.@$business_name.'",
-                ":business_category": "'.@$business_category.'",
-                ":business_phone_no": "'.@$office_phone.'",
-                ":customer_salutation": "'.@$salutation.'",
-                ":customer_title": "'.@$title.'",
-                ":customer_first_name": "'.@$fname.'",
-                ":customer_last_name": "'.@$lname.'",
-                ":customer_phone_no": "'.@$phone.'",
-                '.$mobile_phone.'
-                ":customer_email": "'.@$email.'",
-                '.$alternate_email.'
-                ":customer_billing_address": "'.@$bill_address.'",
-                ":customer_suite_no": "'.@$bill_address_2.'",
-                ":customer_billing_city": "'.@$bill_city.'",
-                ":customer_billing_state": "'.@$bill_state.'",
-                ":customer_billing_zip": "'.@$bill_zip.'",
-                '.$planprodUpdate.'
-                ":product_component_quantity": "'.@$comp_quantity.'",
-                ":product_coupon_code": "'.@$coupon_code.'",
-                ":product_coupon_name": "'.@$couponName.'"
+            $params_upt_acc->business_name="".@$business_name."";
+            $params_upt_acc->business_category="".@$business_category."";
+            $params_upt_acc->business_phone_no="".@$office_phone."";
+            $params_upt_acc->customer_salutation="".@$salutation."";
+            $params_upt_acc->customer_title="".@$title."";
+            $params_upt_acc->customer_first_name="".@$fname."";
+            $params_upt_acc->customer_last_name="".@$lname."";
+            $params_upt_acc->customer_phone_no="".@$phone."";
+            $params_upt_acc->customer_mobile_no="".$mobile_phone."";
+            $params_upt_acc->customer_email="".@$email."";
+            $params_upt_acc->customer_alternate_email="".$alternate_email."";
+            $params_upt_acc->customer_billing_address="".@$bill_address."";
+            $params_upt_acc->customer_suite_no="".@$bill_address_2."";
+            $params_upt_acc->customer_billing_city="".@$bill_city."";
+            $params_upt_acc->customer_billing_state="".@$bill_state."";
+            $params_upt_acc->customer_billing_zip="".@$bill_zip."";
+            if(isset($planprodUpdate_product_id)){
+                $params_upt_acc->product_id="".$planprodUpdate_product_id."";
+                $params_upt_acc->product_handle="".$planprodUpdate_product_handle."";
+                $params_upt_acc->product_name="".$planprodUpdate_product_name."";
             }
-        ');
-
-        $params_upt_acc = [
-            'TableName' => 'ursa-customers',
-            'Key' => $key_upt,
-            'UpdateExpression' =>
-                'set business_name=:business_name,
-                    business_category=:business_category,
-                    business_phone_no=:business_phone_no,
-                    customer_salutation=:customer_salutation,
-                    customer_title=:customer_title,
-                    customer_first_name=:customer_first_name,
-                    customer_last_name=:customer_last_name,
-                    customer_phone_no=:customer_phone_no,
-                    customer_mobile_no=:customer_mobile_no,
-                    customer_email=:customer_email,
-                    customer_alternate_email=:customer_alternate_email,
-                    customer_billing_address=:customer_billing_address,
-                    customer_suite_no=:customer_suite_no,
-                    customer_billing_city=:customer_billing_city,
-                    customer_billing_state=:customer_billing_state,
-                    customer_billing_zip=:customer_billing_zip,
-                    '.$param_ppU.'
-                    product_component_quantity=:product_component_quantity,
-                    product_coupon_code=:product_coupon_code,
-                    product_coupon_name=:product_coupon_name
-                ',
-            'ExpressionAttributeValues'=> $eav_upt_acc,
-            'ReturnValues' => 'UPDATED_NEW'
-        ];
-
+            if(isset($planprodUpdate_plan_id)){
+                $params_upt_acc->plan_id="".$planprodUpdate_plan_id."";
+                $params_upt_acc->plan_name="".$planprodUpdate_plan_name."";
+            }
+            $params_upt_acc->product_component_quantity="".@$comp_quantity."";
+            $params_upt_acc->product_coupon_code="".@$coupon_code."";
+            $params_upt_acc->product_coupon_name="".@$couponName."";
         $chg_cnt = 0;
         $str_changes = "";            
         while(!empty($changes[$chg_cnt])) {
@@ -715,25 +681,18 @@ date_default_timezone_set("Asia/Manila");
         }
 
         if($changes != null) {
-            $log_item = $marshaler->marshalJson('
-                {
-                    "log_id": "'.GUID().'",
-                    "user_id": "'.$_SESSION['user_now_id'].'",
-                    "customer_id": "'.$_GET['id'].'",
-                    "event": "Updated",
-                    "data": "'.$str_changes.'",
-                    "date": "'.date('Y/m/d H:i:s').'"
-                }
-            ');
-            $params_add_log = [
-                'TableName' => 'ursa-logs',
-                'Item' => $log_item
-            ];
+            $params_add_log = $obj_gateway_log->createEntity([
+                    "user_id"=> "".$_SESSION['user_now_id']."",
+                    "customer_id"=> "".$_GET['id']."",
+                    "event"=> "Updated",
+                    "data"=> "".$str_changes."",
+                    "date"=> "".date('Y/m/d H:i:s').""
+            ]);
         }
                 
 
         try {
-            $result_apr_acc = $dynamodb->updateItem($params_upt_acc);
+            $result_apr_acc = $obj_gateway_customer->upsert($params_upt_acc);
             if($usingPayPortal == "chargify") {
                 $product_handle = $prod_handle;
                 $product_name = $prodName;
@@ -746,34 +705,16 @@ date_default_timezone_set("Asia/Manila");
             $product_coupon_name = $couponName;
             $product_component_quantity = $comp_quantity;
             if($changes != null) {
-                $result_add_log = $dynamodb->putItem($params_add_log);
+                $result_add_log = $obj_gateway_log->upsert($params_add_log);
             }
             if($bill_address_2 == "null") {
                 $bill_address_2 = null;
             }
-
-            $params3 = [
-                'TableName' => 'ursa-logs',
-                'ProjectionExpression' => 'user_id,customer_id,event,#data,#date',
-                'ExpressionAttributeNames'=> [ '#data' => 'data','#date' => 'date' ]
-            ];
+            $result_db_logs = $obj_gateway_log->fetchAll("SELECT * FROM log");
 
             try {
-                while (true) {
-                    $result_db_logs = $dynamodb->scan($params3);
-    
-                    foreach ($result_db_logs['Items'] as $i) {
-                        $movie = $marshaler->unmarshalItem($i);
-                    }
 
-                    if (isset($result_db_logs['LastEvaluatedKey'])) {
-                        $params3['ExclusiveStartKey'] = $result_db_logs['LastEvaluatedKey'];
-                        $result_db_logs = $dynamodb->scan($params3);
-                    } else {
-                        break;
-                    }
-                }
-                $all_logs = $result_db_logs['Items'];
+                $all_logs = $result_db_logs;
 
                 //prime phone number - customer number
                 if($phone != null) {
@@ -823,11 +764,11 @@ date_default_timezone_set("Asia/Manila");
                 }
                 $office_phone = implode("",$fin_num1);
 
-            } catch (DynamoDbException $e) {
+            } catch (Exception $e) {
                 echo "Unable to scan LOGS:\n";
                 echo $e->getMessage() . "\n";
             }
-        } catch (DynamoDbException $e) {
+        } catch (Exception $e) {
             echo "Unable to update item:\n";
             echo $e->getMessage() . "\n";
         }
@@ -1121,141 +1062,80 @@ date_default_timezone_set("Asia/Manila");
 if(@$_POST['submit_user'])
 {
   if(@$_GET['user_id']){
-    $key = $marshaler->marshalJson('
-        {
-            "user_id": "'.@$_GET['user_id'].'"
-        }
-    ');
-
-    $eav = $marshaler->marshalJson('
-        {
-            ":email": "'.$_POST['email'].'",
-            ":password": "'.$_POST['pass'].'",
-            ":userType": "'.$_POST['type'].'",
-            ":user_first_name": "'.$_POST['fname'].'",
-            ":user_last_name": "'.$_POST['lname'].'"
-        }
-    ');
-
-    $params = [
-        'TableName' => 'ursa-users',
-        'Key' => $key,
-        'UpdateExpression' =>
-            'set email=:email,
-                    password=:password,
-                    userType=:userType,
-                    user_first_name=:user_first_name,
-                    user_last_name=:user_last_name
-            ',
-        'ExpressionAttributeValues'=> $eav,
-        'ReturnValues' => 'UPDATED_NEW'
-    ];
+    $params = $obj_gateway_user->fetchById(@$_GET['user_id']);
+    $params->email="".$_POST['email']."";
+    $params->password="".$_POST['pass']."";
+    $params->userType="".$_POST['type']."";
+    $params->user_first_name="".$_POST['fname']."";
+    $params->user_last_name="".$_POST['lname']."";
     
     try {
-        $result = $dynamodb->updateItem($params);
+        $result = $obj_gateway_user->upsert($params);
         ?>
         <script type="text/javascript">
             document.getElementById('home').click();
         </script>
       <?php
 
-    } catch (DynamoDbException $e) {
+    } catch (Exception $e) {
         echo "Unable to update item:\n";
         echo $e->getMessage() . "\n";
     }
 
   }else{
-    $item = $marshaler->marshalJson('
-        {
-            "user_id": "'.GUID().'",
-            "email": "'.$_POST['email'].'",
-            "password": "'.$_POST['pass'].'",
-            "status": "active",
-            "userType": "'.$_POST['type'].'",
-            "user_first_name": "'.$_POST['fname'].'",
-            "user_last_name": "'.$_POST['lname'].'"
-        }
-    ');
-
-    $params = [
-        'TableName' => 'ursa-users',
-        'Item' => $item
-    ];
-
+    $params = $obj_gateway_user->createEntity([
+            "email"=> "".$_POST['email']."",
+            "password"=> "".$_POST['pass']."",
+            "status"=> "active",
+            "userType"=> "".$_POST['type']."",
+            "user_first_name"=> "".$_POST['fname']."",
+            "user_last_name"=> "".$_POST['lname'].""
+    ]);
 
     try {
-        $result = $dynamodb->putItem($params);
+        $result = $obj_gateway_user->upsert($params);
         ?>
         <script type="text/javascript">
             document.getElementById('home').click();
         </script>
       <?php
 
-    } catch (DynamoDbException $e) {
+    } catch (Exception $e) {
         echo "Unable to add item:\n";
         echo $e->getMessage() . "\n";
     }
   }
 }
 if(@$_GET['action'] == "edit"){
-    $key2 = $marshaler->marshalJson('
-        {
-            "user_id": "'.$_GET['user_id'].'"
-        }
-    ');
-    $params2 = [
-        'TableName' => 'ursa-users',
-        'Key' => $key2
-    ];
     try {
-        $result = $dynamodb->getItem($params2);
-        $user_fname =  $result['Item']['user_first_name']['S'];
-        $user_lname =  $result['Item']['user_last_name']['S'];
-        $user_email =  $result['Item']['email']['S'];
-        $userType =  $result['Item']['userType']['S'];
+        $result = $obj_gateway_user->fetchById($_GET['user_id']);
+        $user_fname =  $result->user_first_name;
+        $user_lname =  $result->user_last_name;
+        $user_email =  $result->email;
+        $userType =  $result->userType;
 
-    } catch (DynamoDbException $e) {
+    } catch (Exception $e) {
         echo "Unable to get item:\n";
         echo $e->getMessage() . "\n";
     }
 }
 
 if(@$_GET['action'] == "delete"){
-    $key = $marshaler->marshalJson('
-        {
-            "user_id": "'.$_GET['user_id'].'"
-        }
-    ');
-
-
-    $params = [
-        'TableName' => 'ursa-users',
-        'Key' => $key
-    ];
-
+    $params = $obj_gateway_user->fetchById($_GET['user_id']);
     try {
-        $result = $dynamodb->deleteItem($params);
+        $result = $obj_gateway_user->delete($params);
 
-    } catch (DynamoDbException $e) {
+    } catch (Exception $e) {
         echo "Unable to delete item:\n";
         echo $e->getMessage() . "\n";
     }
 }  
 if(@$_GET['action'] == "status"){
-    $key_get = $marshaler->marshalJson('
-        {
-            "user_id": "'.$_GET['user_id'].'"
-        }
-    ');
-    $params_get = [
-        'TableName' => 'ursa-users',
-        'Key' => $key_get
-    ];
+    $result_get = $obj_gateway_user->fetchById($_GET['user_id']);
     try {
-        $result_get = $dynamodb->getItem($params_get);
-        $status =  $result_get['Item']['status']['S'];
+        $status =  $result_get->status;
 
-    } catch (DynamoDbException $e) {
+    } catch (Exception $e) {
         echo "Unable to get item:\n";
         echo $e->getMessage() . "\n";
     }
@@ -1271,34 +1151,20 @@ if(@$_GET['action'] == "status"){
     }else{
       $stat_now = "active";
     }
-    $eav_stat = $marshaler->marshalJson('
-        {
-            ":status": "'.$stat_now.'"
-        }
-    ');
-
-    $params_stat = [
-        'TableName' => 'ursa-users',
-        'Key' => $key_stat,
-        'UpdateExpression' =>
-            'set #st=:status',
-        'ExpressionAttributeValues'=> $eav_stat,
-        'ReturnValues' => 'UPDATED_NEW',
-        'ExpressionAttributeNames'=> [ '#st' => 'status' ]
-    ];
+    $result_get->status= "".$stat_now."";
     
     try {
-        $result = $dynamodb->updateItem($params_stat);
+        $result = $obj_gateway_user->upsert($result_get);
         ?>
         
       <?php
 
-    } catch (DynamoDbException $e) {
+    } catch (Exception $e) {
         echo "Unable to update item:\n";
         echo $e->getMessage() . "\n";
     }
 }
-
+/* <----------remove this
     // Your Account Sid and Auth Token from twilio.com/user/account
     $sid = $sid;
     $token = $token;
@@ -1316,6 +1182,7 @@ if(@$_GET['action'] == "status"){
     );
     echo $number->sid;
     */
+//*<------------remove this
 
     if(@$_POST['call']) {
         try {
