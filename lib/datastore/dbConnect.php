@@ -6,8 +6,7 @@ ini_set('max_execution_time', 0); //300 seconds = 5 minutes
  * @author Tom Walder <twalder@gmail.com>
  */
 date_default_timezone_set("Asia/Manila");
-//require_once('apiclient/vendor/autoload.php');
-require_once('../app/apiclient/vendor/autoload.php');
+require_once('lib/google/apiclient/vendor/autoload.php');
 require_once('lib/google/php-gds/src/GDS/Entity.php');
 require_once('lib/google/php-gds/src/GDS/Schema.php');
 require_once('lib/google/php-gds/src/GDS/Store.php');

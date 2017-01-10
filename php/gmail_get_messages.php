@@ -1,7 +1,7 @@
 <?php
     require_once 'settings.php';
     require_once 'lib/datastore/dbConnect.php';
-    require_once 'lib/google/apiclient/src/Google/autoload.php';
+    require_once 'lib/google/apiclient/vendor/autoload.php';
     $ticket_check = $obj_gateway_ticket->fetchAll("SELECT * FROM ticket");
     $tbname = 'ursa-tickets';
     $tbid = 'ticket_id';
